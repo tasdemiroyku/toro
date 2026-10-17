@@ -70,8 +70,8 @@ proxy.js                    Next.js 16 middleware: session refresh, route guards
 Requirements: Node.js 20+ and a Supabase project.
 
 ```bash
-git clone https://github.com/tasdemiroyku/toro-next.git
-cd toro-next
+git clone https://github.com/tasdemiroyku/toro.git
+cd toro
 npm install
 cp .env.example .env.local   # then fill in your Supabase keys
 npm run dev                  # http://localhost:3000

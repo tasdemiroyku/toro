@@ -9,7 +9,7 @@ Toro is a services marketplace for students in Turin (tutoring, cleaning,
 consular paperwork, elderly care, moving, tech help, language exchange).
 Founders: Öykü (computer engineering, Politecnico) and Ogi (business, UniTO).
 Status: pre-launch. Current goal: a working, secure, well-documented app that holds
-up to a technical review; public launch later. Production: https://toro-next.vercel.app
+up to a technical review; public launch later. Production URL: `SITE_URL` in `lib/site.js`.
 
 ## Working agreement
 
@@ -51,6 +51,7 @@ components/                <Name>Client.jsx per route + Header, Footer, ToretBul
 lib/categories.js          CATEGORIES, CATEGORY_LABEL, CATEGORY_DEFAULT_IMAGE, PRICE_TYPES, PRICE_TYPE_LABEL
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
 lib/redirect.js            safeRedirectPath()
+lib/site.js                SITE_URL, SITE_HOST (the only place the domain is written)
 utils/supabase/            client.js, server.js, proxy.js (session helper), admin.js (secret key)
 utils/upload.js            image validation, WebP compression, Storage upload
 proxy.js                   middleware entry point (Next.js 16 name)
