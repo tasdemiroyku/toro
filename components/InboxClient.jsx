@@ -71,11 +71,13 @@ const MESSAGE_SELECT = `
 
 // ─── Thread View ──────────────────────────────────────────────────────────────
 
-function ThreadView({ conversation, currentUserId, onBack, onNewMessage }) {
+function ThreadView({ conversation, currentUserId, onBack, onNewMessage, onMessagesRead }) {
   const supabase = createClient()
-  const [messages, setMessages] = useState(
-    [...conversation.messages].sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-  )
+  // Confirmed messages come from the parent (single source of truth, kept live by
+  // the realtime subscription). Only unconfirmed optimistic sends live here.
+  const [pending, setPending] = useState([])
+  const messages = [...conversation.messages, ...pending]
+    .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
   const [input, setInput]   = useState('')
   const [sending, setSending] = useState(false)
   const messagesEndRef = useRef(null)
@@ -85,41 +87,21 @@ function ThreadView({ conversation, currentUserId, onBack, onNewMessage }) {
     messagesEndRef.current?.scrollIntoView({ behavior, block: 'nearest' })
   }, [])
 
-  useEffect(() => { scrollToBottom() },         [messages, scrollToBottom])
+  useEffect(() => { scrollToBottom() },         [messages.length, scrollToBottom])
   useEffect(() => { scrollToBottom('instant') }, [conversation.key, scrollToBottom])
 
-  // Mark unread as read
+  // Mark incoming messages as read — on open and whenever a new one arrives
+  const unreadIds = conversation.messages
+    .filter(m => !m.read && m.receiver_id === currentUserId)
+    .map(m => m.id)
+  const unreadKey = unreadIds.join(',')
+
   useEffect(() => {
-    const unreadIds = messages.filter(m => !m.read && m.receiver_id === currentUserId).map(m => m.id)
     if (!unreadIds.length) return
-    supabase.from('messages').update({ read: true }).in('id', unreadIds).then(() => {
-      setMessages(prev => prev.map(m => unreadIds.includes(m.id) ? { ...m, read: true } : m))
+    supabase.from('messages').update({ read: true }).in('id', unreadIds).then(({ error }) => {
+      if (!error) onMessagesRead(unreadIds)
     })
-  }, [conversation.key]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Real-time for THIS thread
-  useEffect(() => {
-    const channel = supabase
-      .channel(`thread:${conversation.key}`)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `receiver_id=eq.${currentUserId}` }, payload => {
-        const msg = payload.new
-        if (msg.listing_id !== conversation.listingId || msg.sender_id !== conversation.otherId) return
-
-        const enriched = {
-          ...msg,
-          read: true,
-          sender: conversation.otherProfile,
-          receiver: { id: currentUserId },
-          listing: conversation.listing,
-        }
-        setMessages(prev => [...prev, enriched])
-        onNewMessage(enriched)
-        supabase.from('messages').update({ read: true }).eq('id', msg.id)
-      })
-      .subscribe()
-
-    return () => supabase.removeChannel(channel)
-  }, [conversation.key]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [unreadKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSend = async () => {
     const content = input.trim()
@@ -141,7 +123,7 @@ function ThreadView({ conversation, currentUserId, onBack, onNewMessage }) {
       listing: conversation.listing,
       _optimistic: true,
     }
-    setMessages(prev => [...prev, optimistic])
+    setPending(prev => [...prev, optimistic])
 
     const { data, error } = await supabase
       .from('messages')
@@ -149,12 +131,12 @@ function ThreadView({ conversation, currentUserId, onBack, onNewMessage }) {
       .select()
       .single()
 
+    setPending(prev => prev.filter(m => m.id !== optimistic.id))
     if (error) {
-      setMessages(prev => prev.filter(m => m.id !== optimistic.id))
       setInput(content)
     } else {
-      setMessages(prev => prev.map(m => m.id === optimistic.id ? { ...optimistic, ...data } : m))
-      onNewMessage({ ...optimistic, ...data })
+      const { _optimistic, ...base } = optimistic
+      onNewMessage({ ...base, ...data })
     }
 
     setSending(false)
@@ -303,6 +285,36 @@ export default function InboxClient({ initialMessages, currentUserId, activeList
     })
   }, [])
 
+  const handleMessagesRead = useCallback(ids => {
+    setMessages(prev => prev.map(m => ids.includes(m.id) ? { ...m, read: true } : m))
+  }, [])
+
+  // Realtime: every message sent to me, in any conversation
+  useEffect(() => {
+    const channel = supabase
+      .channel(`inbox-global:${currentUserId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+          filter: `receiver_id=eq.${currentUserId}`,
+        },
+        async (payload) => {
+          const { data: enriched } = await supabase
+            .from('messages')
+            .select(MESSAGE_SELECT)
+            .eq('id', payload.new.id)
+            .single()
+          if (enriched) handleNewMessage(enriched)
+        }
+      )
+      .subscribe()
+
+    return () => supabase.removeChannel(channel)
+  }, [currentUserId]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const totalUnread = conversations.reduce((sum, c) => sum + c.unreadCount, 0)
 
   return (
@@ -348,7 +360,7 @@ export default function InboxClient({ initialMessages, currentUserId, activeList
             <AnimatePresence mode="wait">
               {activeConv ? (
                 <motion.div key={activeConv.key} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }} className="flex flex-col flex-1 min-h-0">
-                  <ThreadView conversation={activeConv} currentUserId={currentUserId} onBack={handleBack} onNewMessage={handleNewMessage} />
+                  <ThreadView conversation={activeConv} currentUserId={currentUserId} onBack={handleBack} onNewMessage={handleNewMessage} onMessagesRead={handleMessagesRead} />
                 </motion.div>
               ) : (
                 <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col items-center justify-center gap-4 text-center px-8">

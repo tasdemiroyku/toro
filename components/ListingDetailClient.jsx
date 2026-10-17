@@ -40,7 +40,7 @@ export default function ListingDetailClient({ listing: initialListing, profile, 
   }
 
   const [isPending, startTransition] = useTransition()
-  
+
   const handleDelete = () => {
   startTransition(async () => {
     try {
@@ -259,10 +259,10 @@ const handleToggleActive = () => {
               </button>
               <button
                 onClick={handleDelete}
-                disabled={deleting}
+                disabled={isPending}
                 className="flex-1 bg-red-500 text-white rounded-full py-2.5 text-sm font-semibold hover:bg-red-600 transition disabled:opacity-60"
               >
-                {deleting ? 'Deleting...' : 'Yes, delete'}
+                {isPending ? 'Deleting...' : 'Yes, delete'}
               </button>
             </div>
           </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import { CATEGORIES, PRICE_TYPES, CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
@@ -27,6 +27,15 @@ export default function EditListingClient({ listing }) {
   const [imageError, setImageError]     = useState(null)
   const [loading, setLoading]           = useState(false)
   const [error, setError]               = useState(null)
+
+  // Release the previous object URL whenever the preview changes or the form unmounts
+  useEffect(() => {
+    return () => {
+      if (imagePreview?.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview)
+      }
+    }
+  }, [imagePreview])
 
   // The cover to display in the preview area:
   //   1. New file picked by user (imagePreview = object URL)
