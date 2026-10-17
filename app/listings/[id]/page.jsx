@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import ListingDetailClient from '@/components/ListingDetailClient'
+import { PUBLIC_PROFILE_COLUMNS } from '@/lib/profile'
 
 export async function generateMetadata({ params }) {
   const { id } = await params
@@ -31,10 +32,10 @@ export default async function ListingDetailPage({ params }) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Single joined query — listing + profile
+  // Single joined query — listing + public profile fields only
   const { data: listing, error } = await supabase
     .from('listings')
-    .select('*, profiles(*)')
+    .select(`*, profiles(${PUBLIC_PROFILE_COLUMNS})`)
     .eq('id', id)
     .single()
 

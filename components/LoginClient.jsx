@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import ToretBull from '@/components/ToretBull'
 import ToroLoader from '@/components/ToroLoader'
-
-const isSafeInternalPath = (value) => typeof value === 'string' && value.startsWith('/')
+import { safeRedirectPath } from '@/lib/redirect'
 
 // "Remember me" e-mail lives in localStorage. Reading it through
 // useSyncExternalStore keeps server and client renders consistent
@@ -18,7 +17,7 @@ const readSavedEmailOnServer = () => ''
 
 export default function LoginClient({ redirectTarget = '/' }) {
   const router = useRouter()
-  const safeRedirectTarget = isSafeInternalPath(redirectTarget) ? redirectTarget : '/'
+  const safeRedirectTarget = safeRedirectPath(redirectTarget)
   const [mode, setMode] = useState('login')
   const savedEmail = useSyncExternalStore(subscribeToNothing, readSavedEmail, readSavedEmailOnServer)
   const [typedEmail, setEmail] = useState(null)

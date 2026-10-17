@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import OnboardingClient from '@/components/OnboardingClient'
+import { safeRedirectPath } from '@/lib/redirect'
 
 export const metadata = { title: 'Welcome to Toro — Complete Your Profile' }
 
@@ -15,7 +16,7 @@ export default async function OnboardingPage({ searchParams }) {
   if (user.user_metadata?.username) redirect('/profile')
 
   const { next } = await searchParams
-  const redirectAfter = next && next.startsWith('/') ? next : '/'
+  const redirectAfter = safeRedirectPath(next)
 
   // Pre-fetch the profile row — may already exist from a DB trigger
   const { data: profile } = await supabase

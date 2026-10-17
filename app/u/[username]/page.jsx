@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import ProfileClient from '@/components/ProfileClient'
+import { PUBLIC_PROFILE_COLUMNS } from '@/lib/profile'
 
 export async function generateMetadata({ params }) {
   const { username } = await params
@@ -30,7 +31,7 @@ export default async function PublicProfilePage({ params }) {
 
   // Fetch profile and current viewer in parallel
   const [{ data: profile }, { data: { user } }] = await Promise.all([
-    supabase.from('profiles').select('*').eq('username', username).single(),
+    supabase.from('profiles').select(PUBLIC_PROFILE_COLUMNS).eq('username', username).single(),
     supabase.auth.getUser(),
   ])
 
