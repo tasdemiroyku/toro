@@ -10,6 +10,7 @@ import { useTransition } from 'react'
 import { deleteUserAccount } from '@/app/actions/account'
 import { savePersonalInfo } from '@/app/actions/profile'
 import { SITE_HOST } from '@/lib/site'
+import { requestStudentCode, confirmStudentCode } from '@/app/actions/verification'
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -452,34 +453,6 @@ function AcademicSection({ user, profile, setProfile }) {
         </Field>
       </div>
 
-      {/* Verification status banner — is_verified is computed by a DB trigger */}
-      <div className={`rounded-2xl p-4 text-sm border ${
-        profile?.is_verified
-          ? 'bg-green-50 border-green-200'
-          : 'bg-transparent border-toro-dark/10'
-      }`}>
-        {profile?.is_verified ? (
-          <div className="flex items-center gap-2 text-green-700">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 6 9 17l-5-5"/>
-            </svg>
-            Your email <span className="font-medium">{user?.email}</span> is automatically verified as a student address.
-          </div>
-        ) : (
-          <div className="flex items-start gap-2 text-toro-dark/50">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 shrink-0">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-            <span>
-              Sign up with your university email (e.g. <em>@studenti.polito.it</em>) to receive a
-              Verified Student badge and build trust with other users.
-            </span>
-          </div>
-        )}
-      </div>
-
       <div className="pt-2">
         <button
           onClick={handleSave}
@@ -490,7 +463,116 @@ function AcademicSection({ user, profile, setProfile }) {
         </button>
       </div>
 
+      <StudentVerification profile={profile} setProfile={setProfile} />
+
       <AnimatePresence>{toast && <Toast {...toast} />}</AnimatePresence>
+    </div>
+  )
+}
+
+// ─── Student verification (code sent to a university e-mail) ─────────────────
+
+function StudentVerification({ profile, setProfile }) {
+  const router = useRouter()
+  const [step, setStep]       = useState('email') // 'email' → 'code'
+  const [email, setEmail]     = useState('')
+  const [code, setCode]       = useState('')
+  const [busy, setBusy]       = useState(false)
+  const [message, setMessage] = useState(null)    // { text, type }
+
+  if (profile?.is_verified) {
+    return (
+      <div className="rounded-2xl p-4 text-sm border bg-green-50 border-green-200 flex items-center gap-2 text-green-700">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        <span>
+          Verified student
+          {profile.student_email && <> · <span className="font-medium">{profile.student_email}</span></>}
+        </span>
+      </div>
+    )
+  }
+
+  const sendCode = async () => {
+    setBusy(true)
+    setMessage(null)
+    const { error } = await requestStudentCode(email)
+    setBusy(false)
+    if (error) return setMessage({ text: error, type: 'error' })
+    setStep('code')
+    setCode('')
+    setMessage({ text: `We sent a 6-digit code to ${email.trim().toLowerCase()}.`, type: 'info' })
+  }
+
+  const confirmCode = async () => {
+    setBusy(true)
+    setMessage(null)
+    const { error, studentEmail } = await confirmStudentCode(code)
+    setBusy(false)
+    if (error) return setMessage({ text: error, type: 'error' })
+    setProfile(prev => ({ ...prev, is_verified: true, student_email: studentEmail }))
+    router.refresh()
+  }
+
+  return (
+    <div className="rounded-2xl p-4 border border-toro-dark/10 flex flex-col gap-3 text-sm">
+      <div className="flex flex-col gap-1">
+        <p className="font-semibold text-toro-dark">Get the Verified Student badge</p>
+        <p className="text-toro-dark/50">
+          Enter your university e-mail (e.g. <em>@studenti.polito.it</em>) and we will send you a
+          code. Your login e-mail stays the same and the university address is never shown publicly.
+        </p>
+      </div>
+
+      {step === 'email' ? (
+        <div className="flex flex-col sm:flex-row gap-2">
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && email.trim() && !busy && sendCode()}
+            placeholder="name@studenti.polito.it"
+            maxLength={254}
+            className="toro-input flex-1"
+          />
+          <button onClick={sendCode} disabled={busy || !email.trim()} className="toro-btn-primary whitespace-nowrap">
+            {busy ? 'Sending…' : 'Send code'}
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <input
+              type="text"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              value={code}
+              onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              onKeyDown={e => e.key === 'Enter' && code.length === 6 && !busy && confirmCode()}
+              placeholder="6-digit code"
+              className="toro-input flex-1 font-mono tracking-widest"
+            />
+            <button onClick={confirmCode} disabled={busy || code.length !== 6} className="toro-btn-primary whitespace-nowrap">
+              {busy ? 'Checking…' : 'Verify'}
+            </button>
+          </div>
+          <div className="flex gap-4 text-xs">
+            <button onClick={sendCode} disabled={busy} className="text-toro-gold font-semibold hover:underline disabled:opacity-40">
+              Resend code
+            </button>
+            <button onClick={() => { setStep('email'); setMessage(null) }} className="text-toro-dark/50 hover:underline">
+              Use a different e-mail
+            </button>
+          </div>
+        </>
+      )}
+
+      {message && (
+        <p className={`text-xs font-medium ${message.type === 'error' ? 'text-red-500' : 'text-toro-dark/60'}`}>
+          {message.text}
+        </p>
+      )}
     </div>
   )
 }
