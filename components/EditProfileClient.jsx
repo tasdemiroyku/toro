@@ -8,6 +8,7 @@ import { uploadAvatar } from '@/utils/upload'
 import ToretBull from '@/components/ToretBull'
 import { useTransition } from 'react'
 import { deleteUserAccount } from '@/app/actions/account'
+import { savePersonalInfo } from '@/app/actions/profile'
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -212,7 +213,6 @@ function LanguageTagSelector({ selected, onChange }) {
 
 function PersonalSection({ user, profile, setProfile }) {
   const update = (field, value) => setProfile(prev => ({ ...prev, [field]: value }))
-  const supabase = createClient()
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -236,22 +236,17 @@ function PersonalSection({ user, profile, setProfile }) {
 
   const handleSave = async () => {
     setSaving(true)
-    
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        full_name:    profile.full_name,
-        bio:          profile.bio,
-        languages:    profile.languages,
-        phone_number: profile.phone_number,
-        skills:       profile.skills,
-      })
-      .eq('id', user.id)
 
-    showToast(
-      error ? 'Something went wrong.' : 'Profile saved.',
-      error ? 'error' : 'success'
-    )
+    // Server Action: validates input and keeps the phone number in private_profiles
+    const { error } = await savePersonalInfo({
+      fullName:    profile.full_name,
+      bio:         profile.bio,
+      languages:   profile.languages,
+      skills:      profile.skills,
+      phoneNumber: profile.phone_number,
+    })
+
+    showToast(error ?? 'Profile saved.', error ? 'error' : 'success')
     setSaving(false)
   }
 
