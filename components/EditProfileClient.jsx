@@ -12,12 +12,6 @@ import { savePersonalInfo } from '@/app/actions/profile'
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const STUDENT_DOMAINS = [
-  'studenti.polito.it', 'edu.unito.it', 'studenti.unimi.it',
-  'studio.unibo.it', 'studenti.uniroma1.it', 'edu', 'ac.uk',
-  'student.kuleuven.be', 'etu.u-paris.fr',
-]
-
 const LANGUAGE_OPTIONS = [
   'Italian', 'English', 'Turkish', 'French', 'Spanish',
   'German', 'Arabic', 'Chinese', 'Portuguese', 'Russian',
@@ -67,12 +61,6 @@ const NAV_ITEMS = [
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const USERNAME_RE = /^[a-z0-9_]{3,30}$/
-
-function isVerifiedStudent(email) {
-  if (!email) return false
-  const domain = email.split('@')[1] ?? ''
-  return STUDENT_DOMAINS.some(d => domain.endsWith(d))
-}
 
 function memberSince(dateStr) {
   if (!dateStr) return null
@@ -463,13 +451,13 @@ function AcademicSection({ user, profile, setProfile }) {
         </Field>
       </div>
 
-      {/* Verification status banner */}
+      {/* Verification status banner — is_verified is computed by a DB trigger */}
       <div className={`rounded-2xl p-4 text-sm border ${
-        isVerifiedStudent(user?.email)
+        profile?.is_verified
           ? 'bg-green-50 border-green-200'
           : 'bg-transparent border-toro-dark/10'
       }`}>
-        {isVerifiedStudent(user?.email) ? (
+        {profile?.is_verified ? (
           <div className="flex items-center gap-2 text-green-700">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 6 9 17l-5-5"/>
@@ -647,7 +635,7 @@ export default function EditProfileClient({ user, initialProfile }) {
 
   const fileInputRef = useRef(null)
   const supabase = createClient()
-  const verified = isVerifiedStudent(user?.email)
+  const verified = !!profile?.is_verified
 
   const initials =
     profile?.full_name?.[0]?.toUpperCase() ||
