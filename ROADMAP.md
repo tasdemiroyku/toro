@@ -22,12 +22,12 @@ students comes after that, once moderation and legal pages are in place.
 ## Done
 
 - [x] Inbox realtime fix, edit-form image cleanup, delete button state
-- [ ] Remove unverified partnership claims from the footer and home page
-- [ ] Lint passes with zero errors
-- [ ] Stop sending private profile fields (phone number) to public pages
-- [ ] Block protocol-relative open redirects (`//evil.com`)
-- [ ] README and `.env.example`
-- [ ] Clean repository structure, rewrite CLAUDE.md
+- [x] Remove unverified partnership claims from the footer and home page
+- [x] Lint passes with zero errors
+- [x] Stop sending private profile fields (phone number) to public pages
+- [x] Block protocol-relative open redirects (`//evil.com`)
+- [x] README and `.env.example`
+- [x] Clean repository structure, rewrite CLAUDE.md
 
 ## Next — security hardening (do before anything else)
 
