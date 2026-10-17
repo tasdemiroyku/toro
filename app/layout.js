@@ -3,6 +3,7 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { createClient } from '@/utils/supabase/server'
+import { SITE_URL } from '@/lib/site'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -23,11 +24,11 @@ export const metadata = {
   keywords: ['studenti torino', 'ripetizioni torino', 'pulizie torino', 'lavoro studenti torino', 'marketplace torino', 'öğrenci hizmetleri torino'],
   authors: [{ name: 'Toro' }],
   creator: 'Toro',
-  metadataBase: new URL('https://toro-next.vercel.app'),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     title: 'Toro · Torino',
     description: 'Il marketplace degli studenti di Torino.',
-    url: 'https://toro-next.vercel.app',
+    url: SITE_URL,
     siteName: 'Toro',
     images: [
       {

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
 import { uploadAvatar } from '@/utils/upload'
 import ToretBull from '@/components/ToretBull'
+import { SITE_HOST } from '@/lib/site'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -227,7 +228,7 @@ function StepUsername({ form, setForm }) {
         <div className="text-xs text-toro-dark/30 bg-toro-dark/3 rounded-2xl p-4 leading-relaxed">
           Your public profile will live at{' '}
           <span className="font-mono text-toro-dark/50">
-            toro-next.vercel.app/u/{form.username || 'your_handle'}
+            {SITE_HOST}/u/{form.username || 'your_handle'}
           </span>
         </div>
       </div>
