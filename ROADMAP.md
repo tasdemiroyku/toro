@@ -18,6 +18,7 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-17 | The university picker in profile settings stays: it is user-provided data, not an endorsement. |
 | 2026-10-17 | Work happens on short-lived branches, one small commit per change, English commit messages. |
 | 2026-10-17 | AGENTS.md is merged into CLAUDE.md; CLAUDE.md is the single source of project rules. |
+| 2026-10-17 | Project renamed from `toro-next` to `toro` (repo, package, folder). Domain change pending; `lib/site.js` holds the URL. |
 
 ## Done
 
@@ -28,6 +29,13 @@ students comes after that, once moderation and legal pages are in place.
 - [x] Block protocol-relative open redirects (`//evil.com`)
 - [x] README and `.env.example`
 - [x] Clean repository structure, rewrite CLAUDE.md
+- [x] Verified on production: no `phone_number` in page HTML
+
+## Findings from the anon-key probe (2026-10-17)
+
+- `profiles.phone_number` is selectable with the public anon key (no row has a value yet) → S3.
+- `messages`: 0 rows visible to anon, as expected.
+- `subscribers` table does **not exist**, so the home-page waitlist always fails → F4.
 
 ## Next — security hardening (do before anything else)
 
@@ -48,7 +56,7 @@ students comes after that, once moderation and legal pages are in place.
 | F1 | Privacy policy + terms of use pages (GDPR), working footer links | S (text needs legal review) | — |
 | F2 | Report listing / user + founder email via Resend + simple admin view | M | S2, S4 |
 | F3 | Email notification on new message (Resend) | S–M | S4 |
-| F4 | Waitlist confirmation email (Resend) or remove the "check your email" copy | S | — |
+| F4 | Waitlist is broken: create `subscribers` (RLS: anon insert only) or remove the section; optional Resend confirmation | S | S1 |
 | F5 | i18n: Italian / English / Turkish | L | F1 copy |
 | F6 | Turin neighbourhood filter | S | S1 |
 | F7 | Replace "launching soon" section with real onboarding CTA | S | F1, F2 |
