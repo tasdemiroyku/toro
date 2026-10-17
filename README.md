@@ -53,17 +53,24 @@ proxy.js                    Next.js 16 middleware: session refresh, route guards
 
 ## Security notes
 
-- Database access from the browser relies on Row Level Security. The service-role key
-  is used only in one Server Action (account deletion) and never reaches the client.
-- Public pages select an explicit allow-list of profile columns
-  (`lib/profile.js`), so private fields such as phone numbers are never
-  serialised into HTML.
+- **Row Level Security on every table**, versioned in
+  [`supabase/migrations/`](supabase/migrations) and verified with the read-only
+  queries in [`supabase/audit/`](supabase/audit). The browser only holds the anon
+  key; the service-role key is used in one Server Action (account deletion).
+- **Private data is separated from public data.** Profiles are public by design, so
+  phone numbers live in an owner-only `private_profiles` table. Public pages also
+  select an explicit column allow-list (`lib/profile.js`).
+- **Least-privilege column grants.** For example, the receiver of a message can
+  update only its `read` flag.
+- **The database validates input itself.** CHECK constraints cover categories,
+  price types and text lengths, so the public API cannot bypass the UI's rules.
+- **The Verified Student badge** is computed by a database trigger: a confirmed
+  e-mail on an allow-listed university domain. Clients cannot set it.
 - Every post-login redirect goes through `safeRedirectPath()` (`lib/redirect.js`),
   which blocks open redirects such as `//evil.com`.
 - Route parameters are validated (UUID and username regexes) before any query runs.
-- Planned hardening work is tracked in [ROADMAP.md](ROADMAP.md): versioning and
-  auditing the RLS policies, rate limiting, and server-side validation for every
-  mutation.
+- Next steps, such as rate limiting and moving the remaining client-side writes
+  into Server Actions, are tracked in [ROADMAP.md](ROADMAP.md).
 
 ## Getting started
 
@@ -79,9 +86,10 @@ npm run dev                  # http://localhost:3000
 
 In the Supabase dashboard:
 
+- Run the files in `supabase/migrations/` in the SQL Editor, in filename order.
+  They create the tables, policies, triggers and the `toro-uploads` bucket.
 - Enable the Google and LinkedIn (OIDC) providers.
 - Add `http://localhost:3000/auth/callback` to the allowed redirect URLs.
-- Create a public storage bucket named `toro-uploads`.
 
 | Script | Purpose |
 |---|---|
@@ -94,7 +102,7 @@ In the Supabase dashboard:
 
 ```
 app/
-  actions/           Server Actions (account, listings, messages)
+  actions/           Server Actions (account, listings, messages, profile)
   api/subscribe/     Waitlist endpoint
   auth/callback/     OAuth code exchange
   inbox/ listings/ login/ onboarding/ profile/ reset-password/ u/[username]/
@@ -103,6 +111,8 @@ lib/                 Constants and pure helpers (categories, redirects, profile 
 utils/supabase/      Browser, server, middleware and admin Supabase clients
 utils/upload.js      Image validation, compression and Storage upload
 proxy.js             Middleware entry point (Next.js 16 naming)
+supabase/migrations/ Versioned schema: tables, RLS policies, triggers, storage
+supabase/audit/      Read-only SQL to verify policies and schema
 ```
 
 ## Authors

@@ -19,6 +19,8 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-17 | Work happens on short-lived branches, one small commit per change, English commit messages. |
 | 2026-10-17 | AGENTS.md is merged into CLAUDE.md; CLAUDE.md is the single source of project rules. |
 | 2026-10-17 | Project renamed from `toro-next` to `toro` (repo, package, folder). Domain change pending; `lib/site.js` holds the URL. |
+| 2026-10-17 | Phone numbers live in an owner-only `private_profiles` table (not dropped), kept for future contact features. |
+| 2026-10-17 | Schema changes are SQL files in `supabase/migrations/`, written in the repo and applied by hand in the Supabase SQL Editor. Breaking changes use expand → deploy → contract. |
 
 ## Done
 
@@ -30,23 +32,41 @@ students comes after that, once moderation and legal pages are in place.
 - [x] README and `.env.example`
 - [x] Clean repository structure, rewrite CLAUDE.md
 - [x] Verified on production: no `phone_number` in page HTML
+- [x] RLS audit of all tables and storage (two catalog queries, 2026-10-17)
+- [x] Migrations written: baseline, messages hardening, realtime, private phone table, verification trigger, policy cleanup, subscribers, constraints
 
-## Findings from the anon-key probe (2026-10-17)
+## In progress — apply the migrations (branch `security/rls-hardening`)
 
-- `profiles.phone_number` is selectable with the public anon key (no row has a value yet) → S3.
-- `messages`: 0 rows visible to anon, as expected.
-- `subscribers` table does **not exist**, so the home-page waitlist always fails → F4.
+Run in the Supabase SQL Editor, in this order:
+
+1. `20261017120100` … `20261017120600` (skip the baseline; it is already live)
+2. Merge the branch → Vercel deploys the code that uses `private_profiles`
+3. `20261017120700_drop_profiles_phone_number.sql`
+4. Re-run `supabase/audit/*.sql` and test: messages, profile save, avatar upload, waitlist
+
+## Audit findings (2026-10-17)
+
+| Finding | Fix |
+|---|---|
+| Receivers could edit any column of a received message | `20261017120100` |
+| `messages` was not in the realtime publication, so live inbox updates never fired | `20261017120150` |
+| `phone_number` readable by anyone through the API | `20261017120200`, `…700` |
+| Messages could be sent about unrelated listings | `20261017120100` |
+| Two conflicting verification triggers; suffix match; unconfirmed e-mails verified | `20261017120300` |
+| Duplicate profile and legacy storage policies; bucket listing open to all | `20261017120400` |
+| `subscribers` table missing, so the waitlist always failed | `20261017120500` |
+| No DB checks for category/price type, nullable flags, duplicate username check, unindexed FKs | `20261017120600` |
 
 ## Next — security hardening (do before anything else)
 
 | # | Task | Effort | Depends on |
 |---|---|---|---|
-| S1 | Export the live Supabase schema + RLS policies into `supabase/migrations/` so they are versioned | M | Supabase dashboard / CLI access |
-| S2 | Audit RLS on `profiles`, `listings`, `messages`, `subscribers` and storage; test with the anon key | M | S1 |
-| S3 | Hide `phone_number` at the database level (column privileges or a public view), not only in queries | S | S1 |
-| S4 | Move listing create/edit and inbox sends into Server Actions with server-side validation | M | — |
+| ~~S1~~ | ~~Version the live schema in `supabase/migrations/`~~ (baseline) | — | — |
+| ~~S2~~ | ~~Audit RLS on all tables and storage~~ | — | — |
+| ~~S3~~ | ~~Hide `phone_number` at the database level~~ (`private_profiles`) | — | — |
+| S4 | Move listing create/edit, inbox sends, academic info and avatar URL saves into Server Actions (personal info done) | M | — |
 | S5 | Rate limiting on messages, listing creation and `/api/subscribe` (Postgres function or Upstash) | M | S4 |
-| S6 | Confirm student verification (`is_verified`) runs only server-side with a strict domain allowlist | S | S1 |
+| ~~S6~~ | ~~Server-side student verification with a strict allowlist~~ | — | — |
 | S7 | Escape user input used in PostgREST `.or()` search filters | S | — |
 
 ## Then — minimum for real users
@@ -56,7 +76,7 @@ students comes after that, once moderation and legal pages are in place.
 | F1 | Privacy policy + terms of use pages (GDPR), working footer links | S (text needs legal review) | — |
 | F2 | Report listing / user + founder email via Resend + simple admin view | M | S2, S4 |
 | F3 | Email notification on new message (Resend) | S–M | S4 |
-| F4 | Waitlist is broken: create `subscribers` (RLS: anon insert only) or remove the section; optional Resend confirmation | S | S1 |
+| F4 | Waitlist confirmation e-mail via Resend (table fixed in `20261017120500`) | S | — |
 | F5 | i18n: Italian / English / Turkish | L | F1 copy |
 | F6 | Turin neighbourhood filter | S | S1 |
 | F7 | Replace "launching soon" section with real onboarding CTA | S | F1, F2 |
