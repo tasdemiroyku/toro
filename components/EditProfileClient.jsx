@@ -9,6 +9,7 @@ import ToretBull from '@/components/ToretBull'
 import { useTransition } from 'react'
 import { deleteUserAccount } from '@/app/actions/account'
 import { savePersonalInfo } from '@/app/actions/profile'
+import { SITE_HOST } from '@/lib/site'
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -244,7 +245,7 @@ function PersonalSection({ user, profile, setProfile }) {
         await deleteUserAccount()
       } catch (error) {
         setShowDeleteModal(false)
-        setGlobalToast({ message: error.message, type: 'error' })
+        showToast(error.message, 'error')
       }
     })
   }
@@ -279,7 +280,7 @@ function PersonalSection({ user, profile, setProfile }) {
         <label className="text-xs text-toro-dark/50 tracking-wide">Public Profile Link</label>
         <div className="flex items-center bg-toro-dark/5 border border-toro-dark/10 rounded-2xl p-1.5 pl-4">
           <span className="flex-1 text-sm font-mono text-toro-dark/70 truncate mr-2 select-all">
-            toro.com/u/{profile.username}
+            {SITE_HOST}/u/{profile.username}
           </span>
           <button
             type="button"
