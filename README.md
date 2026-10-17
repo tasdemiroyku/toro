@@ -23,7 +23,8 @@ exchange. The name comes from the *Toret*, Turin's green cast-iron bull fountain
 - **Public profiles:** `/u/[username]` with bio, languages, skills and active listings
 - **Messaging:** a realtime inbox per listing (Supabase Realtime), with read
   receipts and an unread indicator in the header
-- **Verified students:** a badge for accounts registered with a university e-mail
+- **Verified students:** anyone can join; the badge is earned by confirming a
+  one-time code sent to a university e-mail (via Resend)
 - **Account deletion:** removes the profile and the auth user (GDPR right to erasure)
 
 ## Tech stack
@@ -64,8 +65,11 @@ proxy.js                    Next.js 16 middleware: session refresh, route guards
   update only its `read` flag.
 - **The database validates input itself.** CHECK constraints cover categories,
   price types and text lengths, so the public API cannot bypass the UI's rules.
-- **The Verified Student badge** is computed by a database trigger: a confirmed
-  e-mail on an allow-listed university domain. Clients cannot set it.
+- **The Verified Student badge** can only be granted by the server, after the user
+  enters a 6-digit code sent to an allow-listed university address. Codes are
+  stored as HMACs, expire after 15 minutes, allow 5 attempts and are rate-limited.
+  Each university address can verify only one account. Column grants stop clients
+  from writing `is_verified`.
 - Every post-login redirect goes through `safeRedirectPath()` (`lib/redirect.js`),
   which blocks open redirects such as `//evil.com`.
 - Route parameters are validated (UUID and username regexes) before any query runs.

@@ -20,6 +20,8 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-17 | AGENTS.md is merged into CLAUDE.md; CLAUDE.md is the single source of project rules. |
 | 2026-10-17 | Project renamed from `toro-next` to `toro` (repo, package, folder). Domain change pending; `lib/site.js` holds the URL. |
 | 2026-10-17 | Phone numbers live in an owner-only `private_profiles` table (not dropped), kept for future contact features. |
+| 2026-10-17 | Anyone can sign up with any e-mail. The student badge needs a code sent to a university e-mail (not the sign-up address). One university address per account. |
+| 2026-10-17 | Commits keep the `Co-Authored-By: Claude` trailer (transparency). From now on: feature branch → PR with description → merge. |
 | 2026-10-17 | Schema changes are SQL files in `supabase/migrations/`, written in the repo and applied by hand in the Supabase SQL Editor. Breaking changes use expand → deploy → contract. |
 
 ## Done
@@ -37,12 +39,16 @@ students comes after that, once moderation and legal pages are in place.
 
 ## In progress — apply the migrations (branch `security/rls-hardening`)
 
-Run in the Supabase SQL Editor, in this order:
-
-1. `20261017120100` … `20261017120600` (skip the baseline; it is already live)
-2. Merge the branch → Vercel deploys the code that uses `private_profiles`
-3. `20261017120700_drop_profiles_phone_number.sql`
-4. Re-run `supabase/audit/*.sql` and test: messages, profile save, avatar upload, waitlist
+1. ✅ `20261017120100` … `20261017120600` applied (2026-10-17)
+2. Run `20261017130000_student_code_verification.sql` (safe with the old code)
+3. Vercel → Environment Variables: `VERIFICATION_CODE_SECRET`, `RESEND_FROM_EMAIL`
+   (and check `RESEND_API_KEY`, `SUPABASE_SECRET_KEY`)
+4. Merge the PR → Vercel deploys the code that uses `private_profiles`
+5. Run `20261017120700_drop_profiles_phone_number.sql`
+6. Re-run `supabase/audit/*.sql` and test: messages, profile save, avatar upload,
+   waitlist, student verification
+7. Buy a domain and verify it in Resend, otherwise codes reach only the Resend
+   account owner
 
 ## Audit findings (2026-10-17)
 

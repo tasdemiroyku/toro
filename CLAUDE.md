@@ -39,6 +39,7 @@ app/
   actions/listings.js      deleteListing, toggleListingActive
   actions/messages.js      sendMessage
   actions/profile.js       savePersonalInfo (phone → private_profiles)
+  actions/verification.js  requestStudentCode, confirmStudentCode (admin client + Resend)
   api/subscribe/route.js   waitlist insert into `subscribers`
   auth/callback/route.js   OAuth code exchange → onboarding or ?next
   inbox/                   realtime inbox
@@ -55,6 +56,7 @@ lib/redirect.js            safeRedirectPath()
 lib/site.js                SITE_URL, SITE_HOST (the only place the domain is written)
 utils/supabase/            client.js, server.js, proxy.js (session helper), admin.js (secret key)
 utils/upload.js            image validation, WebP compression, Storage upload
+utils/email.js             sendEmail() via Resend (server-only)
 proxy.js                   middleware entry point (Next.js 16 name)
 supabase/migrations/       versioned SQL schema, RLS policies, triggers
 supabase/audit/            read-only catalog queries to verify RLS and schema
@@ -104,8 +106,11 @@ changes, re-run `supabase/audit/*.sql` (read-only) to confirm the result.
   `^[a-z0-9_]{3,30}$`), full_name ≤100, avatar_url, bio ≤300, languages text[] ≤15,
   location ≤100, skills ≤300, university ≤150, department ≤150, is_verified,
   created_at. Row created by `handle_new_user()` on auth signup.
-- **private_profiles** (owner-only RLS): id → profiles, phone_number, updated_at.
-  Anything a stranger must not see goes here, never in `profiles`.
+- **private_profiles** (owner-only RLS): id → profiles, phone_number, updated_at,
+  student_email (unique), student_verified_at. Anything a stranger must not see
+  goes here, never in `profiles`. Clients may write only phone_number/updated_at.
+- **student_verifications** (service role only, no client grants): pending
+  codes as HMAC (`VERIFICATION_CODE_SECRET`), attempts, expires_at, consumed_at.
 - **listings:** id, user_id → profiles, title ≤100, description ≤1000, category
   (CHECK = `lib/categories.js` values), price 0–10000, price_type (CHECK), location,
   languages, is_active, image_url, created_at. Anyone sees active rows; owners see
@@ -119,9 +124,10 @@ changes, re-run `supabase/audit/*.sql` (read-only) to confirm the result.
   PostgREST join hints.
 - **subscribers:** email (lowercase, unique). anon/authenticated may INSERT only;
   nobody can read it through the API.
-- **is_verified** is computed by `set_profile_verification()` (profiles trigger)
-  and `sync_profile_verification()` (auth.users trigger): confirmed e-mail +
-  `is_student_email()` allowlist. Never set it from app code.
+- **is_verified** is granted only by `confirmStudentCode` (service role) after a
+  code sent to an `is_student_email()` address is confirmed. The sign-up e-mail
+  is irrelevant. Client column grants on `profiles` exclude it — when adding an
+  editable profile column, add it to the grants in a migration too.
 - **Storage:** public bucket `toro-uploads` (5 MB, images only). Paths
   `avatars/{uid}/…` and `listings/{uid}/{listingId}/…`; users can write, read
   and list only their own folder; files are served by public URL.
