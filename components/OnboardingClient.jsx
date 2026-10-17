@@ -407,7 +407,7 @@ function StepPassword({ form, setForm }) {
             }`}
           />
           {form.confirmPassword && form.password !== form.confirmPassword && (
-            <p className="text-xs text-red-400 font-medium">Passwords don't match.</p>
+            <p className="text-xs text-red-400 font-medium">Passwords don&apos;t match.</p>
           )}
         </div>
       </div>

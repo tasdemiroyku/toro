@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useSyncExternalStore } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import ToretBull from '@/components/ToretBull'
@@ -8,14 +8,25 @@ import ToroLoader from '@/components/ToroLoader'
 
 const isSafeInternalPath = (value) => typeof value === 'string' && value.startsWith('/')
 
+// "Remember me" e-mail lives in localStorage. Reading it through
+// useSyncExternalStore keeps server and client renders consistent
+// (the server snapshot is always empty) without a setState-in-effect.
+const SAVED_EMAIL_KEY = 'toro_saved_email'
+const subscribeToNothing = () => () => {}
+const readSavedEmail = () => localStorage.getItem(SAVED_EMAIL_KEY) ?? ''
+const readSavedEmailOnServer = () => ''
+
 export default function LoginClient({ redirectTarget = '/' }) {
   const router = useRouter()
   const safeRedirectTarget = isSafeInternalPath(redirectTarget) ? redirectTarget : '/'
   const [mode, setMode] = useState('login')
-  const [email, setEmail] = useState('')
+  const savedEmail = useSyncExternalStore(subscribeToNothing, readSavedEmail, readSavedEmailOnServer)
+  const [typedEmail, setEmail] = useState(null)
+  const email = typedEmail ?? savedEmail
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
-  const [rememberMe, setRememberMe] = useState(false)
+  const [rememberChoice, setRememberMe] = useState(null)
+  const rememberMe = rememberChoice ?? !!savedEmail
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(null)
   const [showPassword, setShowPassword] = useState(false)
@@ -24,16 +35,13 @@ export default function LoginClient({ redirectTarget = '/' }) {
   const emailRef = useRef(null)
   const nameRef = useRef(null)
 
-  useEffect(() => {
-    const savedEmail = localStorage.getItem('toro_saved_email')
-    if (savedEmail) {
-      setEmail(savedEmail)
-      setRememberMe(true)
-    }
-  }, [])
-
-  useEffect(() => {
+  const switchMode = (nextMode) => {
+    setMode(nextMode)
     setMessage(null)
+  }
+
+  // Focus the first relevant field whenever the form mode changes
+  useEffect(() => {
     if ((mode === 'login' || mode === 'forgot') && emailRef.current) {
       emailRef.current.focus()
     } else if (mode === 'signup' && nameRef.current) {
@@ -95,8 +103,8 @@ export default function LoginClient({ redirectTarget = '/' }) {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
-        if (rememberMe) localStorage.setItem('toro_saved_email', email)
-        else localStorage.removeItem('toro_saved_email')
+        if (rememberMe) localStorage.setItem(SAVED_EMAIL_KEY, email)
+        else localStorage.removeItem(SAVED_EMAIL_KEY)
         router.replace(safeRedirectTarget)
         router.refresh()
       }
@@ -230,7 +238,7 @@ export default function LoginClient({ redirectTarget = '/' }) {
                 </label>
                 <button
                   type="button"
-                  onClick={() => setMode('forgot')}
+                  onClick={() => switchMode('forgot')}
                   className="text-xs text-toro-gold font-semibold hover:underline"
                 >
                   Forgot password?
@@ -274,16 +282,16 @@ export default function LoginClient({ redirectTarget = '/' }) {
 
           <p className="text-xs text-center text-toro-dark/40 font-medium shrink-0">
             {mode === 'forgot' ? (
-              <button onClick={() => setMode('login')} className="text-toro-gold font-bold hover:underline">Back to Login</button>
+              <button onClick={() => switchMode('login')} className="text-toro-gold font-bold hover:underline">Back to Login</button>
             ) : mode === 'login' ? (
               <>
-                Don't have an account?{' '}
-                <button onClick={() => setMode('signup')} className="text-toro-gold font-bold hover:underline">Sign up</button>
+                Don&apos;t have an account?{' '}
+                <button onClick={() => switchMode('signup')} className="text-toro-gold font-bold hover:underline">Sign up</button>
               </>
             ) : (
               <>
                 Already have an account?{' '}
-                <button onClick={() => setMode('login')} className="text-toro-gold font-bold hover:underline">Log in</button>
+                <button onClick={() => switchMode('login')} className="text-toro-gold font-bold hover:underline">Log in</button>
               </>
             )}
           </p>

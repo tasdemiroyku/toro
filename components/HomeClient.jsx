@@ -110,7 +110,12 @@ export default function HomeClient({ user, listings }) {
 
   const totalPages = listings.length > 0 ? Math.ceil(listings.length / visibleCount) : 0
 
-  useEffect(() => { setPage(0) }, [visibleCount])
+  // Reset to the first page when the number of visible cards changes
+  const [pageSize, setPageSize] = useState(visibleCount)
+  if (pageSize !== visibleCount) {
+    setPageSize(visibleCount)
+    setPage(0)
+  }
 
   const goNext = () => { setDir(1);  setPage(p => (p + 1) % totalPages) }
   const goPrev = () => { setDir(-1); setPage(p => (p - 1 + totalPages) % totalPages) }
@@ -159,7 +164,7 @@ export default function HomeClient({ user, listings }) {
         <motion.div className="relative z-10 w-full max-w-3xl mx-auto px-8 flex flex-col items-center mt-12" initial="hidden" animate="visible" variants={stagger}>
           <motion.div variants={fadeUp} className="text-center mb-10 flex flex-col gap-4">
             <h1 className="text-4xl md:text-6xl font-bold text-toro-light tracking-tight leading-tight">
-              Torino's Student Marketplace
+              Torino&apos;s Student Marketplace
             </h1>
             <p className="text-lg text-white/80 font-medium max-w-xl mx-auto">
               Find trusted peers for tutoring, cleaning, or bureaucratic help.
@@ -294,7 +299,7 @@ export default function HomeClient({ user, listings }) {
               {status === 'loading' ? 'Saving...' : 'Notify me'}
             </button>
           </div>
-          {status === 'success' && <p className="text-sm text-toro-dark font-medium">You're in — check your email.</p>}
+          {status === 'success' && <p className="text-sm text-toro-dark font-medium">You&apos;re on the list. We&apos;ll let you know when Toro goes live.</p>}
           {status === 'error'   && <p className="text-sm text-red-500">Something went wrong. Try again.</p>}
         </motion.div>
       </motion.section>

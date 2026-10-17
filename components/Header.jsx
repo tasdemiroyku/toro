@@ -274,17 +274,17 @@ export default function Header({ user: initialUser = null, profile: initialProfi
     return () => subscription.unsubscribe()
   }, [])
 
-  // Close mobile menu on route change
-  useEffect(() => {
+  // Close mobile menu on route change (adjusting state during render,
+  // instead of in an effect, avoids an extra render pass)
+  const [menuPathname, setMenuPathname] = useState(pathname)
+  if (menuPathname !== pathname) {
+    setMenuPathname(pathname)
     setMobileOpen(false)
-  }, [pathname])
+  }
 
   // 🚨 Real-time Inbox Listener
   useEffect(() => {
-    if (!user) {
-      setHasUnread(false)
-      return
-    }
+    if (!user) return
 
     const supabase = createClient()
 

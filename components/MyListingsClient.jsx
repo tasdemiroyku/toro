@@ -173,7 +173,7 @@ export default function MyListingsClient({ listings: initial }) {
                 Delete listing?
               </h2>
               <p className="text-sm text-toro-dark/50 leading-relaxed mb-6">
-                This can't be undone. All messages linked to this listing will also be removed.
+                This can&apos;t be undone. All messages linked to this listing will also be removed.
               </p>
               <div className="flex gap-3">
                 <button
