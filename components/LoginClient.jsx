@@ -122,7 +122,7 @@ export default function LoginClient({ redirectTarget = '/' }) {
 
   return (
     <div className="relative h-[calc(100dvh-72px)] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
-      <img src="/torino.jpeg" alt="Torino" className="absolute inset-0 w-full h-full object-cover" />
+      <img src="/images/torino-river.jpg" alt="Torino" className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-toro-dark/60 backdrop-blur-sm" />
 
       <div className="relative z-10 bg-toro-light rounded-[1.5rem] sm:rounded-[2rem] w-full max-w-[380px] max-h-full shadow-2xl border border-toro-dark/5 flex flex-col overflow-hidden">

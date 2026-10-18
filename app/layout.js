@@ -32,7 +32,7 @@ export const metadata = {
     siteName: 'Toro',
     images: [
       {
-        url: '/torino.jpeg',
+        url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Toro - Il marketplace degli studenti di Torino',
@@ -45,7 +45,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Toro · Torino',
     description: 'Il marketplace degli studenti di Torino.',
-    images: ['/torino.jpeg'],
+    images: ['/images/og-image.jpg'],
   },
   robots: {
     index: true,
