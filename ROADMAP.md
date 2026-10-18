@@ -27,6 +27,8 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-18 | Home refresh: benefit-led hero ("Help from students, around the corner.") with glass search used only in the hero, How it works, provider CTA instead of a waitlist band (waitlist moved to the footer), WCAG AA text contrast. |
 | 2026-10-18 | White page background with one light sage band (`toro-sage`). A warm ivory base and a street-grid pattern were tried and rejected. |
 | 2026-10-18 | One corner radius for controls: 12 px on every input, textarea, button and search bar. Pills only for chips, tags, badges, avatars and round icon buttons. |
+| 2026-10-18 | `main` is protected by a GitHub ruleset: no deletion or force push, changes only through pull requests that pass CI ("Lint, test and build"). No required reviews while there is one maintainer. |
+| 2026-10-18 | README kept short (about 75 lines); architecture, decisions and project layout live in `docs/ARCHITECTURE.md`. |
 | 2026-10-17 | Commits keep the `Co-Authored-By: Claude` trailer (transparency). From now on: feature branch → PR with description → merge. |
 | 2026-10-17 | Schema changes are SQL files in `supabase/migrations/`, written in the repo and applied by hand in the Supabase SQL Editor. Breaking changes use expand → deploy → contract. |
 
