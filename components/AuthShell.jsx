@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import ToretBull from '@/components/ToretBull'
 
 const HIGHLIGHTS = [
@@ -8,13 +9,14 @@ const HIGHLIGHTS = [
 
 /**
  * Split layout shared by login, sign-up and password reset.
- * Desktop: brand panel (photo + value points) on the left, form on the right.
+ * Desktop: brand panel pinned to the viewport on the left (it does not grow or
+ * shift when the form gets longer), form column on the right.
  * Mobile: form only.
  */
 export default function AuthShell({ children }) {
   return (
     <div className="min-h-[calc(100dvh-72px)] grid lg:grid-cols-2 bg-toro-light">
-      <aside className="relative hidden lg:flex flex-col justify-end p-12 xl:p-16 overflow-hidden">
+      <aside className="relative hidden lg:flex lg:sticky lg:top-[72px] lg:h-[calc(100dvh-72px)] self-start flex-col justify-end p-12 xl:p-16 overflow-hidden">
         <img
           src="/images/torino-river.jpg"
           alt="The Po river and Monte dei Cappuccini in Turin"
@@ -43,8 +45,16 @@ export default function AuthShell({ children }) {
         </div>
       </aside>
 
-      <section className="flex items-center justify-center px-5 py-10 sm:px-8">
-        <div className="w-full max-w-sm">{children}</div>
+      <section className="flex flex-col px-5 sm:px-10">
+        <div className="flex-1 flex items-center justify-center py-12">
+          <div className="w-full max-w-[400px]">{children}</div>
+        </div>
+        <footer className="py-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-toro-dark/40">
+          <Link href="/privacy" className="hover:text-toro-dark transition">Privacy</Link>
+          <Link href="/terms" className="hover:text-toro-dark transition">Terms</Link>
+          <Link href="/contact" className="hover:text-toro-dark transition">Contact</Link>
+          <span suppressHydrationWarning>© {new Date().getFullYear()} Toro</span>
+        </footer>
       </section>
     </div>
   )

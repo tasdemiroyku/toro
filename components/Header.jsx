@@ -424,7 +424,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
             {!user && (
               <div className="pt-4 border-t border-toro-light/10 mt-2 flex flex-col gap-3">
                 <button
-                  onClick={() => { setMobileOpen(false); router.push('/login') }}
+                  onClick={() => { setMobileOpen(false); router.push('/login?mode=signup') }}
                   className="w-full bg-toro-gold text-toro-light py-3.5 rounded-full font-semibold hover:bg-[#b8852d] transition"
                 >
                   Join Toro

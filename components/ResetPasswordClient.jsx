@@ -56,13 +56,15 @@ export default function ResetPasswordClient() {
           <p className="text-sm text-toro-dark/50">Use at least {MIN_PASSWORD_LENGTH} characters.</p>
         </div>
 
-        <form onSubmit={handleReset} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-3">
+        <form onSubmit={handleReset} className="flex flex-col gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="new-password" className="px-1 text-xs font-semibold text-toro-dark/70">New password</label>
             <div className="relative">
               <input
+                id="new-password"
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="new-password"
-                placeholder="New password"
+                placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
@@ -76,16 +78,21 @@ export default function ResetPasswordClient() {
                 {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
+            {password && <div className="px-1 pt-1"><PasswordStrength password={password} /></div>}
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="confirm-password" className="px-1 text-xs font-semibold text-toro-dark/70">Confirm password</label>
             <input
+              id="confirm-password"
               type={showPassword ? 'text' : 'password'}
               autoComplete="new-password"
-              placeholder="Confirm new password"
+              placeholder="Repeat the new password"
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
               required
               className="toro-input"
             />
-            {password && <div className="px-2"><PasswordStrength password={password} /></div>}
           </div>
 
           {message && (

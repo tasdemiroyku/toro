@@ -35,10 +35,21 @@ function GoogleIcon() {
   )
 }
 
-export default function LoginClient({ redirectTarget = '/' }) {
+const MODES = ['login', 'signup', 'forgot']
+
+function FieldLabel({ htmlFor, children, aside }) {
+  return (
+    <div className="flex items-center justify-between px-1">
+      <label htmlFor={htmlFor} className="text-xs font-semibold text-toro-dark/70">{children}</label>
+      {aside}
+    </div>
+  )
+}
+
+export default function LoginClient({ redirectTarget = '/', initialMode = 'login' }) {
   const router = useRouter()
   const safeRedirectTarget = safeRedirectPath(redirectTarget)
-  const [mode, setMode] = useState('login')
+  const [mode, setMode] = useState(MODES.includes(initialMode) ? initialMode : 'login')
   const savedEmail = useSyncExternalStore(subscribeToNothing, readSavedEmail, readSavedEmailOnServer)
   const [typedEmail, setEmail] = useState(null)
   const email = typedEmail ?? savedEmail
@@ -148,89 +159,91 @@ export default function LoginClient({ redirectTarget = '/' }) {
 
   return (
     <AuthShell>
-      <div className="flex flex-col gap-6">
-        {mode !== 'forgot' && (
-          <div className="grid grid-cols-2 p-1 rounded-full bg-toro-dark/5 text-sm font-semibold" role="tablist">
-            {['login', 'signup'].map(m => (
-              <button
-                key={m}
-                type="button"
-                role="tab"
-                aria-selected={mode === m}
-                onClick={() => switchMode(m)}
-                className={`rounded-full py-2 transition ${mode === m ? 'bg-white text-toro-dark shadow-sm' : 'text-toro-dark/50 hover:text-toro-dark'}`}
-              >
-                {m === 'login' ? 'Log in' : 'Sign up'}
-              </button>
-            ))}
-          </div>
-        )}
-
-        <div className="flex flex-col gap-1.5">
-          <h1 className="text-3xl font-bold text-toro-dark" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+      <div className="flex flex-col gap-7">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-[2rem] leading-tight font-bold text-toro-dark" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
             {copy.title}
           </h1>
           <p className="text-sm text-toro-dark/50">{copy.subtitle}</p>
         </div>
 
         {mode !== 'forgot' && (
-          <>
-            <div className="flex flex-col gap-3">
-              <button onClick={() => handleOAuth('google')} type="button" className="toro-btn-outline w-full">
+          <div className="flex flex-col gap-5">
+            <div className="grid grid-cols-2 gap-3">
+              <button onClick={() => handleOAuth('google')} type="button" className="toro-btn-outline w-full !px-3" aria-label="Continue with Google">
                 <GoogleIcon />
-                Continue with Google
+                Google
               </button>
-              <button onClick={() => handleOAuth('linkedin_oidc')} type="button" className="toro-btn-outline w-full">
+              <button onClick={() => handleOAuth('linkedin_oidc')} type="button" className="toro-btn-outline w-full !px-3" aria-label="Continue with LinkedIn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2" aria-hidden="true">
                   <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                 </svg>
-                Continue with LinkedIn
+                LinkedIn
               </button>
             </div>
 
             <div className="flex items-center gap-4">
               <div className="flex-1 h-px bg-toro-dark/10" />
-              <span className="text-xs font-medium text-toro-dark/40">or with e-mail</span>
+              <span className="text-xs font-medium text-toro-dark/40">or continue with e-mail</span>
               <div className="flex-1 h-px bg-toro-dark/10" />
             </div>
-          </>
+          </div>
         )}
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-3">
-            {mode === 'signup' && (
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate={false}>
+          {mode === 'signup' && (
+            <div className="flex flex-col gap-1.5">
+              <FieldLabel htmlFor="name">Full name</FieldLabel>
               <input
                 ref={nameRef}
+                id="name"
                 type="text"
                 name="name"
                 autoComplete="name"
-                placeholder="Full name"
+                placeholder="Name and surname"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 maxLength={100}
                 className="toro-input"
               />
-            )}
+            </div>
+          )}
+
+          <div className="flex flex-col gap-1.5">
+            <FieldLabel htmlFor="email">E-mail</FieldLabel>
             <input
               ref={emailRef}
               type="email"
               name="email"
               id="email"
               autoComplete={mode === 'login' ? 'username' : 'email'}
-              placeholder="E-mail"
+              placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               className="toro-input"
             />
-            {mode !== 'forgot' && (
+          </div>
+
+          {mode !== 'forgot' && (
+            <div className="flex flex-col gap-1.5">
+              <FieldLabel
+                htmlFor="password"
+                aside={mode === 'login' && (
+                  <button type="button" onClick={() => switchMode('forgot')} className="text-xs text-toro-gold font-semibold hover:underline">
+                    Forgot password?
+                  </button>
+                )}
+              >
+                Password
+              </FieldLabel>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
                   name="password"
                   id="password"
                   autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                  placeholder={mode === 'signup' ? `Password (min. ${MIN_PASSWORD_LENGTH} characters)` : 'Password'}
+                  placeholder={mode === 'signup' ? `At least ${MIN_PASSWORD_LENGTH} characters` : '••••••••'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -255,29 +268,20 @@ export default function LoginClient({ redirectTarget = '/' }) {
                   )}
                 </button>
               </div>
-            )}
-            {mode === 'signup' && password && <div className="px-2"><PasswordStrength password={password} /></div>}
-          </div>
+              {mode === 'signup' && password && <div className="px-1 pt-1"><PasswordStrength password={password} /></div>}
+            </div>
+          )}
 
           {mode === 'login' && (
-            <div className="flex items-center justify-between px-2">
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-toro-dark/20 accent-toro-gold cursor-pointer"
-                />
-                <span className="text-xs text-toro-dark/50 group-hover:text-toro-dark transition">Remember me</span>
-              </label>
-              <button
-                type="button"
-                onClick={() => switchMode('forgot')}
-                className="text-xs text-toro-gold font-semibold hover:underline"
-              >
-                Forgot password?
-              </button>
-            </div>
+            <label className="flex items-center gap-2 px-1 cursor-pointer group w-fit">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 rounded border-toro-dark/20 accent-toro-gold cursor-pointer"
+              />
+              <span className="text-xs text-toro-dark/50 group-hover:text-toro-dark transition">Remember my e-mail</span>
+            </label>
           )}
 
           {message && (
@@ -313,11 +317,19 @@ export default function LoginClient({ redirectTarget = '/' }) {
           )}
         </form>
 
-        {mode === 'forgot' && (
-          <button onClick={() => switchMode('login')} className="text-sm text-toro-gold font-bold hover:underline self-center">
-            ← Back to log in
-          </button>
-        )}
+        <p className="text-sm text-center text-toro-dark/50 pt-2 border-t border-toro-dark/10">
+          <span className="inline-block pt-5">
+            {mode === 'login' && (
+              <>New to Toro?{' '}<button type="button" onClick={() => switchMode('signup')} className="text-toro-dark font-semibold hover:text-toro-gold transition">Create an account</button></>
+            )}
+            {mode === 'signup' && (
+              <>Already have an account?{' '}<button type="button" onClick={() => switchMode('login')} className="text-toro-dark font-semibold hover:text-toro-gold transition">Log in</button></>
+            )}
+            {mode === 'forgot' && (
+              <button type="button" onClick={() => switchMode('login')} className="text-toro-dark font-semibold hover:text-toro-gold transition">← Back to log in</button>
+            )}
+          </span>
+        </p>
       </div>
     </AuthShell>
   )
