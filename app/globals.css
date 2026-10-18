@@ -71,7 +71,7 @@
 
   /*
    * Base input style. Used on all <input>, <textarea>, and <select> elements.
-   * Shape: rounded-xl (12 px), the same as buttons and search bars.
+   * Shape: rounded-xl (12 px). Buttons and search bars are pills.
    */
   .toro-input {
     @apply
@@ -98,7 +98,7 @@
   .toro-btn-primary {
     @apply
       bg-toro-dark text-toro-light
-      rounded-xl
+      rounded-full
       py-3.5 px-6
       text-sm font-semibold
       shadow-sm
@@ -118,7 +118,7 @@
   .toro-btn-gold {
     @apply
       bg-toro-gold text-toro-dark
-      rounded-xl
+      rounded-full
       py-3.5 px-6
       text-sm font-semibold
       shadow-sm
@@ -140,7 +140,7 @@
       border border-toro-dark/15
       text-toro-dark
       bg-white
-      rounded-xl
+      rounded-full
       py-3.5 px-6
       text-sm font-semibold
       transition

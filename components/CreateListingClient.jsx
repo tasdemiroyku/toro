@@ -94,7 +94,7 @@ export default function CreateListingClient({ userId }) {
                 <button
                   key={cat.value}
                   onClick={() => update('category', cat.value)}
-                  className={`py-2.5 px-3 rounded-xl text-xs font-semibold border transition ${
+                  className={`py-2.5 px-3 rounded-full text-xs font-semibold border transition ${
                     form.category === cat.value
                       ? 'bg-toro-dark text-toro-light border-toro-dark'
                       : 'bg-white text-toro-dark border-toro-dark/15 hover:border-toro-gold'

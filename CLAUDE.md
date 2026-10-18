@@ -163,10 +163,10 @@ updating the CHECK constraint.
 - Global classes (`app/globals.css`): `.toro-input` (every input, textarea and
   select), `.toro-btn-primary`, `.toro-btn-gold`, `.toro-btn-outline`,
   `.toro-card`, `.toro-empty-state`.
-- Shapes: inputs, buttons and search bars `rounded-xl` (12 px, via the `.toro-*`
-  classes); a button inside a bar is `rounded-lg`. Only chips, tags, badges, avatars
-  and icon-only round buttons are pills. Cards and modals `rounded-2xl` or
-  `rounded-[2rem]`. Borders are thin and solid (`border-toro-dark/10`), **never dashed**.
+- Shapes: what you click is a pill (`rounded-full`): buttons (via `.toro-btn-*`),
+  search bars and the button inside them, chips, tags, badges and avatars. What you
+  type in is `rounded-xl` (12 px, via `.toro-input`, textareas too). Cards and
+  modals `rounded-2xl` or `rounded-[2rem]`. Borders are thin and solid (`border-toro-dark/10`), **never dashed**.
 - People: always render `<Avatar profile={…} />` (photo, or initials on a colour
   derived from the profile id), never ad-hoc initials.
 - Photos: use our own (`public/images/toret/` are stills from our Toret footage).

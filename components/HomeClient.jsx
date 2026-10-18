@@ -21,6 +21,13 @@ const HOW_IT_WORKS = [
   { title: 'Meet', text: 'Agree on the time and price directly. Toro takes no commission.' },
 ]
 
+// What makes Toro different, shown under the How it works steps
+const TRUST_POINTS = [
+  'Verified Student badges through a university e-mail',
+  'Help in Italian, English, Turkish and more',
+  'Free to join',
+]
+
 // Our own video stills (public/images/toret)
 const TORET_PHOTOS = [
   { src: '/images/toret/bull.jpg', alt: 'Close-up of a Toret bull-head fountain' },
@@ -141,7 +148,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
           <motion.form
             variants={fadeUp}
             onSubmit={e => { e.preventDefault(); handleSearch() }}
-            className="mt-12 w-full max-w-xl flex items-center rounded-xl border border-white/25 bg-white/10 backdrop-blur-xl p-1 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)] focus-within:border-white/50 focus-within:bg-white/15 transition"
+            className="mt-12 w-full max-w-xl flex items-center rounded-full border border-white/25 bg-white/10 backdrop-blur-xl p-1 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)] focus-within:border-white/50 focus-within:bg-white/15 transition"
           >
             <label htmlFor="hero-search" className="sr-only">Search services</label>
             <input
@@ -152,7 +159,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
               onChange={e => setHeroSearch(e.target.value)}
               className="flex-1 min-w-0 bg-transparent outline-none text-white placeholder:text-white/60 text-[15px] py-2.5 px-5"
             />
-            <button type="submit" className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-toro-gold text-toro-dark text-sm font-semibold px-4 py-2.5 hover:brightness-110 active:scale-[0.98] transition">
+            <button type="submit" className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-toro-gold text-toro-dark text-sm font-semibold px-4 py-2.5 hover:brightness-110 active:scale-[0.98] transition">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
@@ -180,39 +187,41 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
       </section>
 
       {/* ── Browse by category ── */}
-      <motion.section className="toro-container pt-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
-        <motion.div variants={fadeUp} className="flex items-end justify-between gap-4 mb-8">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-3xl font-bold tracking-tight text-toro-dark">Browse by category</h2>
-            <p className="text-sm text-toro-dark/65">Everyday help from people who study in Turin.</p>
+      <motion.section className="bg-toro-sage py-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
+        <div className="toro-container">
+          <motion.div variants={fadeUp} className="flex items-end justify-between gap-4 mb-8">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-3xl font-bold tracking-tight text-toro-dark">Browse by category</h2>
+              <p className="text-sm text-toro-dark/65">Everyday help from people who study in Turin.</p>
+            </div>
+            <Link href="/listings" className="text-sm font-semibold text-toro-dark/60 hover:text-toro-gold transition whitespace-nowrap">
+              All services →
+            </Link>
+          </motion.div>
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+            {CATEGORIES.map(cat => {
+              const count = categoryCounts[cat.value] ?? 0
+              return (
+                <motion.div key={cat.value} variants={fadeUp}>
+                  <Link
+                    href={`/listings?category=${cat.value}`}
+                    className="group h-full flex flex-col gap-3 rounded-2xl border border-toro-dark/10 bg-white p-4 hover:border-toro-gold/60 hover:shadow-[0_12px_30px_-18px_rgba(19,38,0,0.3)] transition-all"
+                  >
+                    <span className="w-9 h-9 rounded-xl bg-toro-dark/5 text-toro-dark flex items-center justify-center group-hover:bg-toro-dark group-hover:text-toro-gold transition-colors">
+                      <CategoryIcon category={cat.value} className="w-[18px] h-[18px]" />
+                    </span>
+                    <span className="flex flex-col gap-0.5">
+                      <span className="text-sm font-semibold text-toro-dark leading-snug">{cat.label}</span>
+                      <span className="text-xs text-toro-dark/65 leading-snug">{cat.examples}</span>
+                    </span>
+                    <span className="mt-auto text-[11px] font-medium text-toro-dark/65">
+                      {count > 0 ? `${count} service${count === 1 ? '' : 's'}` : 'Be the first'}
+                    </span>
+                  </Link>
+                </motion.div>
+              )
+            })}
           </div>
-          <Link href="/listings" className="text-sm font-semibold text-toro-dark/60 hover:text-toro-gold transition whitespace-nowrap">
-            All services →
-          </Link>
-        </motion.div>
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-          {CATEGORIES.map(cat => {
-            const count = categoryCounts[cat.value] ?? 0
-            return (
-              <motion.div key={cat.value} variants={fadeUp}>
-                <Link
-                  href={`/listings?category=${cat.value}`}
-                  className="group h-full flex flex-col gap-3 rounded-2xl border border-toro-dark/10 bg-white p-4 hover:border-toro-gold/60 hover:shadow-[0_12px_30px_-18px_rgba(19,38,0,0.3)] transition-all"
-                >
-                  <span className="w-9 h-9 rounded-xl bg-toro-dark/5 text-toro-dark flex items-center justify-center group-hover:bg-toro-dark group-hover:text-toro-gold transition-colors">
-                    <CategoryIcon category={cat.value} className="w-[18px] h-[18px]" />
-                  </span>
-                  <span className="flex flex-col gap-0.5">
-                    <span className="text-sm font-semibold text-toro-dark leading-snug">{cat.label}</span>
-                    <span className="text-xs text-toro-dark/65 leading-snug">{cat.examples}</span>
-                  </span>
-                  <span className="mt-auto text-[11px] font-medium text-toro-dark/65">
-                    {count > 0 ? `${count} service${count === 1 ? '' : 's'}` : 'Be the first'}
-                  </span>
-                </Link>
-              </motion.div>
-            )
-          })}
         </div>
       </motion.section>
 
@@ -269,19 +278,27 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
         )}
       </motion.section>
 
-      {/* ── How it works ── */}
-      <motion.section className="bg-toro-sage py-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
+      {/* ── How it works, with what makes Toro different ── */}
+      <motion.section className="bg-toro-dark py-24" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
         <div className="toro-container">
-          <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-dark mb-10">How it works</motion.h2>
+          <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-light mb-10">How it works</motion.h2>
           <ol className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {HOW_IT_WORKS.map((step, i) => (
-              <motion.li key={step.title} variants={fadeUp} className="flex flex-col gap-3 rounded-2xl border border-toro-dark/10 bg-white p-6">
-                <span className="w-9 h-9 rounded-full bg-toro-gold/15 text-toro-dark text-sm font-bold flex items-center justify-center">{i + 1}</span>
-                <h3 className="text-lg font-bold text-toro-dark">{step.title}</h3>
-                <p className="text-sm text-toro-dark/70 leading-relaxed">{step.text}</p>
+              <motion.li key={step.title} variants={fadeUp} className="flex flex-col gap-3 rounded-2xl border border-toro-light/10 bg-toro-light/[0.04] p-6">
+                <span className="w-9 h-9 rounded-full bg-toro-gold/15 text-toro-gold text-sm font-bold flex items-center justify-center">{i + 1}</span>
+                <h3 className="text-lg font-bold text-toro-light">{step.title}</h3>
+                <p className="text-sm text-toro-light/70 leading-relaxed">{step.text}</p>
               </motion.li>
             ))}
           </ol>
+          <motion.ul variants={fadeUp} className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm text-toro-light/80">
+            {TRUST_POINTS.map(point => (
+              <li key={point} className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-toro-gold shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                {point}
+              </li>
+            ))}
+          </motion.ul>
         </div>
       </motion.section>
 
@@ -313,26 +330,6 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
         </div>
       </motion.section>
 
-      {/* ── Why Toro ── */}
-      <motion.section className="bg-toro-dark py-24" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
-        <div className="toro-container">
-          <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-light mb-12">Why Toro is different</motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { title: 'Student verified', desc: 'Sign up with your university email to earn a Verified Student badge, so you always know who you are dealing with.' },
-              { title: 'Built for newcomers', desc: 'Every provider lists the languages they speak, so you can get help in Italian, English, Turkish and more.' },
-              { title: 'Your first step', desc: 'Never worked before? No problem. Toro is designed to help students take their first professional step with confidence.' },
-            ].map(item => (
-              <motion.div key={item.title} variants={fadeUp} className="flex flex-col gap-3">
-                <div className="w-8 h-1 bg-toro-gold rounded-full" />
-                <h3 className="text-lg font-bold text-toro-light">{item.title}</h3>
-                <p className="text-sm text-toro-light/60 leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-
       {/* ── Call to action ── */}
       <motion.section className="toro-container py-24" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
         <motion.div variants={fadeUp} className="relative overflow-hidden rounded-[2rem] bg-toro-dark px-8 py-14 md:px-14 md:py-16 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
@@ -343,7 +340,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
           </div>
           <div className="relative flex flex-wrap gap-3">
             <Link href={user ? '/listings/create' : '/login?mode=signup'} className="toro-btn-gold">Post a service</Link>
-            <Link href="/listings" className="inline-flex items-center justify-center rounded-xl border border-toro-light/30 px-6 py-3.5 text-sm font-semibold text-toro-light hover:bg-toro-light/10 transition">
+            <Link href="/listings" className="inline-flex items-center justify-center rounded-full border border-toro-light/30 px-6 py-3.5 text-sm font-semibold text-toro-light hover:bg-toro-light/10 transition">
               Browse services
             </Link>
           </div>

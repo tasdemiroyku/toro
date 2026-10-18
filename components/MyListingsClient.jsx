@@ -124,7 +124,7 @@ export default function MyListingsClient({ listings: initial }) {
               <div className="flex items-center gap-2 shrink-0">
                 <Link
                   href={`/listings/${listing.id}/edit`}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold border border-toro-dark/15 text-toro-dark hover:bg-toro-dark/5 transition"
+                  className="px-4 py-2 rounded-full text-xs font-semibold border border-toro-dark/15 text-toro-dark hover:bg-toro-dark/5 transition"
                 >
                   Edit
                 </Link>
@@ -132,7 +132,7 @@ export default function MyListingsClient({ listings: initial }) {
                 <button
                   onClick={() => handleToggle(listing)}
                   disabled={loadingId === listing.id}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold border border-toro-dark/15 text-toro-dark hover:bg-toro-dark/5 transition disabled:opacity-50"
+                  className="px-4 py-2 rounded-full text-xs font-semibold border border-toro-dark/15 text-toro-dark hover:bg-toro-dark/5 transition disabled:opacity-50"
                 >
                   {loadingId === listing.id
                     ? '…'
@@ -142,7 +142,7 @@ export default function MyListingsClient({ listings: initial }) {
                 <button
                   onClick={() => setDeletingId(listing.id)}
                   disabled={loadingId === listing.id}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold border border-red-200 text-red-600 hover:bg-red-50 transition disabled:opacity-50"
+                  className="px-4 py-2 rounded-full text-xs font-semibold border border-red-200 text-red-600 hover:bg-red-50 transition disabled:opacity-50"
                 >
                   Delete
                 </button>
@@ -185,7 +185,7 @@ export default function MyListingsClient({ listings: initial }) {
                 <button
                   onClick={() => handleDelete(deletingId)}
                   disabled={loadingId === deletingId}
-                  className="flex-1 bg-red-600 text-white rounded-xl py-2.5 text-sm font-semibold hover:bg-red-600 transition disabled:opacity-50"
+                  className="flex-1 bg-red-600 text-white rounded-full py-2.5 text-sm font-semibold hover:bg-red-600 transition disabled:opacity-50"
                 >
                   {loadingId === deletingId ? 'Deleting…' : 'Delete'}
                 </button>
