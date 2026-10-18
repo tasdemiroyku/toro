@@ -66,7 +66,7 @@ function LaunchUpdates() {
           Thanks, you are on the list. We will e-mail you at launch.
         </p>
       ) : (
-        <form onSubmit={handleSubmit} className="flex gap-2 rounded-xl bg-toro-light/[0.06] p-1.5 border border-toro-light/15 focus-within:border-toro-gold/60 transition">
+        <form onSubmit={handleSubmit} className="flex gap-2 rounded-full bg-toro-light/[0.06] p-1.5 border border-toro-light/15 focus-within:border-toro-gold/60 transition">
           <label htmlFor="footer-email" className="sr-only">E-mail address</label>
           <input
             id="footer-email"
@@ -75,9 +75,9 @@ function LaunchUpdates() {
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder="Your e-mail address"
-            className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-toro-light placeholder:text-toro-light/45 outline-none"
+            className="min-w-0 flex-1 bg-transparent px-4 py-2 text-sm text-toro-light placeholder:text-toro-light/45 outline-none"
           />
-          <button type="submit" disabled={status === 'sending'} className="rounded-lg bg-toro-gold px-4 py-2 text-sm font-semibold text-toro-dark hover:brightness-105 disabled:opacity-60 transition">
+          <button type="submit" disabled={status === 'sending'} className="rounded-full bg-toro-gold px-4 py-2 text-sm font-semibold text-toro-dark hover:brightness-105 disabled:opacity-60 transition">
             {status === 'sending' ? 'Saving…' : 'Notify me'}
           </button>
         </form>

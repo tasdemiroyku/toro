@@ -161,7 +161,7 @@ const handleToggleActive = () => {
                 </button>
                 <button
                   onClick={() => setShowDeleteModal(true)}
-                  className="flex-1 border border-red-200 text-red-600 rounded-xl py-2 text-sm font-semibold hover:bg-red-50 transition"
+                  className="flex-1 border border-red-200 text-red-600 rounded-full py-2 text-sm font-semibold hover:bg-red-50 transition"
                 >
                   Delete
                 </button>
@@ -295,7 +295,7 @@ const handleToggleActive = () => {
               <button
                 onClick={handleDelete}
                 disabled={isPending}
-                className="flex-1 bg-red-600 text-white rounded-xl py-2.5 text-sm font-semibold hover:bg-red-700 transition disabled:opacity-60"
+                className="flex-1 bg-red-600 text-white rounded-full py-2.5 text-sm font-semibold hover:bg-red-700 transition disabled:opacity-60"
               >
                 {isPending ? 'Deleting...' : 'Yes, delete'}
               </button>
