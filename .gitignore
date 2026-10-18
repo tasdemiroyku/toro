@@ -44,3 +44,4 @@ next-env.d.ts
 # editor & local tool settings
 .vscode/
 .claude/settings.local.json
+.claude/launch.json

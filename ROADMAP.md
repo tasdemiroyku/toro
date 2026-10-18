@@ -23,6 +23,7 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-17 | Anyone can sign up with any e-mail. The student badge needs a code sent to a university e-mail (not the sign-up address). One university address per account. |
 | 2026-10-18 | Listing cards are text-first (no cover photos); category illustrations are used for the home page category tiles; uploaded photos appear on the detail page only. Demo listings are labelled "Sample". |
 | 2026-10-18 | No public e-mail address until the domain exists; `/contact` form delivers to a server-only inbox variable. |
+| 2026-10-18 | Portfolio-ready: Inter everywhere (Cormorant only for the logo), one page container, ten categories (+ Pet Care, Translation & Proofreading, Design & Media; Consular shown as Paperwork & Bureaucracy), compact category tiles, CI and unit tests, "All rights reserved" licence. |
 | 2026-10-17 | Commits keep the `Co-Authored-By: Claude` trailer (transparency). From now on: feature branch → PR with description → merge. |
 | 2026-10-17 | Schema changes are SQL files in `supabase/migrations/`, written in the repo and applied by hand in the Supabase SQL Editor. Breaking changes use expand → deploy → contract. |
 
@@ -49,6 +50,9 @@ students comes after that, once moderation and legal pages are in place.
 ## In progress — rollout of the first-impression work ([PR #2](https://github.com/tasdemiroyku/toro/pull/2) merged, cards and auth polish in PR #3)
 
 Open steps:
+
+0. Run `20261018130000_more_categories.sql` **before** merging PR #4 (the forms offer the
+   new categories), then `supabase/seed/demo_listings_new_categories.sql`
 
 1. ✅ `20261018120000_listings_is_sample.sql` applied
 2. Supabase → Authentication → Users → Add user (Auto Confirm) for
