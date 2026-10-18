@@ -13,8 +13,8 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-toro-dark px-6 lg:px-8 pt-10 pb-8">
-      <div className="max-w-6xl mx-auto">
+    <footer className="bg-toro-dark pt-10 pb-8">
+      <div className="toro-container">
         {/* Bottom Section (Logo & Links) */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           

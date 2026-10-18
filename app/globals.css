@@ -30,6 +30,14 @@
 /* COMPONENTS */
 @layer components {
 
+  /* ── Layout ────────────────────────────────────────────── */
+
+  /* One page width for header, footer and every section, so they line up
+     and shrink together when the window is resized */
+  .toro-container {
+    @apply w-full max-w-6xl mx-auto px-6;
+  }
+
   /* ── Cards ─────────────────────────────────────────────── */
 
   .toro-card {

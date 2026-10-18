@@ -253,7 +253,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
   return (
     <>
       <header className="bg-toro-dark sticky top-0 z-50 w-full h-[72px] shadow-[0_14px_22px_-10px_rgba(0,0,0,0.5)]">
-        <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between gap-4">
+        <div className="toro-container h-full flex items-center justify-between gap-4">
 
           <Link href="/" className="flex items-center gap-3 shrink-0">
             <ToretBull className="w-9 h-9 text-toro-light" />
