@@ -66,10 +66,10 @@ function UserDropdown({ user, profile, setUser, hasUnread }) {
 
       <button
         onClick={() => setOpen(!open)}
-        className="relative w-9 h-9 rounded-full bg-toro-dark border-2 border-toro-light/20 hover:border-toro-gold transition flex items-center justify-center shrink-0"
+        className="relative w-9 h-9 rounded-full bg-toro-dark text-toro-light border-2 border-toro-light/20 hover:border-toro-gold transition flex items-center justify-center shrink-0"
         aria-label="User menu"
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FAFAF7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
           <circle cx="12" cy="7" r="4"/>
         </svg>
