@@ -109,7 +109,7 @@ export default function ReportButton({ targetType, targetId, isLoggedIn, classNa
                     {REPORT_REASONS.map((r, i) => (
                       <label
                         key={r.value}
-                        className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-sm cursor-pointer transition ${
+                        className={`flex items-center gap-3 rounded-full border px-4 py-3 text-sm cursor-pointer transition ${
                           reason === r.value ? 'border-toro-gold bg-toro-gold/5 text-toro-dark' : 'border-toro-dark/10 text-toro-dark/80 hover:border-toro-dark/25'
                         }`}
                       >

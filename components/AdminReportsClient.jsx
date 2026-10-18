@@ -77,14 +77,14 @@ function ReportRow({ report, targets }) {
       {report.status === 'open' && (
         <div className="flex flex-wrap gap-2 pt-1">
           {report.target_type === 'listing' && (
-            <button type="button" disabled={isPending} onClick={() => act('remove_listing')} className="rounded-lg bg-red-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-red-700 disabled:opacity-50 transition">
+            <button type="button" disabled={isPending} onClick={() => act('remove_listing')} className="rounded-full bg-red-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-red-700 disabled:opacity-50 transition">
               Remove listing
             </button>
           )}
-          <button type="button" disabled={isPending} onClick={() => act('resolve')} className="rounded-lg border border-toro-dark/15 px-3.5 py-2 text-xs font-semibold text-toro-dark hover:bg-toro-dark/5 disabled:opacity-50 transition">
+          <button type="button" disabled={isPending} onClick={() => act('resolve')} className="rounded-full border border-toro-dark/15 px-3.5 py-2 text-xs font-semibold text-toro-dark hover:bg-toro-dark/5 disabled:opacity-50 transition">
             Mark as handled
           </button>
-          <button type="button" disabled={isPending} onClick={() => act('dismiss')} className="rounded-lg border border-toro-dark/15 px-3.5 py-2 text-xs font-semibold text-toro-dark/70 hover:bg-toro-dark/5 disabled:opacity-50 transition">
+          <button type="button" disabled={isPending} onClick={() => act('dismiss')} className="rounded-full border border-toro-dark/15 px-3.5 py-2 text-xs font-semibold text-toro-dark/70 hover:bg-toro-dark/5 disabled:opacity-50 transition">
             Dismiss
           </button>
         </div>
