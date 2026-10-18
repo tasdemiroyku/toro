@@ -363,7 +363,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
                 </button>
                 <button
                   onClick={() => router.push('/login?mode=signup')}
-                  className="bg-toro-gold text-toro-light text-sm px-5 py-2 rounded-full font-semibold hover:bg-[#b8852d] transition whitespace-nowrap shadow-sm"
+                  className="bg-toro-gold text-toro-dark text-sm px-5 py-2 rounded-xl font-semibold hover:brightness-105 transition whitespace-nowrap shadow-sm"
                 >
                   Sign up
                 </button>
@@ -434,7 +434,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
               <div className="pt-4 border-t border-toro-light/10 mt-2 flex flex-col gap-3">
                 <button
                   onClick={() => { setMobileOpen(false); router.push('/login?mode=signup') }}
-                  className="w-full bg-toro-gold text-toro-light py-3.5 rounded-full font-semibold hover:bg-[#b8852d] transition"
+                  className="w-full bg-toro-gold text-toro-dark py-3.5 rounded-xl font-semibold hover:brightness-105 transition"
                 >
                   Join Toro
                 </button>

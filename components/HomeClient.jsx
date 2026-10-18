@@ -289,7 +289,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
           </div>
           <div className="relative flex flex-wrap gap-3">
             <Link href={user ? '/listings/create' : '/login?mode=signup'} className="toro-btn-gold">Post a service</Link>
-            <Link href="/listings" className="inline-flex items-center justify-center rounded-full border border-toro-light/30 px-6 py-3.5 text-sm font-semibold text-toro-light hover:bg-toro-light/10 transition">
+            <Link href="/listings" className="inline-flex items-center justify-center rounded-xl border border-toro-light/30 px-6 py-3.5 text-sm font-semibold text-toro-light hover:bg-toro-light/10 transition">
               Browse services
             </Link>
           </div>

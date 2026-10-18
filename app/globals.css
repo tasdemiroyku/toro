@@ -77,16 +77,16 @@
     @apply
       w-full
       border border-toro-dark/15
-      rounded-full
-      px-5 py-3
-      text-sm text-toro-dark
+      rounded-xl
+      px-4 py-3
+      text-[15px] text-toro-dark
       bg-white
-      font-medium
       transition
-      placeholder:text-toro-dark/40
+      placeholder:text-toro-dark/45
+      hover:border-toro-dark/25
       focus:outline-none
       focus:border-toro-gold
-      focus:ring-1 focus:ring-toro-gold/30;
+      focus:ring-4 focus:ring-toro-gold/15;
   }
 
   /* ── Buttons ─────────────────────────────────────────────── */
@@ -98,13 +98,13 @@
   .toro-btn-primary {
     @apply
       bg-toro-dark text-toro-light
-      rounded-full
+      rounded-xl
       py-3.5 px-6
       text-sm font-semibold
-      shadow-lg
+      shadow-sm
       transition
-      hover:bg-[#1f3d00]
-      active:scale-95
+      hover:bg-toro-dark/90
+      active:scale-[0.98]
       disabled:opacity-50
       disabled:cursor-not-allowed
       disabled:active:scale-100
@@ -117,14 +117,14 @@
    */
   .toro-btn-gold {
     @apply
-      bg-toro-gold text-toro-light
-      rounded-full
+      bg-toro-gold text-toro-dark
+      rounded-xl
       py-3.5 px-6
-      text-sm font-bold
-      shadow-md
+      text-sm font-semibold
+      shadow-sm
       transition
-      hover:bg-[#b8852d]
-      active:scale-95
+      hover:brightness-105
+      active:scale-[0.98]
       disabled:opacity-50
       disabled:cursor-not-allowed
       disabled:active:scale-100
@@ -139,13 +139,13 @@
     @apply
       border border-toro-dark/15
       text-toro-dark
-      bg-transparent
-      rounded-full
+      bg-white
+      rounded-xl
       py-3.5 px-6
       text-sm font-semibold
       transition
-      hover:bg-toro-dark/5
-      active:scale-95
+      hover:bg-toro-dark/[0.03] hover:border-toro-dark/25
+      active:scale-[0.98]
       disabled:opacity-50
       flex items-center justify-center gap-2;
   }

@@ -67,9 +67,9 @@ function LaunchUpdates() {
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="min-w-0 flex-1 rounded-full bg-toro-light/10 border border-toro-light/15 px-4 py-2.5 text-sm text-toro-light placeholder:text-toro-light/40 outline-none focus:border-toro-gold transition"
+            className="min-w-0 flex-1 rounded-xl bg-toro-light/10 border border-toro-light/15 px-4 py-2.5 text-sm text-toro-light placeholder:text-toro-light/40 outline-none focus:border-toro-gold transition"
           />
-          <button type="submit" disabled={status === 'sending'} className="rounded-full bg-toro-gold px-4 py-2.5 text-sm font-semibold text-toro-dark hover:brightness-110 disabled:opacity-60 transition">
+          <button type="submit" disabled={status === 'sending'} className="rounded-xl bg-toro-gold px-4 py-2.5 text-sm font-semibold text-toro-dark hover:brightness-110 disabled:opacity-60 transition">
             {status === 'sending' ? 'Saving…' : 'Notify me'}
           </button>
         </form>

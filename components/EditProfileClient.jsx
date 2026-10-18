@@ -380,7 +380,7 @@ function PersonalSection({ user, profile, setProfile }) {
               <div className="flex flex-col gap-2">
                 <button
                   onClick={handleDeleteAccount}
-                  className="w-full bg-red-500 text-white rounded-full py-3 text-sm hover:bg-red-600 transition"
+                  className="w-full bg-red-600 text-white rounded-xl py-3 text-sm font-semibold hover:bg-red-700 transition"
                 >
                   Yes, delete everything
                 </button>

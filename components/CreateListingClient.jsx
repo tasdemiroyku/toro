@@ -197,14 +197,14 @@ export default function CreateListingClient({ userId }) {
         <div className="flex gap-3">
           <button
             onClick={() => router.push('/listings')}
-            className="flex-1 toro-btn-outline !py-3 !rounded-full bg-transparent"
+            className="flex-1 toro-btn-outline !py-3"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="flex-1 toro-btn-primary !py-3 !rounded-full"
+            className="flex-1 toro-btn-primary !py-3"
           >
             {loading ? 'Publishing...' : 'Publish listing'}
           </button>

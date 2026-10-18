@@ -154,7 +154,7 @@ export default function EditListingClient({ listing }) {
                     <button
                       type="button"
                       onClick={() => fileRef.current?.click()}
-                      className="bg-white text-toro-dark text-xs font-semibold px-4 py-2 rounded-full hover:bg-toro-light transition"
+                      className="bg-white text-toro-dark text-xs font-semibold px-4 py-2 rounded-lg hover:bg-toro-light transition"
                     >
                       Change
                     </button>
@@ -162,7 +162,7 @@ export default function EditListingClient({ listing }) {
                       <button
                         type="button"
                         onClick={handleRemoveImage}
-                        className="bg-red-500 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-red-600 transition"
+                        className="bg-red-600 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-red-700 transition"
                       >
                         Remove
                       </button>
