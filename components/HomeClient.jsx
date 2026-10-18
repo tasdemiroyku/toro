@@ -141,7 +141,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
           <motion.form
             variants={fadeUp}
             onSubmit={e => { e.preventDefault(); handleSearch() }}
-            className="mt-12 w-full max-w-xl flex items-center rounded-full border border-white/25 bg-white/10 backdrop-blur-xl p-1 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)] focus-within:border-white/50 focus-within:bg-white/15 transition"
+            className="mt-12 w-full max-w-xl flex items-center rounded-xl border border-white/25 bg-white/10 backdrop-blur-xl p-1 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)] focus-within:border-white/50 focus-within:bg-white/15 transition"
           >
             <label htmlFor="hero-search" className="sr-only">Search services</label>
             <input
@@ -152,7 +152,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
               onChange={e => setHeroSearch(e.target.value)}
               className="flex-1 min-w-0 bg-transparent outline-none text-white placeholder:text-white/60 text-[15px] py-2.5 px-5"
             />
-            <button type="submit" className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-toro-gold text-toro-dark text-sm font-semibold px-4 py-2.5 hover:brightness-110 active:scale-[0.98] transition">
+            <button type="submit" className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-toro-gold text-toro-dark text-sm font-semibold px-4 py-2.5 hover:brightness-110 active:scale-[0.98] transition">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
