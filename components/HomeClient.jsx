@@ -21,6 +21,13 @@ const HOW_IT_WORKS = [
   { title: 'Meet', text: 'Agree on the time and price directly. Toro takes no commission.' },
 ]
 
+// What makes Toro different, shown under the How it works steps
+const TRUST_POINTS = [
+  'Verified Student badges through a university e-mail',
+  'Help in Italian, English, Turkish and more',
+  'Free to join',
+]
+
 // Our own video stills (public/images/toret)
 const TORET_PHOTOS = [
   { src: '/images/toret/bull.jpg', alt: 'Close-up of a Toret bull-head fountain' },
@@ -271,19 +278,27 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
         )}
       </motion.section>
 
-      {/* ── How it works ── */}
-      <motion.section className="bg-toro-sage py-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
+      {/* ── How it works, with what makes Toro different ── */}
+      <motion.section className="bg-toro-dark py-24" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
         <div className="toro-container">
-          <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-dark mb-10">How it works</motion.h2>
+          <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-light mb-10">How it works</motion.h2>
           <ol className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {HOW_IT_WORKS.map((step, i) => (
-              <motion.li key={step.title} variants={fadeUp} className="flex flex-col gap-3 rounded-2xl border border-toro-dark/10 bg-white p-6">
-                <span className="w-9 h-9 rounded-full bg-toro-gold/15 text-toro-dark text-sm font-bold flex items-center justify-center">{i + 1}</span>
-                <h3 className="text-lg font-bold text-toro-dark">{step.title}</h3>
-                <p className="text-sm text-toro-dark/70 leading-relaxed">{step.text}</p>
+              <motion.li key={step.title} variants={fadeUp} className="flex flex-col gap-3 rounded-2xl border border-toro-light/10 bg-toro-light/[0.04] p-6">
+                <span className="w-9 h-9 rounded-full bg-toro-gold/15 text-toro-gold text-sm font-bold flex items-center justify-center">{i + 1}</span>
+                <h3 className="text-lg font-bold text-toro-light">{step.title}</h3>
+                <p className="text-sm text-toro-light/70 leading-relaxed">{step.text}</p>
               </motion.li>
             ))}
           </ol>
+          <motion.ul variants={fadeUp} className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm text-toro-light/80">
+            {TRUST_POINTS.map(point => (
+              <li key={point} className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-toro-gold shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                {point}
+              </li>
+            ))}
+          </motion.ul>
         </div>
       </motion.section>
 
@@ -312,26 +327,6 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
               />
             ))}
           </motion.div>
-        </div>
-      </motion.section>
-
-      {/* ── Why Toro ── */}
-      <motion.section className="bg-toro-dark py-24" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
-        <div className="toro-container">
-          <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-light mb-12">Why Toro is different</motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { title: 'Student verified', desc: 'Sign up with your university email to earn a Verified Student badge, so you always know who you are dealing with.' },
-              { title: 'Built for newcomers', desc: 'Every provider lists the languages they speak, so you can get help in Italian, English, Turkish and more.' },
-              { title: 'Your first step', desc: 'Never worked before? No problem. Toro is designed to help students take their first professional step with confidence.' },
-            ].map(item => (
-              <motion.div key={item.title} variants={fadeUp} className="flex flex-col gap-3">
-                <div className="w-8 h-1 bg-toro-gold rounded-full" />
-                <h3 className="text-lg font-bold text-toro-light">{item.title}</h3>
-                <p className="text-sm text-toro-light/60 leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </motion.section>
 
