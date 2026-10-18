@@ -7,6 +7,8 @@ import { createClient } from '@/utils/supabase/client'
 import { uploadAvatar } from '@/utils/upload'
 import ToretBull from '@/components/ToretBull'
 import { SITE_HOST } from '@/lib/site'
+import PasswordStrength from '@/components/PasswordStrength'
+import { isStrongPassword } from '@/lib/password'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -334,16 +336,8 @@ function StepPersonal({ user, form, setForm, avatarPreview, setAvatarPreview, se
 function StepPassword({ form, setForm }) {
   const [show, setShow] = useState(false)
 
-  const strength = (() => {
-    const p = form.password
-    const score = [p.length >= 8, /[A-Z]/.test(p), /[0-9]/.test(p), /[^A-Za-z0-9]/.test(p)].filter(Boolean).length
-    const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e']
-    const labels = ['Weak', 'Fair', 'Good', 'Strong']
-    return { score, color: colors[score - 1], label: labels[score - 1] }
-  })()
-
   return {
-    canProceed: form.password.length >= 8 && form.password === form.confirmPassword,
+    canProceed: isStrongPassword(form.password) && form.password === form.confirmPassword,
     content: (
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-1">
@@ -359,7 +353,7 @@ function StepPassword({ form, setForm }) {
               type={show ? 'text' : 'password'}
               value={form.password}
               onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
-              placeholder="New password (min 8 characters)"
+              placeholder="Create a strong password"
               className="toro-input !pr-12"
             />
             <button
@@ -380,21 +374,7 @@ function StepPassword({ form, setForm }) {
             </button>
           </div>
 
-          {form.password.length > 0 && (
-            <div className="flex items-center gap-3">
-              <div className="flex gap-1 flex-1">
-                {[0,1,2,3].map(i => (
-                  <motion.div key={i} className="h-1.5 flex-1 rounded-full"
-                    animate={{ background: i < strength.score ? strength.color : 'rgba(19,38,0,0.08)' }}
-                    transition={{ duration: 0.25 }}
-                  />
-                ))}
-              </div>
-              <span className="text-xs font-semibold" style={{ color: strength.color || 'rgba(19,38,0,0.3)' }}>
-                {strength.label || ''}
-              </span>
-            </div>
-          )}
+          <div className="px-1"><PasswordStrength password={form.password} /></div>
 
           <input
             type="password"

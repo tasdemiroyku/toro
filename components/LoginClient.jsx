@@ -7,6 +7,7 @@ import { createClient } from '@/utils/supabase/client'
 import AuthShell from '@/components/AuthShell'
 import PasswordStrength from '@/components/PasswordStrength'
 import { safeRedirectPath } from '@/lib/redirect'
+import { isStrongPassword } from '@/lib/password'
 
 // "Remember me" e-mail lives in localStorage. Reading it through
 // useSyncExternalStore keeps server and client renders consistent
@@ -15,8 +16,6 @@ const SAVED_EMAIL_KEY = 'toro_saved_email'
 const subscribeToNothing = () => () => {}
 const readSavedEmail = () => localStorage.getItem(SAVED_EMAIL_KEY) ?? ''
 const readSavedEmailOnServer = () => ''
-
-const MIN_PASSWORD_LENGTH = 8
 
 const COPY = {
   login:  { title: 'Welcome back',        subtitle: 'Log in to message providers and manage your listings.', submit: 'Log in',         busy: 'Logging in…' },
@@ -109,8 +108,8 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
     if (!email) return
     if (mode !== 'forgot' && !password) return
     if (mode === 'forgot' && cooldown > 0) return
-    if (mode === 'signup' && password.length < MIN_PASSWORD_LENGTH) {
-      setMessage({ text: `Use at least ${MIN_PASSWORD_LENGTH} characters for your password.`, type: 'error' })
+    if (mode === 'signup' && !isStrongPassword(password)) {
+      setMessage({ text: 'Your password does not meet all the requirements below the field yet.', type: 'error' })
       return
     }
 
@@ -243,7 +242,7 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
                   name="password"
                   id="password"
                   autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                  placeholder={mode === 'signup' ? `At least ${MIN_PASSWORD_LENGTH} characters` : '••••••••'}
+                  placeholder={mode === 'signup' ? 'Create a strong password' : '••••••••'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -268,7 +267,7 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
                   )}
                 </button>
               </div>
-              {mode === 'signup' && password && <div className="px-1 pt-1"><PasswordStrength password={password} /></div>}
+              {mode === 'signup' && <div className="px-1 pt-1"><PasswordStrength password={password} /></div>}
             </div>
           )}
 
