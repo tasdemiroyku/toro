@@ -125,7 +125,7 @@ export default function EditListingClient({ listing }) {
 
         <div>
           <h1 className="text-3xl font-bold text-toro-dark">Edit listing</h1>
-          <p className="text-sm text-toro-dark/50 mt-1 font-medium">
+          <p className="text-sm text-toro-dark/65 mt-1 font-medium">
             Changes go live immediately.
           </p>
         </div>
@@ -134,10 +134,10 @@ export default function EditListingClient({ listing }) {
 
           {/* ── Cover photo ── */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
               Photo <span className="normal-case font-normal tracking-normal">(optional)</span>
             </label>
-            <p className="text-xs text-toro-dark/40 -mt-0.5">
+            <p className="text-xs text-toro-dark/65 -mt-0.5">
               Shown on your listing page, e.g. your notes, your tools or a finished job. Listing cards stay text-only.
             </p>
 
@@ -179,7 +179,7 @@ export default function EditListingClient({ listing }) {
                     <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                     <circle cx="12" cy="13" r="4"/>
                   </svg>
-                  <p className="text-xs text-toro-dark/40 font-medium">
+                  <p className="text-xs text-toro-dark/65 font-medium">
                     Click to add a photo
                   </p>
                   <p className="text-[10px] text-toro-dark/25">
@@ -250,12 +250,12 @@ export default function EditListingClient({ listing }) {
 
           {/* ── Price ── */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
               Price
             </label>
             <div className="flex gap-3">
               <div className="relative flex-1">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-toro-dark/40 font-medium">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-toro-dark/65 font-medium">
                   €
                 </span>
                 <input
@@ -283,7 +283,7 @@ export default function EditListingClient({ listing }) {
                     <option key={p.value} value={p.value}>{p.label}</option>
                   ))}
                 </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-toro-dark/40">
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-toro-dark/65">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <path d="m6 9 6 6 6-6"/>
                   </svg>
@@ -345,7 +345,7 @@ export default function EditListingClient({ listing }) {
 function Field({ label, required, hint, children }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+      <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
         {label}
         {required && <span className="text-red-400 ml-1">*</span>}
       </label>

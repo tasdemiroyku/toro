@@ -34,7 +34,7 @@ export default function ContactClient({ defaultName = '', defaultEmail = '' }) {
     return (
       <div className="rounded-[2rem] border border-toro-dark/10 bg-white p-8 flex flex-col gap-2 text-center">
         <p className="text-lg font-bold text-toro-dark">Thanks, your message is on its way.</p>
-        <p className="text-sm text-toro-dark/50">We usually reply within a couple of days, at the address you gave us.</p>
+        <p className="text-sm text-toro-dark/65">We usually reply within a couple of days, at the address you gave us.</p>
       </div>
     )
   }
@@ -43,17 +43,17 @@ export default function ContactClient({ defaultName = '', defaultEmail = '' }) {
     <form onSubmit={handleSubmit} className="rounded-[2rem] border border-toro-dark/10 bg-white p-6 sm:p-8 flex flex-col gap-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <label className="flex flex-col gap-1.5">
-          <span className="text-xs text-toro-dark/50 tracking-wide">Your name</span>
+          <span className="text-xs text-toro-dark/65 tracking-wide">Your name</span>
           <input value={form.name} onChange={update('name')} required maxLength={100} autoComplete="name" className="toro-input" />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-xs text-toro-dark/50 tracking-wide">Your e-mail</span>
+          <span className="text-xs text-toro-dark/65 tracking-wide">Your e-mail</span>
           <input type="email" value={form.email} onChange={update('email')} required maxLength={254} autoComplete="email" className="toro-input" />
         </label>
       </div>
 
       <label className="flex flex-col gap-1.5">
-        <span className="text-xs text-toro-dark/50 tracking-wide">Message</span>
+        <span className="text-xs text-toro-dark/65 tracking-wide">Message</span>
         <textarea
           value={form.message}
           onChange={update('message')}

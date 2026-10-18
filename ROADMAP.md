@@ -24,6 +24,7 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-18 | Listing cards are text-first (no cover photos); category illustrations are used for the home page category tiles; uploaded photos appear on the detail page only. Demo listings are labelled "Sample". |
 | 2026-10-18 | No public e-mail address until the domain exists; `/contact` form delivers to a server-only inbox variable. |
 | 2026-10-18 | Portfolio-ready: Inter everywhere (Cormorant only for the logo), one page container, ten categories (+ Pet Care, Translation & Proofreading, Design & Media; Consular shown as Paperwork & Bureaucracy), compact category tiles, CI and unit tests, "All rights reserved" licence. |
+| 2026-10-18 | Home refresh: benefit-led hero ("Help from students, around the corner.") with glass search used only in the hero, How it works, provider CTA instead of a waitlist band (waitlist moved to the footer), WCAG AA text contrast. |
 | 2026-10-17 | Commits keep the `Co-Authored-By: Claude` trailer (transparency). From now on: feature branch → PR with description → merge. |
 | 2026-10-17 | Schema changes are SQL files in `supabase/migrations/`, written in the repo and applied by hand in the Supabase SQL Editor. Breaking changes use expand → deploy → contract. |
 
@@ -46,6 +47,7 @@ students comes after that, once moderation and legal pages are in place.
 - [x] Login / sign-up / reset redesign
 - [x] Privacy Policy, Terms of Use, contact form (e-mails the founders)
 - [x] Demo data seed with Sample labels; branded 404; uploaded photos deleted with the account
+- [x] Portfolio polish (PR #4) and home refresh: CI + tests, README showcase, consistent typography/layout, 10 categories
 
 ## In progress — rollout of the first-impression work ([PR #2](https://github.com/tasdemiroyku/toro/pull/2) merged, cards and auth polish in PR #3)
 

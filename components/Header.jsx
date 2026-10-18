@@ -92,7 +92,7 @@ function UserDropdown({ user, profile, setUser, hasUnread }) {
               <p className="text-xs font-semibold text-toro-dark truncate">
                 {user?.user_metadata?.full_name || 'My Account'}
               </p>
-              <p className="text-xs text-toro-dark/40 truncate mt-0.5">
+              <p className="text-xs text-toro-dark/65 truncate mt-0.5">
                 {user?.email}
               </p>
             </div>
@@ -440,7 +440,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
                 </button>
                 <button
                   onClick={() => { setMobileOpen(false); router.push('/login') }}
-                  className="w-full text-center text-sm text-toro-light/50 py-2 group"
+                  className="w-full text-center text-sm text-toro-light/65 py-2 group"
                 >
                   Already have an account? <span className="text-toro-gold group-hover:underline">Log in</span>
                 </button>

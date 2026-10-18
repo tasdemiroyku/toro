@@ -168,6 +168,10 @@ updating the CHECK constraint.
   on the listing detail page, with no stock fallback. Horizontal carousels use
   native scroll with `scroll-snap` (see Latest services in HomeClient).
 - Copy: plain punctuation, no em dashes (—) in UI text.
+- Contrast: informational secondary text is at least `text-toro-dark/65`
+  (`text-toro-light/65` on dark), which passes WCAG AA. Lighter values only for
+  decoration. Keyboard focus uses the global gold `:focus-visible` outline.
+- Glass effects (backdrop-blur, white/10 fills) belong to the hero only.
 - Empty states use the `.toro-empty-state` pattern: ToretBull icon, heading,
   short text, CTA.
 - Never define CATEGORIES or PRICE_TYPES locally. Import them from `@/lib/categories`.

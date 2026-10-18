@@ -13,7 +13,7 @@ export default function LegalPage({ title, intro, children }) {
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-toro-dark">
             {title}
           </h1>
-          <p className="text-sm text-toro-dark/50">
+          <p className="text-sm text-toro-dark/65">
             Last updated: {LEGAL_LAST_UPDATED} · Pre-launch version
           </p>
           {intro && <p className="text-base text-toro-dark/70 leading-relaxed mt-2">{intro}</p>}

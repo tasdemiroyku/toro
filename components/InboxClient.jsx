@@ -147,13 +147,13 @@ function ThreadView({ conversation, currentUserId, onBack, onNewMessage, onMessa
     <div className="flex flex-col h-full min-h-0">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 py-3 border-b border-toro-dark/10 bg-white shrink-0">
-        <button onClick={onBack} className="md:hidden p-1.5 -ml-1.5 text-toro-dark/40 hover:text-toro-dark transition" aria-label="Back">
+        <button onClick={onBack} className="md:hidden p-1.5 -ml-1.5 text-toro-dark/65 hover:text-toro-dark transition" aria-label="Back">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </button>
         <Avatar profile={conversation.otherProfile} />
         <div className="flex-1 min-w-0">
           <p className="text-sm font-bold text-toro-dark truncate">{conversation.otherProfile?.full_name || 'Unknown'}</p>
-          <p className="text-xs text-toro-dark/40 truncate">Re: {conversation.listing?.title || 'Listing'}</p>
+          <p className="text-xs text-toro-dark/65 truncate">Re: {conversation.listing?.title || 'Listing'}</p>
         </div>
       </div>
 
@@ -182,7 +182,7 @@ function ThreadView({ conversation, currentUserId, onBack, onNewMessage, onMessa
               >
                 <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${isMe ? 'bg-toro-dark text-toro-light rounded-br-sm' : 'bg-white border border-toro-dark/10 text-toro-dark rounded-bl-sm'} ${msg._optimistic ? 'opacity-70' : ''}`}>
                   {msg.content}
-                  <div className={`text-[10px] mt-1 ${isMe ? 'text-toro-light/40' : 'text-toro-dark/30'}`}>
+                  <div className={`text-[10px] mt-1 ${isMe ? 'text-toro-light/65' : 'text-toro-dark/30'}`}>
                     {formatTime(msg.created_at)}
                     {isMe && <span className="ml-1.5">{msg._optimistic ? '·' : msg.read ? '✓✓' : '✓'}</span>}
                   </div>
@@ -244,7 +244,7 @@ function ConversationItem({ conv, isActive, onClick }) {
           <span className="text-[10px] text-toro-dark/30 shrink-0">{formatTime(conv.lastMessage.created_at)}</span>
         </div>
         <p className="text-[11px] text-toro-gold/70 font-medium truncate mb-0.5">{conv.listing?.title || 'Listing'}</p>
-        <p className={`text-xs truncate ${conv.unreadCount > 0 ? 'text-toro-dark/70' : 'text-toro-dark/40'}`}>
+        <p className={`text-xs truncate ${conv.unreadCount > 0 ? 'text-toro-dark/70' : 'text-toro-dark/65'}`}>
           {conv.lastMessage.sender_id !== conv.otherId && <span className="mr-1 text-toro-dark/30">You:</span>}
           {conv.lastMessage.content}
         </p>
@@ -339,7 +339,7 @@ export default function InboxClient({ initialMessages, currentUserId, activeList
                   <div className="w-14 h-14 text-toro-dark/10"><ToretBull className="w-full h-full" /></div>
                   <div className="flex flex-col gap-1">
                     <p className="text-toro-dark text-base font-bold">No messages yet</p>
-                    <p className="text-toro-dark/40 text-sm max-w-xs mx-auto">When you contact a service provider, your conversations appear here.</p>
+                    <p className="text-toro-dark/65 text-sm max-w-xs mx-auto">When you contact a service provider, your conversations appear here.</p>
                   </div>
                   <button onClick={() => router.push('/listings')} className="toro-btn-primary text-xs !py-2.5 !px-5">Browse services</button>
                 </div>
@@ -365,7 +365,7 @@ export default function InboxClient({ initialMessages, currentUserId, activeList
               ) : (
                 <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col items-center justify-center gap-4 text-center px-8">
                   <div className="w-16 h-16 text-toro-dark/10"><ToretBull className="w-full h-full" /></div>
-                  <p className="text-toro-dark/50 text-sm font-medium">Select a conversation to read messages</p>
+                  <p className="text-toro-dark/65 text-sm font-medium">Select a conversation to read messages</p>
                 </motion.div>
               )}
             </AnimatePresence>

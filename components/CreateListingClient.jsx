@@ -62,7 +62,7 @@ export default function CreateListingClient({ userId }) {
 
         <div>
           <h1 className="text-3xl font-bold text-toro-dark">Post a service</h1>
-          <p className="text-sm text-toro-dark/50 mt-1 font-medium">
+          <p className="text-sm text-toro-dark/65 mt-1 font-medium">
             Tell people what you offer and how to reach you.
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function CreateListingClient({ userId }) {
 
           {/* Title */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
               Title <span className="text-red-400">*</span>
             </label>
             <input
@@ -86,7 +86,7 @@ export default function CreateListingClient({ userId }) {
 
           {/* Category */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
               Category <span className="text-red-400">*</span>
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -108,7 +108,7 @@ export default function CreateListingClient({ userId }) {
 
           {/* Description */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
               Description ({form.description.length}/1000){' '}
               <span className="text-red-400">*</span>
             </label>
@@ -124,12 +124,12 @@ export default function CreateListingClient({ userId }) {
 
           {/* Price */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
               Price <span className="text-red-400">*</span>
             </label>
             <div className="flex gap-3">
               <div className="relative flex-1">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-toro-dark/40 font-medium">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-toro-dark/65 font-medium">
                   €
                 </span>
                 <input
@@ -152,7 +152,7 @@ export default function CreateListingClient({ userId }) {
                     <option key={p.value} value={p.value}>{p.label}</option>
                   ))}
                 </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-toro-dark/40">
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-toro-dark/65">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <path d="m6 9 6 6 6-6"/>
                   </svg>
@@ -163,7 +163,7 @@ export default function CreateListingClient({ userId }) {
 
           {/* Location */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
               Location
             </label>
             <input
@@ -177,7 +177,7 @@ export default function CreateListingClient({ userId }) {
 
           {/* Languages */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+            <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
               Languages
             </label>
             <input

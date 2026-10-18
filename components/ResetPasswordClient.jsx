@@ -52,7 +52,7 @@ export default function ResetPasswordClient() {
           <h1 className="text-3xl font-bold tracking-tight text-toro-dark">
             Choose a new password
           </h1>
-          <p className="text-sm text-toro-dark/50">Pick something you have not used on other sites.</p>
+          <p className="text-sm text-toro-dark/65">Pick something you have not used on other sites.</p>
         </div>
 
         <form onSubmit={handleReset} className="flex flex-col gap-5">
@@ -72,7 +72,7 @@ export default function ResetPasswordClient() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-toro-dark/40 hover:text-toro-dark transition"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-toro-dark/65 hover:text-toro-dark transition"
               >
                 {showPassword ? 'Hide' : 'Show'}
               </button>

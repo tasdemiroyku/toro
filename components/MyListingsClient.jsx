@@ -51,7 +51,7 @@ export default function MyListingsClient({ listings: initial }) {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-toro-dark">My Listings</h1>
-          <p className="text-sm mt-1 text-toro-dark/40 font-medium">
+          <p className="text-sm mt-1 text-toro-dark/65 font-medium">
             {listings.length} listing{listings.length !== 1 ? 's' : ''}
           </p>
         </div>
@@ -68,7 +68,7 @@ export default function MyListingsClient({ listings: initial }) {
           </div>
           <div className="flex flex-col gap-1.5">
             <p className="text-toro-dark text-lg font-bold">No listings yet</p>
-            <p className="text-toro-dark/40 text-sm max-w-xs mx-auto font-medium">
+            <p className="text-toro-dark/65 text-sm max-w-xs mx-auto font-medium">
               Offer a service to the Turin community.
             </p>
           </div>
@@ -106,7 +106,7 @@ export default function MyListingsClient({ listings: initial }) {
                   </Link>
                   <StatusBadge active={listing.is_active} />
                 </div>
-                <p className="text-xs text-toro-dark/40 font-medium">
+                <p className="text-xs text-toro-dark/65 font-medium">
                   {CATEGORY_LABEL[listing.category] ?? listing.category}
                   {listing.price != null && (
                     <> · €{listing.price}{listing.price_type ? `/${listing.price_type}` : ''}</>
@@ -172,7 +172,7 @@ export default function MyListingsClient({ listings: initial }) {
               <h2 className="text-lg font-bold text-toro-dark mb-2">
                 Delete listing?
               </h2>
-              <p className="text-sm text-toro-dark/50 leading-relaxed mb-6">
+              <p className="text-sm text-toro-dark/65 leading-relaxed mb-6">
                 This can&apos;t be undone. All messages linked to this listing will also be removed.
               </p>
               <div className="flex gap-3">
@@ -203,7 +203,7 @@ function StatusBadge({ active }) {
     <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
       active
         ? 'bg-green-100 text-green-700'
-        : 'bg-toro-dark/8 text-toro-dark/40'
+        : 'bg-toro-dark/8 text-toro-dark/65'
     }`}>
       <span className={`w-1.5 h-1.5 rounded-full ${active ? 'bg-green-600' : 'bg-toro-dark/30'}`} />
       {active ? 'Active' : 'Paused'}
