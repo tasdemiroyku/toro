@@ -44,6 +44,6 @@ export function ContactLine() {
   return CONTACT_EMAIL ? (
     <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
   ) : (
-    <span>a dedicated contact address, which will be published on this page before the public launch</span>
+    <Link href="/contact">our contact form</Link>
   )
 }

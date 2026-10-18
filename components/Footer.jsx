@@ -3,7 +3,6 @@
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import ToretBull from './ToretBull' // Importing the central, reusable logo
-import { CONTACT_EMAIL } from '@/lib/site'
 
 export default function Footer() {
   const pathname = usePathname()
@@ -46,11 +45,9 @@ export default function Footer() {
             <Link href="/terms" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
               Terms
             </Link>
-            {CONTACT_EMAIL && (
-              <a href={`mailto:${CONTACT_EMAIL}`} className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
-                Contact
-              </a>
-            )}
+            <Link href="/contact" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
+              Contact
+            </Link>
           </div>
           
         </div>
