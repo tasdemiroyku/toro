@@ -56,7 +56,7 @@ app/
   layout.js                fetches user server-side, renders Header/Footer
 components/                <Name>Client.jsx per route + shared UI: Header, Footer, AuthShell (auth split layout),
                            LegalPage, ListingCard (every listing grid), Avatar, CategoryIcon, PasswordStrength,
-                           SampleBadge, ToretBull, ToroLoader
+                           SampleBadge, ToretBull
 lib/categories.js          CATEGORIES (value, label, examples, icon), CATEGORY_LABEL, CATEGORY_ICON, PRICE_TYPES
 lib/password.js            PASSWORD_RULES, isStrongPassword (mirrors Supabase Auth policy)
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
