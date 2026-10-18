@@ -196,7 +196,7 @@ function ThreadView({ conversation, currentUserId, onBack, onNewMessage, onMessa
             onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend() } }}
             placeholder="Write a message… (Enter to send)"
             rows={1} maxLength={500}
-            className="toro-input !rounded-2xl resize-none flex-1 max-h-32 overflow-y-auto"
+            className="toro-input resize-none flex-1 max-h-32 overflow-y-auto"
             style={{ minHeight: '44px' }}
           />
           <button

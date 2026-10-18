@@ -114,7 +114,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
         {/* Cinematic overlay: dark at the top (header) and bottom, lighter in the middle */}
         <div className="absolute inset-0 bg-linear-to-b from-toro-dark/85 via-toro-dark/45 to-toro-dark/90" />
 
-        <motion.div className="relative z-10 toro-container flex flex-col items-center text-center pt-16" initial="hidden" animate="visible" variants={stagger}>
+        <motion.div className="relative z-10 toro-container flex flex-col items-center text-center pt-28" initial="hidden" animate="visible" variants={stagger}>
           <motion.h1 variants={fadeUp} className="max-w-2xl text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-white text-balance">
             Help from students, around{' '}
             <span className="relative inline-block">
@@ -134,14 +134,14 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
               </svg>
             </span>
           </motion.h1>
-          <motion.p variants={fadeUp} className="mt-5 max-w-lg text-base md:text-lg text-white/80 text-balance">
-            Tutoring, Italian paperwork, moving and more, from people who study in Turin.
+          <motion.p variants={fadeUp} className="mt-6 max-w-2xl text-base md:text-lg text-white/80 text-balance">
+            Tutoring, paperwork and everyday help from students in Turin.
           </motion.p>
 
           <motion.form
             variants={fadeUp}
             onSubmit={e => { e.preventDefault(); handleSearch() }}
-            className="mt-9 w-full max-w-xl flex items-center rounded-full border border-white/25 bg-white/10 backdrop-blur-xl p-1 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)] focus-within:border-white/50 focus-within:bg-white/15 transition"
+            className="mt-12 w-full max-w-xl flex items-center rounded-xl border border-white/25 bg-white/10 backdrop-blur-xl p-1 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)] focus-within:border-white/50 focus-within:bg-white/15 transition"
           >
             <label htmlFor="hero-search" className="sr-only">Search services</label>
             <input
@@ -152,7 +152,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
               onChange={e => setHeroSearch(e.target.value)}
               className="flex-1 min-w-0 bg-transparent outline-none text-white placeholder:text-white/60 text-[15px] py-2.5 px-5"
             />
-            <button type="submit" className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-toro-gold text-toro-dark text-sm font-semibold px-4 py-2.5 hover:brightness-110 active:scale-[0.98] transition">
+            <button type="submit" className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-toro-gold text-toro-dark text-sm font-semibold px-4 py-2.5 hover:brightness-110 active:scale-[0.98] transition">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
@@ -160,7 +160,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
             </button>
           </motion.form>
 
-          <motion.div variants={fadeUp} className="mt-5 flex flex-wrap justify-center gap-2">
+          <motion.div variants={fadeUp} className="mt-6 flex flex-wrap justify-center gap-2">
             {QUICK_CATEGORIES.map(value => (
               <Link
                 key={value}
@@ -270,7 +270,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
       </motion.section>
 
       {/* ── How it works ── */}
-      <motion.section className="bg-toro-cream py-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
+      <motion.section className="bg-toro-sage py-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
         <div className="toro-container">
           <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-dark mb-10">How it works</motion.h2>
           <ol className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -298,7 +298,6 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
               free for anyone who walks by. We want help between students to feel the same: close,
               simple and part of the city.
             </p>
-            <p className="text-xs text-toro-dark/55">Photos: our own footage of Toret around Turin.</p>
           </motion.div>
           <motion.div variants={fadeUp} className="grid grid-cols-2 gap-3 md:gap-4">
             {TORET_PHOTOS.map((photo, i) => (

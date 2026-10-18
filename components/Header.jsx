@@ -66,10 +66,10 @@ function UserDropdown({ user, profile, setUser, hasUnread }) {
 
       <button
         onClick={() => setOpen(!open)}
-        className="relative w-9 h-9 rounded-full bg-toro-dark border-2 border-toro-light/20 hover:border-toro-gold transition flex items-center justify-center shrink-0"
+        className="relative w-9 h-9 rounded-full bg-toro-dark text-toro-light border-2 border-toro-light/20 hover:border-toro-gold transition flex items-center justify-center shrink-0"
         aria-label="User menu"
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FAFAF7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
           <circle cx="12" cy="7" r="4"/>
         </svg>
@@ -293,7 +293,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
             <motion.form
               onSubmit={handleHeaderSearch}
               style={{ opacity: searchOpacity, y: searchY, pointerEvents: searchPointerEvents }}
-              className="flex-1 max-w-sm hidden md:flex items-center bg-toro-light/10 backdrop-blur-md border border-toro-light/20 rounded-full p-1 transition-all hover:bg-toro-light/20 mx-auto"
+              className="flex-1 max-w-sm hidden md:flex items-center bg-toro-light/10 backdrop-blur-md border border-toro-light/20 rounded-xl p-1 transition-all hover:bg-toro-light/20 mx-auto"
             >
               <input
                 type="text"
@@ -305,7 +305,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
               <button
                 type="submit"
                 aria-label="Search"
-                className="bg-toro-dark hover:bg-[#1f3d00] text-toro-gold rounded-full p-2 transition-all shadow-md active:scale-95 shrink-0"
+                className="bg-toro-dark hover:bg-toro-dark/80 text-toro-gold rounded-lg p-2 transition-all shadow-md active:scale-95 shrink-0"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8"></circle>
@@ -316,7 +316,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
           ) : !isAuthPage ? (
             <motion.form
               onSubmit={handleHeaderSearch}
-              className="flex-1 max-w-sm hidden md:flex items-center bg-toro-light/10 backdrop-blur-md border border-toro-light/20 rounded-full p-1 transition-all hover:bg-toro-light/20 mx-auto"
+              className="flex-1 max-w-sm hidden md:flex items-center bg-toro-light/10 backdrop-blur-md border border-toro-light/20 rounded-xl p-1 transition-all hover:bg-toro-light/20 mx-auto"
             >
               <input
                 type="text"
@@ -328,7 +328,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
               <button
                 type="submit"
                 aria-label="Search"
-                className="bg-toro-dark hover:bg-[#1f3d00] text-toro-gold rounded-full p-2 transition-all shadow-md active:scale-95 shrink-0"
+                className="bg-toro-dark hover:bg-toro-dark/80 text-toro-gold rounded-lg p-2 transition-all shadow-md active:scale-95 shrink-0"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8"></circle>
@@ -400,7 +400,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
           >
             <form
               onSubmit={handleHeaderSearch}
-              className="w-full flex items-center bg-toro-light/10 backdrop-blur-md border border-toro-light/20 rounded-full p-1.5 transition-all hover:bg-toro-light/20 mb-2 mt-2"
+              className="w-full flex items-center bg-toro-light/10 backdrop-blur-md border border-toro-light/20 rounded-xl p-1.5 transition-all hover:bg-toro-light/20 mb-2 mt-2"
             >
               <input
                 type="text"
@@ -412,7 +412,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
               <button
                 type="submit"
                 aria-label="Search"
-                className="bg-toro-dark hover:bg-[#1f3d00] text-toro-gold rounded-full p-2.5 transition-all shadow-md active:scale-95 shrink-0"
+                className="bg-toro-dark hover:bg-toro-dark/80 text-toro-gold rounded-lg p-2.5 transition-all shadow-md active:scale-95 shrink-0"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8"></circle>

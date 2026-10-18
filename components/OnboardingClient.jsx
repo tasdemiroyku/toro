@@ -302,7 +302,7 @@ function StepPersonal({ user, form, setForm, avatarPreview, setAvatarPreview, se
             rows={3}
             maxLength={300}
             placeholder="What can you offer? What are you looking for?"
-            className="toro-input !rounded-2xl resize-none"
+            className="toro-input resize-none"
           />
         </div>
 

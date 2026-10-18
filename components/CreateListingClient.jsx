@@ -80,7 +80,7 @@ export default function CreateListingClient({ userId }) {
               value={form.title}
               onChange={e => update('title', e.target.value)}
               maxLength={100}
-              className="toro-input !rounded-2xl"
+              className="toro-input"
             />
           </div>
 
@@ -118,7 +118,7 @@ export default function CreateListingClient({ userId }) {
               value={form.description}
               onChange={e => update('description', e.target.value)}
               maxLength={1000}
-              className="toro-input !rounded-2xl resize-none"
+              className="toro-input resize-none"
             />
           </div>
 
@@ -139,14 +139,14 @@ export default function CreateListingClient({ userId }) {
                   placeholder="0"
                   value={form.price}
                   onChange={e => update('price', e.target.value)}
-                  className="toro-input !rounded-2xl !pl-8"
+                  className="toro-input !pl-8"
                 />
               </div>
               <div className="relative w-[150px] shrink-0">
                 <select
                   value={form.price_type}
                   onChange={e => update('price_type', e.target.value)}
-                  className="toro-input !rounded-2xl appearance-none cursor-pointer !pr-10"
+                  className="toro-input appearance-none cursor-pointer !pr-10"
                 >
                   {PRICE_TYPES.map(p => (
                     <option key={p.value} value={p.value}>{p.label}</option>
@@ -171,7 +171,7 @@ export default function CreateListingClient({ userId }) {
               placeholder="e.g. Torino, Crocetta"
               value={form.location}
               onChange={e => update('location', e.target.value)}
-              className="toro-input !rounded-2xl"
+              className="toro-input"
             />
           </div>
 
@@ -185,7 +185,7 @@ export default function CreateListingClient({ userId }) {
               placeholder="e.g. Italian, English, Turkish"
               value={form.languages}
               onChange={e => update('languages', e.target.value)}
-              className="toro-input !rounded-2xl"
+              className="toro-input"
             />
           </div>
         </div>

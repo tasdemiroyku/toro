@@ -59,7 +59,7 @@ app/
   layout.js                fetches user server-side, renders Header/Footer
 components/                <Name>Client.jsx per route + shared UI: Header, Footer, AuthShell (auth split layout),
                            LegalPage, ListingCard (every listing grid), Avatar, CategoryIcon, PasswordStrength,
-                           SampleBadge, ToretBull, ToroLoader
+                           SampleBadge, ToretBull
 lib/categories.js          CATEGORIES (value, label, examples, icon), CATEGORY_LABEL, CATEGORY_ICON, PRICE_TYPES
 lib/password.js            PASSWORD_RULES, isStrongPassword (mirrors Supabase Auth policy)
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
@@ -163,7 +163,8 @@ updating the CHECK constraint.
 ## Design system
 
 - Colors are Tailwind tokens only: `toro-dark` #132600, `toro-gold` #C9963E,
-  `toro-light` #FAFAF7, `toro-cream` #F4EFE6 (warm section bands). No raw hex in
+  `toro-light` #FFFFFF (page background, light text on dark), `toro-sage` #EEF1E8
+  (light sage section bands). Cards on white need a thin border. No raw hex in
   `className`. Gold buttons use dark text.
 - Fonts: **Inter** (`font-sans`) for all text, headings included (bold +
   `tracking-tight` for page and section titles). Cormorant (`font-logo`) is only for
@@ -173,8 +174,9 @@ updating the CHECK constraint.
 - Global classes (`app/globals.css`): `.toro-input` (every input, textarea and
   select), `.toro-btn-primary`, `.toro-btn-gold`, `.toro-btn-outline`,
   `.toro-card`, `.toro-empty-state`.
-- Shapes: inputs and buttons `rounded-xl` (12 px, via the `.toro-*` classes); chips,
-  tags, badges, avatars and search bars are pills; cards and modals `rounded-2xl` or
+- Shapes: inputs, buttons and search bars `rounded-xl` (12 px, via the `.toro-*`
+  classes); a button inside a bar is `rounded-lg`. Only chips, tags, badges, avatars
+  and icon-only round buttons are pills. Cards and modals `rounded-2xl` or
   `rounded-[2rem]`. Borders are thin and solid (`border-toro-dark/10`), **never dashed**.
 - People: always render `<Avatar profile={…} />` (photo, or initials on a colour
   derived from the profile id), never ad-hoc initials.

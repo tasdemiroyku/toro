@@ -4,8 +4,8 @@
 @theme {
   --color-toro-dark: #132600;
   --color-toro-gold: #C9963E;
-  --color-toro-light: #FAFAF7;
-  --color-toro-cream: #F4EFE6;
+  --color-toro-light: #FFFFFF;
+  --color-toro-sage: #EEF1E8;
 }
 
 /* Fonts come from next/font (app/layout.js): Inter for everything, Cormorant
@@ -71,8 +71,7 @@
 
   /*
    * Base input style. Used on all <input>, <textarea>, and <select> elements.
-   * Shape: rounded-full for single-line inputs.
-   * For textarea, override with !rounded-2xl at the usage site.
+   * Shape: rounded-xl (12 px), the same as buttons and search bars.
    */
   .toro-input {
     @apply
