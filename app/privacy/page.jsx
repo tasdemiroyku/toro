@@ -54,13 +54,14 @@ export default function PrivacyPage() {
       <LegalSection title="5. Service providers">
         <p>We use a small number of providers who process data on our behalf:</p>
         <ul>
-          <li><strong>Supabase</strong>: database, authentication and file storage</li>
+          <li><strong>Supabase</strong>: database, authentication and file storage, hosted in the European Union (Ireland)</li>
           <li><strong>Vercel</strong>: website hosting</li>
           <li><strong>Resend</strong>: delivery of verification e-mails</li>
           <li><strong>Google and LinkedIn</strong>: only if you choose to sign in with them</li>
         </ul>
         <p>
-          Some of these providers are based in, or may process data in, the United States. Such
+          Your account, profile, listings and messages are stored in the EU. Some providers, such as
+          Vercel and Resend, are based in or may process data in the United States. Such
           transfers are covered by the safeguards those providers offer, such as the EU–U.S. Data
           Privacy Framework or the European Commission&apos;s Standard Contractual Clauses.
         </p>

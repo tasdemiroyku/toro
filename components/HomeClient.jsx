@@ -269,7 +269,7 @@ export default function HomeClient({ user, listings }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { title: 'Student verified', desc: 'Sign up with your university email to earn a Verified Student badge, so you always know who you are dealing with.' },
-              { title: 'Built for newcomers', desc: 'Multilingual platform. Whether you speak Italian, English or Turkish — Toro works for you.' },
+              { title: 'Built for newcomers', desc: 'Every provider lists the languages they speak, so you can get help in Italian, English, Turkish and more.' },
               { title: 'Your first step', desc: 'Never worked before? No problem. Toro is designed to help students take their first professional step with confidence.' },
             ].map(item => (
               <motion.div key={item.title} variants={fadeUp} className="flex flex-col gap-3">
