@@ -180,39 +180,41 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
       </section>
 
       {/* ── Browse by category ── */}
-      <motion.section className="toro-container pt-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
-        <motion.div variants={fadeUp} className="flex items-end justify-between gap-4 mb-8">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-3xl font-bold tracking-tight text-toro-dark">Browse by category</h2>
-            <p className="text-sm text-toro-dark/65">Everyday help from people who study in Turin.</p>
+      <motion.section className="bg-toro-sage py-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
+        <div className="toro-container">
+          <motion.div variants={fadeUp} className="flex items-end justify-between gap-4 mb-8">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-3xl font-bold tracking-tight text-toro-dark">Browse by category</h2>
+              <p className="text-sm text-toro-dark/65">Everyday help from people who study in Turin.</p>
+            </div>
+            <Link href="/listings" className="text-sm font-semibold text-toro-dark/60 hover:text-toro-gold transition whitespace-nowrap">
+              All services →
+            </Link>
+          </motion.div>
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+            {CATEGORIES.map(cat => {
+              const count = categoryCounts[cat.value] ?? 0
+              return (
+                <motion.div key={cat.value} variants={fadeUp}>
+                  <Link
+                    href={`/listings?category=${cat.value}`}
+                    className="group h-full flex flex-col gap-3 rounded-2xl border border-toro-dark/10 bg-white p-4 hover:border-toro-gold/60 hover:shadow-[0_12px_30px_-18px_rgba(19,38,0,0.3)] transition-all"
+                  >
+                    <span className="w-9 h-9 rounded-xl bg-toro-dark/5 text-toro-dark flex items-center justify-center group-hover:bg-toro-dark group-hover:text-toro-gold transition-colors">
+                      <CategoryIcon category={cat.value} className="w-[18px] h-[18px]" />
+                    </span>
+                    <span className="flex flex-col gap-0.5">
+                      <span className="text-sm font-semibold text-toro-dark leading-snug">{cat.label}</span>
+                      <span className="text-xs text-toro-dark/65 leading-snug">{cat.examples}</span>
+                    </span>
+                    <span className="mt-auto text-[11px] font-medium text-toro-dark/65">
+                      {count > 0 ? `${count} service${count === 1 ? '' : 's'}` : 'Be the first'}
+                    </span>
+                  </Link>
+                </motion.div>
+              )
+            })}
           </div>
-          <Link href="/listings" className="text-sm font-semibold text-toro-dark/60 hover:text-toro-gold transition whitespace-nowrap">
-            All services →
-          </Link>
-        </motion.div>
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-          {CATEGORIES.map(cat => {
-            const count = categoryCounts[cat.value] ?? 0
-            return (
-              <motion.div key={cat.value} variants={fadeUp}>
-                <Link
-                  href={`/listings?category=${cat.value}`}
-                  className="group h-full flex flex-col gap-3 rounded-2xl border border-toro-dark/10 bg-white p-4 hover:border-toro-gold/60 hover:shadow-[0_12px_30px_-18px_rgba(19,38,0,0.3)] transition-all"
-                >
-                  <span className="w-9 h-9 rounded-xl bg-toro-dark/5 text-toro-dark flex items-center justify-center group-hover:bg-toro-dark group-hover:text-toro-gold transition-colors">
-                    <CategoryIcon category={cat.value} className="w-[18px] h-[18px]" />
-                  </span>
-                  <span className="flex flex-col gap-0.5">
-                    <span className="text-sm font-semibold text-toro-dark leading-snug">{cat.label}</span>
-                    <span className="text-xs text-toro-dark/65 leading-snug">{cat.examples}</span>
-                  </span>
-                  <span className="mt-auto text-[11px] font-medium text-toro-dark/65">
-                    {count > 0 ? `${count} service${count === 1 ? '' : 's'}` : 'Be the first'}
-                  </span>
-                </Link>
-              </motion.div>
-            )
-          })}
         </div>
       </motion.section>
 
