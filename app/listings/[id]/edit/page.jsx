@@ -2,7 +2,7 @@ import { redirect, notFound } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import EditListingClient from '@/components/EditListingClient'
 
-export const metadata = { title: 'Edit Listing — Toro' }
+export const metadata = { title: 'Edit listing' }
 
 export default async function EditListingPage({ params }) {
   const { id } = await params

@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server'
 import OnboardingClient from '@/components/OnboardingClient'
 import { safeRedirectPath } from '@/lib/redirect'
 
-export const metadata = { title: 'Welcome to Toro — Complete Your Profile' }
+export const metadata = { title: 'Complete your profile' }
 
 export default async function OnboardingPage({ searchParams }) {
   const supabase = await createClient()

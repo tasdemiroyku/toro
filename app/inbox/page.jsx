@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import InboxClient from '@/components/InboxClient'
 
-export const metadata = { title: 'Inbox — Toro' }
+export const metadata = { title: 'Inbox' }
 
 export default async function InboxPage({ searchParams }) {
   const supabase = await createClient()

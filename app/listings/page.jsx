@@ -2,7 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import ListingsClient from '@/components/ListingsClient'
 
 export const metadata = {
-  title: 'Search Toro - Services & Students in Torino',
+  title: 'Services in Torino',
 }
 
 const PAGE_SIZE = 12
