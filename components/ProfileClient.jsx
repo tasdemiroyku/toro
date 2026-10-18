@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import ListingCard from '@/components/ListingCard'
+import Avatar from '@/components/Avatar'
 import { sendMessage } from '@/app/actions/messages'
 import ToretBull from '@/components/ToretBull'
 
@@ -158,11 +159,6 @@ export default function ProfileClient({ profile, listings, isOwnProfile, current
   const router = useRouter()
   const [showContact, setShowContact] = useState(false)
 
-  const initials =
-    profile.full_name?.[0]?.toUpperCase() ||
-    profile.username?.[0]?.toUpperCase() ||
-    '?'
-
   const canContact = !isOwnProfile && !!currentUserId && listings.length > 0
 
   return (
@@ -172,13 +168,7 @@ export default function ProfileClient({ profile, listings, isOwnProfile, current
       <motion.div initial="hidden" animate="visible" variants={stagger} className="flex flex-col sm:flex-row items-start gap-6 mb-12">
 
         <motion.div variants={fadeUp} className="shrink-0">
-          <div className="relative w-24 h-24 rounded-full overflow-hidden bg-toro-dark shadow-lg">
-            {profile.avatar_url ? (
-              <img src={profile.avatar_url} alt={profile.full_name || profile.username} className="w-full h-full object-cover" />
-            ) : (
-              <span className="w-full h-full flex items-center justify-center text-toro-light text-3xl font-bold">{initials}</span>
-            )}
-          </div>
+          <Avatar profile={profile} className="w-24 h-24 text-3xl shadow-lg" />
         </motion.div>
 
         <motion.div variants={fadeUp} className="flex-1 min-w-0 flex flex-col gap-2">

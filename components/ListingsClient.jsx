@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import ToretBull from './ToretBull'
 import { CATEGORIES as BASE_CATEGORIES } from '@/lib/categories'
 import ListingCard from '@/components/ListingCard'
+import Avatar from '@/components/Avatar'
 
 const CATEGORIES = [{ value: '', label: 'All' }, ...BASE_CATEGORIES]
 
@@ -102,15 +103,7 @@ export default function ListingsClient({
                 onClick={() => router.push(`/u/${profile.username}`)}
                 className="flex items-start gap-4 bg-white/60 backdrop-blur-sm border border-toro-dark/10 p-4 rounded-3xl min-w-[280px] max-w-[320px] shadow-sm hover:shadow-md hover:border-toro-gold hover:bg-white transition-all cursor-pointer shrink-0 group"
               >
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-toro-dark/5 shrink-0 border border-toro-dark/10 flex items-center justify-center">
-                  {profile.avatar_url ? (
-                    <img src={profile.avatar_url} className="w-full h-full object-cover" alt="" />
-                  ) : (
-                    <span className="text-toro-dark/65 font-bold text-lg">
-                      {profile.full_name?.[0]?.toUpperCase() || '?'}
-                    </span>
-                  )}
-                </div>
+                <Avatar profile={profile} className="w-12 h-12 text-lg" />
                 <div className="flex flex-col min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
                     <span className="text-sm font-bold text-toro-dark truncate group-hover:text-toro-gold transition-colors">

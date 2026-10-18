@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CATEGORY_LABEL } from '@/lib/categories'
 import CategoryIcon from '@/components/CategoryIcon'
+import Avatar from '@/components/Avatar'
 import SampleBadge from '@/components/SampleBadge'
 import { sendMessage } from '@/app/actions/messages'
 import { createClient } from '@/utils/supabase/client'
@@ -222,13 +223,7 @@ const handleToggleActive = () => {
                   router.push(`/u/${profile.username}`)
               }}
             >
-              {profile?.avatar_url ? (
-                <img src={profile.avatar_url} className="w-10 h-10 rounded-full object-cover shrink-0" alt="" />
-              ) : (
-                <div className="w-10 h-10 rounded-full bg-toro-dark flex items-center justify-center text-toro-light font-bold shrink-0">
-                  {profile?.full_name?.[0] || '?'}
-                </div>
-              )}
+              <Avatar profile={profile} className="w-10 h-10 text-sm" />
               <div className="min-w-0 flex-1">
                 <p className={`text-sm font-semibold text-toro-dark truncate ${profile?.username ? 'group-hover:text-toro-gold transition-colors' : ''}`}>
                   {profile?.full_name || 'Anonymous'}

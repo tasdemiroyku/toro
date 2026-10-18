@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
 import ToretBull from '@/components/ToretBull'
+import SharedAvatar from '@/components/Avatar'
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -49,16 +50,7 @@ function formatTime(dateStr) {
 }
 
 function Avatar({ profile, size = 'md' }) {
-  const dim = size === 'sm' ? 'w-8 h-8 text-xs' : 'w-10 h-10 text-sm'
-  const initial = profile?.full_name?.[0]?.toUpperCase() || '?'
-  if (profile?.avatar_url) {
-    return <img src={profile.avatar_url} alt="" className={`${dim} rounded-full object-cover border border-toro-dark/10 shrink-0`} />
-  }
-  return (
-    <div className={`${dim} rounded-full bg-toro-dark flex items-center justify-center text-toro-light font-bold shrink-0`}>
-      {initial}
-    </div>
-  )
+  return <SharedAvatar profile={profile} className={size === 'sm' ? 'w-8 h-8 text-xs' : 'w-10 h-10 text-sm'} />
 }
 
 // ─── The full joined message query — reused in both places that need enrichment ──
