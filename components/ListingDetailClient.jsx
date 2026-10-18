@@ -4,7 +4,8 @@ import { deleteListing, toggleListingActive } from '@/app/actions/listings'
 import { useTransition } from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { CATEGORY_LABEL, CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
+import { CATEGORY_LABEL } from '@/lib/categories'
+import CategoryIcon from '@/components/CategoryIcon'
 import SampleBadge from '@/components/SampleBadge'
 import { sendMessage } from '@/app/actions/messages'
 import { createClient } from '@/utils/supabase/client'
@@ -18,7 +19,8 @@ export default function ListingDetailClient({ listing: initialListing, profile, 
   const [sendError, setSendError]     = useState(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-  const cover = listing.image_url || CATEGORY_DEFAULT_IMAGE[listing.category] || null
+  // Only a photo the provider uploaded; listings without one show the category icon
+  const cover = listing.image_url || null
 
   const handleContact = async () => {
     if (!user) { router.push('/login'); return }
@@ -85,7 +87,10 @@ const handleToggleActive = () => {
           )}
 
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              <span className="w-10 h-10 rounded-2xl bg-toro-dark text-toro-gold flex items-center justify-center shrink-0">
+                <CategoryIcon category={listing.category} className="w-5 h-5" />
+              </span>
               <span className="text-xs font-semibold text-toro-gold uppercase tracking-wide">
                 {CATEGORY_LABEL[listing.category] || listing.category}
               </span>

@@ -1,14 +1,37 @@
 -- Demo content for the pre-launch site. Run in the Supabase SQL Editor AFTER:
 --   1. migration 20261018120000_listings_is_sample.sql
---   2. signing up and finishing onboarding with these usernames:
---        marta_polito, luca_tutor, selin_torino
---      (your own account, tasdemiroyku, is used too)
+--   2. creating three users in Supabase → Authentication → Users → Add user
+--      (tick "Auto Confirm User"):
+--        tasdemiroyku+marta@gmail.com, tasdemiroyku+luca@gmail.com,
+--        tasdemiroyku+selin@gmail.com
+--      This script gives them their usernames; no onboarding needed.
+--      Your own account (tasdemiroyku) is used too.
 --
--- Every row is marked is_sample = true and shown with a "Sample listing" label.
+-- Every row is marked is_sample = true and shown with a "Sample" label.
 -- Remove all of it before the public launch with:
 --   delete from public.listings where is_sample;
 
 begin;
+
+-- 0. Give the demo users their username and name (profile + auth metadata,
+--    so they would skip onboarding if anyone ever logs in as them)
+create temporary table demo_users (email text, username text, full_name text) on commit drop;
+insert into demo_users values
+  ('tasdemiroyku+marta@gmail.com', 'marta_polito', 'Marta Rinaldi'),
+  ('tasdemiroyku+luca@gmail.com',  'luca_tutor',   'Luca Ferrero'),
+  ('tasdemiroyku+selin@gmail.com', 'selin_torino', 'Selin Aydın');
+
+update public.profiles p
+set username = d.username, full_name = d.full_name
+from demo_users d
+join auth.users u on lower(u.email) = d.email
+where p.id = u.id;
+
+update auth.users u
+set raw_user_meta_data = coalesce(u.raw_user_meta_data, '{}'::jsonb)
+  || jsonb_build_object('username', d.username, 'full_name', d.full_name)
+from demo_users d
+where lower(u.email) = d.email;
 
 -- Fail early (and change nothing) if a demo account is missing
 do $$
@@ -20,7 +43,7 @@ begin
   where not exists (select 1 from public.profiles p where p.username = u);
 
   if missing is not null then
-    raise exception 'Create these accounts first (finish onboarding with this username): %', missing;
+    raise exception 'Missing demo accounts (create them in Authentication → Users first): %', missing;
   end if;
 end;
 $$;

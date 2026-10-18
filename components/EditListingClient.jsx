@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
-import { CATEGORIES, PRICE_TYPES, CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
+import { CATEGORIES, PRICE_TYPES } from '@/lib/categories'
 import { uploadListingImage, validateImageFile } from '@/utils/upload'
 
 export default function EditListingClient({ listing }) {
@@ -37,14 +37,9 @@ export default function EditListingClient({ listing }) {
     }
   }, [imagePreview])
 
-  // The cover to display in the preview area:
-  //   1. New file picked by user (imagePreview = object URL)
-  //   2. Existing uploaded image from the listing
-  //   3. Category default stock photo
-  const displayCover =
-    imagePreview ||
-    CATEGORY_DEFAULT_IMAGE[form.category] ||
-    null
+  // Optional photo shown on the listing page only (cards are text-only):
+  // a newly picked file (object URL) or the listing's existing upload
+  const displayCover = imagePreview || null
 
   function handleChange(e) {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -140,8 +135,11 @@ export default function EditListingClient({ listing }) {
           {/* ── Cover photo ── */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
-              Cover photo
+              Photo <span className="normal-case font-normal tracking-normal">(optional)</span>
             </label>
+            <p className="text-xs text-toro-dark/40 -mt-0.5">
+              Shown on your listing page, e.g. your notes, your tools or a finished job. Listing cards stay text-only.
+            </p>
 
             <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-toro-dark/10 group">
               {displayCover ? (
@@ -160,7 +158,6 @@ export default function EditListingClient({ listing }) {
                     >
                       Change
                     </button>
-                    {/* Only show Remove if there's a real uploaded image (not just a default) */}
                     {imagePreview && (
                       <button
                         type="button"
@@ -171,27 +168,19 @@ export default function EditListingClient({ listing }) {
                       </button>
                     )}
                   </div>
-                  {/* Default image label */}
-                  {!imagePreview && CATEGORY_DEFAULT_IMAGE[form.category] && (
-                    <div className="absolute bottom-2 left-3">
-                      <span className="text-[10px] font-semibold text-white/70 bg-toro-dark/40 px-2 py-0.5 rounded-full">
-                        Default photo · click to upload yours
-                      </span>
-                    </div>
-                  )}
                 </>
               ) : (
                 <button
                   type="button"
                   onClick={() => fileRef.current?.click()}
-                  className="w-full h-full flex flex-col items-center justify-center gap-2 bg-toro-dark/3 hover:bg-toro-gold/5 hover:border-toro-gold transition border-2 border-dashed border-toro-dark/15 rounded-2xl"
+                  className="w-full h-full flex flex-col items-center justify-center gap-2 bg-toro-dark/3 hover:bg-toro-gold/5 transition rounded-2xl"
                 >
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-toro-dark/25">
                     <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                     <circle cx="12" cy="13" r="4"/>
                   </svg>
                   <p className="text-xs text-toro-dark/40 font-medium">
-                    Click to add a cover photo
+                    Click to add a photo
                   </p>
                   <p className="text-[10px] text-toro-dark/25">
                     JPEG, PNG, WebP · max 5 MB

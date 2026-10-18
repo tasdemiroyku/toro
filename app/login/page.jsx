@@ -10,5 +10,8 @@ export default async function LoginPage({ searchParams }) {
   const candidate = resolvedSearchParams?.redirectTo ?? resolvedSearchParams?.next
   const redirectTarget = safeRedirectPath(candidate)
 
-  return <LoginClient redirectTarget={redirectTarget} />
+  const mode = resolvedSearchParams?.mode === 'signup' ? 'signup' : 'login'
+
+  // key: remount when the header switches between ?mode=signup and log in
+  return <LoginClient key={mode} redirectTarget={redirectTarget} initialMode={mode} />
 }

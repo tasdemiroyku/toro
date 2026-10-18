@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import ToretBull from './ToretBull'
-import { CATEGORIES as BASE_CATEGORIES, CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
-import SampleBadge from '@/components/SampleBadge'
+import { CATEGORIES as BASE_CATEGORIES } from '@/lib/categories'
+import ListingCard from '@/components/ListingCard'
 
 const CATEGORIES = [{ value: '', label: 'All' }, ...BASE_CATEGORIES]
 
@@ -205,101 +205,18 @@ export default function ListingsClient({
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             <AnimatePresence mode="popLayout">
-              {initialListings.map(listing => {
-                // ── Cover image: uploaded photo → category default → null ──
-                const cover = listing.image_url || CATEGORY_DEFAULT_IMAGE[listing.category] || null
-
-                return (
-                  <motion.div
-                    layout
-                    key={listing.id}
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.2 }}
-                    onClick={() => router.push(`/listings/${listing.id}`)}
-                    className="bg-white/60 backdrop-blur-sm border border-toro-dark/10 rounded-[2rem] overflow-hidden flex flex-col hover:border-toro-gold hover:shadow-xl hover:bg-white transition-all cursor-pointer group"
-                  >
-                    {/* Cover image or placeholder */}
-                    {cover ? (
-                      <div className="h-40 overflow-hidden">
-                        <img
-                          src={cover}
-                          alt={listing.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    ) : (
-                      <div className="h-32 bg-toro-dark/5 flex items-center justify-center group-hover:bg-toro-dark/8 transition-colors">
-                        <ToretBull className="w-10 h-10 text-toro-dark/10" />
-                      </div>
-                    )}
-
-                    <div className="p-5 flex flex-col gap-3 flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-black text-toro-gold uppercase tracking-[0.1em] bg-toro-gold/10 w-fit px-2.5 py-1 rounded-lg">
-                          {CATEGORIES.find(c => c.value === listing.category)?.label || listing.category}
-                        </span>
-                        {listing.is_sample && <SampleBadge />}
-                      </div>
-
-                      <h2 className="text-base font-bold text-toro-dark leading-snug group-hover:text-toro-gold transition-colors line-clamp-2">
-                        {listing.title}
-                      </h2>
-
-                      <p className="text-sm text-toro-dark/50 leading-relaxed line-clamp-2 flex-1">
-                        {listing.description}
-                      </p>
-
-                      <div className="flex items-center justify-between pt-4 border-t border-toro-dark/5 mt-auto">
-                        <div className="flex items-center gap-2">
-                          {listing.profiles?.avatar_url ? (
-                            <img
-                              src={listing.profiles.avatar_url}
-                              className="w-7 h-7 rounded-full object-cover border border-toro-dark/10"
-                              alt=""
-                            />
-                          ) : (
-                            <div className="w-7 h-7 rounded-full bg-toro-dark/10 flex items-center justify-center text-toro-dark text-[10px] font-black border border-toro-dark/10">
-                              {listing.profiles?.full_name?.[0]?.toUpperCase() || 'T'}
-                            </div>
-                          )}
-                          <div className="flex items-center gap-1 min-w-0">
-                            <span className="text-xs font-bold text-toro-dark/60 truncate max-w-[90px]">
-                              {listing.profiles?.full_name || 'Student'}
-                            </span>
-                            {listing.profiles?.is_verified && (
-                              <span
-                                title="Verified Student"
-                                className="w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center shrink-0"
-                              >
-                                <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="M20 6 9 17l-5-5"/>
-                                </svg>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        {listing.price === 0 || listing.price_type === 'free' ? (
-                          <span className="text-xs font-black text-[#15803d] bg-[#dcfce7] px-2.5 py-1 rounded-full uppercase">
-                            Free
-                          </span>
-                        ) : (
-                          <span className="text-sm font-black text-toro-dark shrink-0">
-                            €{listing.price}
-                            {listing.price_type && listing.price_type !== 'fixed' && (
-                              <span className="text-[10px] font-bold text-toro-dark/30 ml-0.5">
-                                /{listing.price_type === 'hour' ? 'hr' : listing.price_type}
-                              </span>
-                            )}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </motion.div>
-                )
-              })}
+              {initialListings.map(listing => (
+                <motion.div
+                  layout
+                  key={listing.id}
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ListingCard listing={listing} />
+                </motion.div>
+              ))}
             </AnimatePresence>
           </motion.div>
 
