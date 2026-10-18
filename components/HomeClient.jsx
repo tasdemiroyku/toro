@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import ToretBull from './ToretBull'
 import { CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
+import SampleBadge from '@/components/SampleBadge'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -100,6 +101,7 @@ function ListingCard({ item, onClick }) {
           {isFree ? 'Free' : `€${item.price}`}
           {!isFree && <span className="text-[10px] opacity-40 ml-0.5">/{item.price_type === 'hour' ? 'hr' : 'job'}</span>}
         </div>
+        {item.is_sample && <SampleBadge className="absolute top-3 left-3 bg-white/90 shadow-sm" />}
       </div>
 
       <div className="p-4 flex flex-col gap-3">

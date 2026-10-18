@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CATEGORY_LABEL, CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
+import SampleBadge from '@/components/SampleBadge'
 import { sendMessage } from '@/app/actions/messages'
 import ToretBull from '@/components/ToretBull'
 
@@ -311,9 +312,12 @@ export default function ProfileClient({ profile, listings, isOwnProfile, current
                         )}
                       </div>
                       <div className="p-4 flex flex-col gap-2 flex-1">
-                        <span className="text-[10px] font-black text-toro-gold uppercase tracking-[0.1em] bg-toro-gold/10 w-fit px-2.5 py-1 rounded-lg">
-                          {CATEGORY_LABEL[listing.category] || listing.category}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-black text-toro-gold uppercase tracking-[0.1em] bg-toro-gold/10 w-fit px-2.5 py-1 rounded-lg">
+                            {CATEGORY_LABEL[listing.category] || listing.category}
+                          </span>
+                          {listing.is_sample && <SampleBadge />}
+                        </div>
                         <h3 className="text-sm font-bold text-toro-dark leading-snug group-hover:text-toro-gold transition-colors line-clamp-2">
                           {listing.title}
                         </h3>

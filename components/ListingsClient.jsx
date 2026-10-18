@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import ToretBull from './ToretBull'
 import { CATEGORIES as BASE_CATEGORIES, CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
+import SampleBadge from '@/components/SampleBadge'
 
 const CATEGORIES = [{ value: '', label: 'All' }, ...BASE_CATEGORIES]
 
@@ -235,9 +236,12 @@ export default function ListingsClient({
                     )}
 
                     <div className="p-5 flex flex-col gap-3 flex-1">
-                      <span className="text-[10px] font-black text-toro-gold uppercase tracking-[0.1em] bg-toro-gold/10 w-fit px-2.5 py-1 rounded-lg">
-                        {CATEGORIES.find(c => c.value === listing.category)?.label || listing.category}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-black text-toro-gold uppercase tracking-[0.1em] bg-toro-gold/10 w-fit px-2.5 py-1 rounded-lg">
+                          {CATEGORIES.find(c => c.value === listing.category)?.label || listing.category}
+                        </span>
+                        {listing.is_sample && <SampleBadge />}
+                      </div>
 
                       <h2 className="text-base font-bold text-toro-dark leading-snug group-hover:text-toro-gold transition-colors line-clamp-2">
                         {listing.title}
