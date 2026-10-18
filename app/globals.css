@@ -5,8 +5,13 @@
   --color-toro-dark: #132600;
   --color-toro-gold: #C9963E;
   --color-toro-light: #FAFAF7;
+}
 
-  --font-cormorant: var(--font-cormorant), serif;
+/* Fonts come from next/font (app/layout.js): Inter for everything, Cormorant
+   only for the wordmark. `inline` makes the utilities read the runtime vars. */
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-logo: var(--font-cormorant), Georgia, serif;
 }
 
 /* BASE */

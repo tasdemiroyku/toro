@@ -160,7 +160,7 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
     <AuthShell>
       <div className="flex flex-col gap-7">
         <div className="flex flex-col gap-2">
-          <h1 className="text-[2rem] leading-tight font-bold text-toro-dark" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+          <h1 className="text-3xl font-bold tracking-tight text-toro-dark">
             {copy.title}
           </h1>
           <p className="text-sm text-toro-dark/50">{copy.subtitle}</p>

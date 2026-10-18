@@ -49,7 +49,7 @@ export default function ResetPasswordClient() {
     <AuthShell>
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-1.5">
-          <h1 className="text-3xl font-bold text-toro-dark" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+          <h1 className="text-3xl font-bold tracking-tight text-toro-dark">
             Choose a new password
           </h1>
           <p className="text-sm text-toro-dark/50">Pick something you have not used on other sites.</p>

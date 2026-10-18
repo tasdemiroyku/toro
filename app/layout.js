@@ -1,13 +1,19 @@
-import { Cormorant_Garamond } from 'next/font/google'
+import { Inter, Cormorant_Garamond } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { createClient } from '@/utils/supabase/server'
 import { SITE_URL } from '@/lib/site'
 
+// Inter for all UI text; Cormorant only for the "Toro" wordmark (font-logo)
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
+
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['600', '700'],
+  weight: ['700'],
   variable: '--font-cormorant',
 })
 
@@ -70,8 +76,8 @@ export default async function RootLayout({ children }) {
   }
 
   return (
-    <html lang="en" className={cormorant.variable} suppressHydrationWarning>
-      <body className="bg-[#FAFAF7] font-sans antialiased min-h-screen flex flex-col">
+    <html lang="en" className={`${inter.variable} ${cormorant.variable}`} suppressHydrationWarning>
+      <body className="bg-toro-light font-sans antialiased min-h-screen flex flex-col">
         <Header user={user} profile={profile} />
 
         <main className="flex-grow">

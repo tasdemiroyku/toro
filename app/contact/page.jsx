@@ -16,7 +16,7 @@ export default async function ContactPage() {
       <div className="max-w-2xl mx-auto px-6 py-16 sm:py-20 flex flex-col gap-8">
         <header className="flex flex-col gap-3">
           <p className="text-xs font-bold tracking-widest uppercase text-toro-gold">Contact</p>
-          <h1 className="text-4xl sm:text-5xl font-bold text-toro-dark" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-toro-dark">
             Write to us
           </h1>
           <p className="text-base text-toro-dark/60 leading-relaxed">
