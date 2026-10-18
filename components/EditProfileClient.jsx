@@ -313,7 +313,7 @@ function PersonalSection({ user, profile, setProfile }) {
           rows={3}
           maxLength={300}
           placeholder="Tell other students what you can offer or what you're looking for..."
-          className="toro-input !rounded-2xl resize-none"
+          className="toro-input resize-none"
         />
         <p className="text-xs text-toro-dark/25 text-right -mt-1">
           {(profile?.bio || '').length}/300

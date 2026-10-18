@@ -26,6 +26,7 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-18 | Portfolio-ready: Inter everywhere (Cormorant only for the logo), one page container, ten categories (+ Pet Care, Translation & Proofreading, Design & Media; Consular shown as Paperwork & Bureaucracy), compact category tiles, CI and unit tests, "All rights reserved" licence. |
 | 2026-10-18 | Home refresh: benefit-led hero ("Help from students, around the corner.") with glass search used only in the hero, How it works, provider CTA instead of a waitlist band (waitlist moved to the footer), WCAG AA text contrast. |
 | 2026-10-18 | White page background with one light sage band (`toro-sage`). A warm ivory base and a street-grid pattern were tried and rejected. |
+| 2026-10-18 | One corner radius for controls: 12 px on every input, textarea, button and search bar. Pills only for chips, tags, badges, avatars and round icon buttons. |
 | 2026-10-17 | Commits keep the `Co-Authored-By: Claude` trailer (transparency). From now on: feature branch → PR with description → merge. |
 | 2026-10-17 | Schema changes are SQL files in `supabase/migrations/`, written in the repo and applied by hand in the Supabase SQL Editor. Breaking changes use expand → deploy → contract. |
 

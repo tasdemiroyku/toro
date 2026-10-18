@@ -210,7 +210,7 @@ export default function EditListingClient({ listing }) {
               maxLength={100}
               required
               placeholder="e.g. Italian grammar for exchange students"
-              className="toro-input !rounded-2xl"
+              className="toro-input"
             />
           </Field>
 
@@ -244,7 +244,7 @@ export default function EditListingClient({ listing }) {
               required
               rows={5}
               placeholder="Describe what you offer, your experience, availability…"
-              className="toro-input !rounded-2xl resize-none"
+              className="toro-input resize-none"
             />
           </Field>
 
@@ -267,7 +267,7 @@ export default function EditListingClient({ listing }) {
                   onChange={handleChange}
                   disabled={form.price_type === 'free'}
                   placeholder="0"
-                  className={`toro-input !rounded-2xl !pl-8 ${
+                  className={`toro-input !pl-8 ${
                     form.price_type === 'free' ? 'opacity-40 cursor-not-allowed' : ''
                   }`}
                 />
@@ -277,7 +277,7 @@ export default function EditListingClient({ listing }) {
                   name="price_type"
                   value={form.price_type}
                   onChange={handleChange}
-                  className="toro-input !rounded-2xl appearance-none cursor-pointer !pr-10"
+                  className="toro-input appearance-none cursor-pointer !pr-10"
                 >
                   {PRICE_TYPES.map(p => (
                     <option key={p.value} value={p.value}>{p.label}</option>
@@ -299,7 +299,7 @@ export default function EditListingClient({ listing }) {
               value={form.location}
               onChange={handleChange}
               placeholder="e.g. Vanchiglia, Centro, Online"
-              className="toro-input !rounded-2xl"
+              className="toro-input"
             />
           </Field>
 
@@ -310,7 +310,7 @@ export default function EditListingClient({ listing }) {
               value={form.languages}
               onChange={handleChange}
               placeholder="English, Italian, Turkish"
-              className="toro-input !rounded-2xl"
+              className="toro-input"
             />
           </Field>
 

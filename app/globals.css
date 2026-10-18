@@ -71,8 +71,7 @@
 
   /*
    * Base input style. Used on all <input>, <textarea>, and <select> elements.
-   * Shape: rounded-full for single-line inputs.
-   * For textarea, override with !rounded-2xl at the usage site.
+   * Shape: rounded-xl (12 px), the same as buttons and search bars.
    */
   .toro-input {
     @apply

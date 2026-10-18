@@ -127,7 +127,7 @@ function ContactModal({ profile, listings, onClose }) {
                 placeholder="Introduce yourself and describe what you need..."
                 value={message}
                 onChange={e => setMessage(e.target.value)}
-                className="toro-input !rounded-2xl resize-none"
+                className="toro-input resize-none"
               />
               <p className="text-xs text-toro-dark/25 text-right">{message.length}/500</p>
             </div>
