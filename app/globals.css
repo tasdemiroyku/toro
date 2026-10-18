@@ -42,6 +42,20 @@
 /* COMPONENTS */
 @layer components {
 
+  /* ── Motion (auth brand panel) ───────────────────────────── */
+
+  /* Slow "Ken Burns" zoom on the photo and a gentle float for the preview card.
+     Both are disabled for people who ask for reduced motion. */
+  .toro-ken-burns {
+    animation: toro-ken-burns 28s ease-in-out infinite alternate;
+  }
+  .toro-float {
+    animation: toro-float 7s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .toro-ken-burns, .toro-float { animation: none; }
+  }
+
   /* ── Layout ────────────────────────────────────────────── */
 
   /* One page width for header, footer and every section, so they line up
@@ -155,4 +169,14 @@
       bg-transparent;
   }
 
+}
+
+@keyframes toro-ken-burns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.1) translate3d(-1.5%, -1%, 0); }
+}
+
+@keyframes toro-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
 }
