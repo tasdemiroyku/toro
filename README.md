@@ -37,9 +37,19 @@ drinking fountains.
   every pull request. One test checks that category values in the code match the
   database CHECK constraint.
 
+## Screenshots
+
+![Categories, latest services and how it works](docs/screenshots/home-sections.jpg)
+
 | Browse | Listing | Sign up |
 |---|---|---|
 | ![Listings](docs/screenshots/listings.jpg) | ![Listing detail](docs/screenshots/detail.jpg) | ![Sign up](docs/screenshots/signup.jpg) |
+
+<p align="center">
+  <img src="docs/screenshots/mobile-home.jpg" alt="Home on mobile" width="260">
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/mobile-listings.jpg" alt="Listings on mobile" width="260">
+</p>
 
 ## Features
 
