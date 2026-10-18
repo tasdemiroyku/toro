@@ -21,6 +21,14 @@ const HOW_IT_WORKS = [
   { title: 'Meet', text: 'Agree on the time and price directly. Toro takes no commission.' },
 ]
 
+// Our own video stills (public/images/toret)
+const TORET_PHOTOS = [
+  { src: '/images/toret/bull.jpg', alt: 'Close-up of a Toret bull-head fountain' },
+  { src: '/images/toret/street.jpg', alt: 'Two Toret fountains on a cobbled street' },
+  { src: '/images/toret/corner.jpg', alt: 'A Toret fountain with people walking past' },
+  { src: '/images/toret/gate.jpg', alt: 'Someone drinking from a Toret by a gate' },
+]
+
 // Shortcuts under the hero search
 const QUICK_CATEGORIES = ['tutoring', 'consular', 'moving', 'pet_care']
 
@@ -108,7 +116,23 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
 
         <motion.div className="relative z-10 toro-container flex flex-col items-center text-center pt-16" initial="hidden" animate="visible" variants={stagger}>
           <motion.h1 variants={fadeUp} className="max-w-2xl text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-white text-balance">
-            Help from students, around the corner.
+            Help from students, around{' '}
+            <span className="relative inline-block">
+              the corner.
+              {/* Hand-drawn gold underline, drawn in after the headline appears */}
+              <svg aria-hidden="true" viewBox="0 0 200 14" preserveAspectRatio="none" className="absolute left-0 -bottom-1.5 md:-bottom-2.5 w-full h-2.5 md:h-3.5 text-toro-gold">
+                <motion.path
+                  d="M3 10 C 45 4, 120 2, 197 7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.9, delay: 0.6, ease: 'easeOut' }}
+                />
+              </svg>
+            </span>
           </motion.h1>
           <motion.p variants={fadeUp} className="mt-5 max-w-lg text-base md:text-lg text-white/80 text-balance">
             Tutoring, Italian paperwork, moving and more, from people who study in Turin.
@@ -246,17 +270,48 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
       </motion.section>
 
       {/* ── How it works ── */}
-      <motion.section className="toro-container pb-24" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
-        <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-dark mb-10">How it works</motion.h2>
-        <ol className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {HOW_IT_WORKS.map((step, i) => (
-            <motion.li key={step.title} variants={fadeUp} className="flex flex-col gap-3 rounded-2xl border border-toro-dark/10 bg-white p-6">
-              <span className="w-9 h-9 rounded-full bg-toro-gold/15 text-toro-dark text-sm font-bold flex items-center justify-center">{i + 1}</span>
-              <h3 className="text-lg font-bold text-toro-dark">{step.title}</h3>
-              <p className="text-sm text-toro-dark/70 leading-relaxed">{step.text}</p>
-            </motion.li>
-          ))}
-        </ol>
+      <motion.section className="bg-toro-cream py-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
+        <div className="toro-container">
+          <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-dark mb-10">How it works</motion.h2>
+          <ol className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {HOW_IT_WORKS.map((step, i) => (
+              <motion.li key={step.title} variants={fadeUp} className="flex flex-col gap-3 rounded-2xl border border-toro-dark/10 bg-white p-6">
+                <span className="w-9 h-9 rounded-full bg-toro-gold/15 text-toro-dark text-sm font-bold flex items-center justify-center">{i + 1}</span>
+                <h3 className="text-lg font-bold text-toro-dark">{step.title}</h3>
+                <p className="text-sm text-toro-dark/70 leading-relaxed">{step.text}</p>
+              </motion.li>
+            ))}
+          </ol>
+        </div>
+      </motion.section>
+
+      {/* ── Made in Turin ── */}
+      <motion.section className="toro-container py-24" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} variants={stagger}>
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-12 items-center">
+          <motion.div variants={fadeUp} className="flex flex-col gap-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-toro-gold">Made in Turin</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-toro-dark text-balance">
+              Named after the green bulls on every corner.
+            </h2>
+            <p className="text-toro-dark/70 leading-relaxed">
+              The <em>Toret</em> are Turin&apos;s cast-iron drinking fountains. There are hundreds of them,
+              free for anyone who walks by. We want help between students to feel the same: close,
+              simple and part of the city.
+            </p>
+            <p className="text-xs text-toro-dark/55">Photos: our own footage of Toret around Turin.</p>
+          </motion.div>
+          <motion.div variants={fadeUp} className="grid grid-cols-2 gap-3 md:gap-4">
+            {TORET_PHOTOS.map((photo, i) => (
+              <img
+                key={photo.src}
+                src={photo.src}
+                alt={photo.alt}
+                loading="lazy"
+                className={`w-full aspect-[4/3] object-cover rounded-2xl ${i % 2 === 1 ? 'translate-y-6 md:translate-y-10' : ''}`}
+              />
+            ))}
+          </motion.div>
+        </div>
       </motion.section>
 
       {/* ── Why Toro ── */}
