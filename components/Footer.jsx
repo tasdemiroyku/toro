@@ -52,13 +52,21 @@ function LaunchUpdates() {
   }
 
   return (
-    <div className="flex flex-col gap-3 max-w-sm">
-      <p className="text-sm font-semibold text-toro-light">Launch updates</p>
-      <p className="text-sm text-toro-light/65">One e-mail when Toro opens to everyone. Nothing else.</p>
+    <div className="flex flex-col gap-4 max-w-sm">
+      <div className="flex flex-col gap-1.5">
+        <p className="text-base font-semibold text-toro-light">Stay in the loop</p>
+        <p className="text-sm text-toro-light/70 leading-relaxed">
+          One e-mail when Toro opens to every student in Turin. Nothing else.
+        </p>
+      </div>
+
       {status === 'done' ? (
-        <p role="status" className="text-sm text-toro-gold">Thanks. We will let you know.</p>
+        <p role="status" className="flex items-center gap-2 rounded-xl border border-toro-gold/30 bg-toro-gold/10 px-4 py-3 text-sm text-toro-light">
+          <svg className="w-4 h-4 text-toro-gold shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+          You are on the list. We will write once, at launch.
+        </p>
       ) : (
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-2 rounded-xl bg-toro-light/[0.06] p-1.5 border border-toro-light/15 focus-within:border-toro-gold/60 transition">
           <label htmlFor="footer-email" className="sr-only">E-mail address</label>
           <input
             id="footer-email"
@@ -66,15 +74,20 @@ function LaunchUpdates() {
             required
             value={email}
             onChange={e => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            className="min-w-0 flex-1 rounded-xl bg-toro-light/10 border border-toro-light/15 px-4 py-2.5 text-sm text-toro-light placeholder:text-toro-light/40 outline-none focus:border-toro-gold transition"
+            placeholder="you@university.it"
+            className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-toro-light placeholder:text-toro-light/45 outline-none"
           />
-          <button type="submit" disabled={status === 'sending'} className="rounded-xl bg-toro-gold px-4 py-2.5 text-sm font-semibold text-toro-dark hover:brightness-110 disabled:opacity-60 transition">
-            {status === 'sending' ? 'Saving…' : 'Notify me'}
+          <button type="submit" disabled={status === 'sending'} className="rounded-lg bg-toro-gold px-4 py-2 text-sm font-semibold text-toro-dark hover:brightness-105 disabled:opacity-60 transition">
+            {status === 'sending' ? 'Saving…' : 'Subscribe'}
           </button>
         </form>
       )}
+
       {status === 'error' && <p role="alert" className="text-xs text-red-300">Something went wrong. Please try again.</p>}
+      <p className="text-xs text-toro-light/55">
+        We only use your address for this. See our{' '}
+        <Link href="/privacy" className="underline hover:text-toro-light">Privacy Policy</Link>.
+      </p>
     </div>
   )
 }
