@@ -147,13 +147,14 @@ export default function ListingsClient({
         </section>
       )}
 
-      {/* Category filter chips — server-driven via URL */}
-      <div className="flex gap-2 flex-wrap">
+      {/* Category filter chips, driven by the URL. Mobile: one swipeable row;
+          larger screens: wrapped. */}
+      <div className="flex gap-2 overflow-x-auto -mx-6 px-6 pb-1 sm:flex-wrap sm:overflow-visible sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {CATEGORIES.map(cat => (
           <button
             key={cat.value}
             onClick={() => setCategory(cat.value)}
-            className={`px-5 py-2 rounded-full text-xs font-bold border transition-all duration-200 ${
+            className={`shrink-0 whitespace-nowrap px-5 py-2 rounded-full text-xs font-bold border transition-all duration-200 ${
               activeCategory === cat.value
                 ? 'bg-toro-dark text-toro-light border-toro-dark shadow-md'
                 : 'bg-white text-toro-dark border-toro-dark/10 hover:border-toro-gold hover:bg-toro-gold/5'
