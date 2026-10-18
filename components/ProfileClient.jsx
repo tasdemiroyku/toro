@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CATEGORY_LABEL, CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
-import SampleBadge from '@/components/SampleBadge'
+import ListingCard from '@/components/ListingCard'
 import { sendMessage } from '@/app/actions/messages'
 import ToretBull from '@/components/ToretBull'
 
@@ -295,48 +294,11 @@ export default function ProfileClient({ profile, listings, isOwnProfile, current
               </motion.div>
             ) : (
               <motion.div variants={stagger} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {listings.map(listing => {
-                  const cover = listing.image_url || CATEGORY_DEFAULT_IMAGE[listing.category] || null
-                  return (
-                    <motion.div
-                      key={listing.id}
-                      variants={fadeUp}
-                      onClick={() => router.push(`/listings/${listing.id}`)}
-                      className="bg-white border border-toro-dark/10 rounded-[2rem] overflow-hidden flex flex-col hover:border-toro-gold hover:shadow-xl transition-all cursor-pointer group"
-                    >
-                      <div className="h-36 overflow-hidden bg-toro-dark/5 flex items-center justify-center">
-                        {cover ? (
-                          <img src={cover} alt={listing.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                        ) : (
-                          <ToretBull className="w-10 h-10 text-toro-dark/10" />
-                        )}
-                      </div>
-                      <div className="p-4 flex flex-col gap-2 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-black text-toro-gold uppercase tracking-[0.1em] bg-toro-gold/10 w-fit px-2.5 py-1 rounded-lg">
-                            {CATEGORY_LABEL[listing.category] || listing.category}
-                          </span>
-                          {listing.is_sample && <SampleBadge />}
-                        </div>
-                        <h3 className="text-sm font-bold text-toro-dark leading-snug group-hover:text-toro-gold transition-colors line-clamp-2">
-                          {listing.title}
-                        </h3>
-                        <div className="flex items-center justify-between mt-auto pt-3 border-t border-toro-dark/5">
-                          {listing.location && (
-                            <span className="text-[10px] text-toro-dark/40 font-medium truncate">📍 {listing.location}</span>
-                          )}
-                          <span className="text-sm font-black text-toro-dark ml-auto shrink-0">
-                            {listing.price === 0 || listing.price_type === 'free' ? (
-                              <span className="text-xs font-black text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Free</span>
-                            ) : (
-                              <>€{listing.price}<span className="text-[10px] font-bold text-toro-dark/30 ml-0.5">/{listing.price_type === 'hour' ? 'hr' : listing.price_type}</span></>
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )
-                })}
+                {listings.map(listing => (
+                  <motion.div key={listing.id} variants={fadeUp}>
+                    <ListingCard listing={listing} showProvider={false} />
+                  </motion.div>
+                ))}
               </motion.div>
             )}
           </motion.div>

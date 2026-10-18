@@ -4,8 +4,9 @@ import { useState, useEffect, useSyncExternalStore } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import ToretBull from './ToretBull'
-import { CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
-import SampleBadge from '@/components/SampleBadge'
+import { CATEGORIES } from '@/lib/categories'
+import ListingCard from '@/components/ListingCard'
+import CategoryIcon from '@/components/CategoryIcon'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -61,75 +62,6 @@ function useVisibleCount() {
     return () => window.removeEventListener('resize', update)
   }, [])
   return count
-}
-
-// ── Verified Student Badge (Academic Icon) ────────────────────────────────────
-function VerifiedBadge() {
-  return (
-    <span
-      title="Verified Student"
-      className="inline-flex items-center gap-1 pl-1.5 pr-2 py-0.5 rounded-full text-[10px] font-bold bg-[#edf7ed] text-[#1e4620] border border-[#c3e6c5] shrink-0 shadow-sm"
-    >
-      <div className="flex items-center justify-center shrink-0">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-          <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-        </svg>
-      </div>
-      Verified
-    </span>
-  )
-}
-
-// ── Individual listing card ───────────────────────────────────────────────────
-function ListingCard({ item, onClick }) {
-  const cover = item.image_url || CATEGORY_DEFAULT_IMAGE[item.category] || null
-  const isFree = item.price === 0 || item.price_type === 'free'
-
-  return (
-    <div
-      onClick={onClick}
-      className="flex flex-col bg-white border border-toro-dark/5 rounded-[2rem] overflow-hidden hover:border-toro-gold/40 hover:shadow-[0_20px_40px_-15px_rgba(201,150,62,0.15)] transition-all duration-300 cursor-pointer group/card p-2"
-    >
-      <div className="h-32 rounded-[1.5rem] relative overflow-hidden flex items-center justify-center bg-toro-dark/5 group-hover/card:bg-toro-dark/10 transition-colors">
-        {cover ? (
-          <img src={cover} alt={item.title} className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300" />
-        ) : (
-          <ToretBull className="w-12 h-12 text-toro-dark opacity-5" />
-        )}
-        <div className={`absolute top-3 right-3 px-3 py-1.5 rounded-full text-[13px] font-black shadow-sm ${isFree ? 'bg-green-50 text-green-600' : 'bg-white text-toro-dark'}`}>
-          {isFree ? 'Free' : `€${item.price}`}
-          {!isFree && <span className="text-[10px] opacity-40 ml-0.5">/{item.price_type === 'hour' ? 'hr' : 'job'}</span>}
-        </div>
-        {item.is_sample && <SampleBadge className="absolute top-3 left-3 bg-white/90 shadow-sm" />}
-      </div>
-
-      <div className="p-4 flex flex-col gap-3">
-        <h3 className="text-toro-dark text-base font-bold leading-tight group-hover/card:text-toro-gold transition-colors line-clamp-2 min-h-[48px]">
-          {item.title}
-        </h3>
-        <div className="flex items-center justify-between mt-auto pt-3 border-t border-toro-dark/5">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="w-7 h-7 rounded-full bg-toro-dark/5 flex items-center justify-center overflow-hidden border border-toro-dark/10 shrink-0">
-              {item.profiles?.avatar_url
-                ? <img src={item.profiles.avatar_url} alt="" className="w-full h-full object-cover" />
-                : <span className="text-[10px] font-bold text-toro-dark/30">{item.profiles?.full_name?.[0] || 'T'}</span>
-              }
-            </div>
-            <span className="text-[11px] text-toro-dark/50 font-bold capitalize tracking-tight truncate max-w-[80px]">
-              {item.profiles?.full_name || 'Torino Student'}
-            </span>
-            {item.profiles?.is_verified && <VerifiedBadge />}
-          </div>
-          {item.location && (
-            <span className="text-[10px] text-toro-gold font-bold bg-toro-gold/5 px-2 py-0.5 rounded-md truncate max-w-[70px] shrink-0">
-              {item.location}
-            </span>
-          )}
-        </div>
-      </div>
-    </div>
-  )
 }
 
 // ── Home page ─────────────────────────────────────────────────────────────────
@@ -256,11 +188,7 @@ export default function HomeClient({ user, listings }) {
                   className={`grid ${gridClass} gap-6`}
                 >
                   {displayedListings.map((item, index) => (
-                    <ListingCard 
-                      key={`${item.id}-${index}`} 
-                      item={item} 
-                      onClick={() => router.push(`/listings/${item.id}`)} 
-                    />
+                    <ListingCard key={`${item.id}-${index}`} listing={item} />
                   ))}
                 </motion.div>
               </AnimatePresence>
