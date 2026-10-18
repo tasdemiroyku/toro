@@ -40,6 +40,9 @@ app/
   actions/messages.js      sendMessage
   actions/profile.js       savePersonalInfo (phone → private_profiles)
   actions/verification.js  requestStudentCode, confirmStudentCode (admin client + Resend)
+  actions/contact.js       sendContactMessage → CONTACT_INBOX_EMAIL
+  privacy/ terms/ contact/ static legal pages and contact form
+  not-found.jsx            branded 404
   api/subscribe/route.js   waitlist insert into `subscribers`
   auth/callback/route.js   OAuth code exchange → onboarding or ?next
   inbox/                   realtime inbox
@@ -49,17 +52,21 @@ app/
   profile/edit/            settings (personal, academic, security, delete account)
   u/[username]/            public profile
   layout.js                fetches user server-side, renders Header/Footer
-components/                <Name>Client.jsx per route + Header, Footer, ToretBull, ToroLoader
+components/                <Name>Client.jsx per route + shared UI: Header, Footer, AuthShell (auth split layout),
+                           LegalPage, PasswordStrength, SampleBadge, ToretBull, ToroLoader
 lib/categories.js          CATEGORIES, CATEGORY_LABEL, CATEGORY_DEFAULT_IMAGE, PRICE_TYPES, PRICE_TYPE_LABEL
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
 lib/redirect.js            safeRedirectPath()
-lib/site.js                SITE_URL, SITE_HOST (the only place the domain is written)
+lib/site.js                SITE_URL, SITE_HOST, CONTACT_EMAIL, LEGAL_LAST_UPDATED
 utils/supabase/            client.js, server.js, proxy.js (session helper), admin.js (secret key)
 utils/upload.js            image validation, WebP compression, Storage upload
 utils/email.js             sendEmail() via Resend (server-only)
 proxy.js                   middleware entry point (Next.js 16 name)
 supabase/migrations/       versioned SQL schema, RLS policies, triggers
 supabase/audit/            read-only catalog queries to verify RLS and schema
+supabase/seed/             demo data (listings.is_sample = true)
+scripts/                   generate-category-covers.mjs (category SVGs)
+public/images/             optimised media: hero.mp4, hero-poster.jpg, torino-river.jpg, og-image.jpg, categories/*.svg
 ```
 
 ## Architecture rules
@@ -165,6 +172,10 @@ updating the CHECK constraint.
 - **React Compiler lint:** `react-hooks/set-state-in-effect` is an error. Adjust
   state during render (store the previous value) or move the update into an event
   handler.
-- Default cover images are Unsplash URLs; replace them with self-hosted assets
-  before launch.
+- Media: keep files in `public/images/`, optimised before committing (hero video
+  ≤1 MB H.264 without audio, photos ≤200 KB). The hero video only loads on
+  ≥768 px screens with motion allowed (`HeroBackground` in HomeClient).
+- Category covers are generated SVGs; re-run `node scripts/generate-category-covers.mjs`
+  after adding a category.
+- Demo listings have `is_sample = true` and show `<SampleBadge />`.
 - i18n (IT/EN/TR) is planned. All UI text is English today, while `<html lang="it">`.
