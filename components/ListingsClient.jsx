@@ -1,10 +1,12 @@
 'use client'
 
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import ToretBull from './ToretBull'
 import { CATEGORIES as BASE_CATEGORIES } from '@/lib/categories'
 import ListingCard from '@/components/ListingCard'
+import Avatar from '@/components/Avatar'
 
 const CATEGORIES = [{ value: '', label: 'All' }, ...BASE_CATEGORIES]
 
@@ -88,60 +90,39 @@ export default function ListingsClient({
         </div>
       )}
 
-      {/* --- UNIFIED SEARCH: MATCHED STUDENTS SECTION --- */}
+      {/* People matching the search: a swipeable row, padded so the hover lift
+          and shadows are not clipped by the horizontal scroller */}
       {searchQuery && initialProfiles.length > 0 && (
-        <section className="flex flex-col gap-4">
-          <h2 className="text-xs font-black text-toro-gold uppercase tracking-widest">
-            Matched Students
-          </h2>
-          <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:-mx-0 sm:px-0 scrollbar-hide">
+        <section className="flex flex-col gap-3">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-toro-gold">People</h2>
+          <div className="flex gap-4 overflow-x-auto overscroll-x-contain snap-x snap-mandatory scroll-px-6 -mx-6 px-6 pt-2 pb-5 -mt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {initialProfiles.map((profile) => (
-              <motion.div
+              <Link
                 key={profile.id}
-                whileHover={{ y: -4 }}
-                onClick={() => router.push(`/u/${profile.username}`)}
-                className="flex items-start gap-4 bg-white/60 backdrop-blur-sm border border-toro-dark/10 p-4 rounded-3xl min-w-[280px] max-w-[320px] shadow-sm hover:shadow-md hover:border-toro-gold hover:bg-white transition-all cursor-pointer shrink-0 group"
+                href={`/u/${profile.username}`}
+                className="snap-start shrink-0 w-[280px] flex items-start gap-4 rounded-2xl border border-toro-dark/10 bg-white p-4 hover:-translate-y-1 hover:border-toro-gold/60 hover:shadow-[0_18px_40px_-20px_rgba(19,38,0,0.25)] transition-all group"
               >
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-toro-dark/5 shrink-0 border border-toro-dark/10 flex items-center justify-center">
-                  {profile.avatar_url ? (
-                    <img src={profile.avatar_url} className="w-full h-full object-cover" alt="" />
-                  ) : (
-                    <span className="text-toro-dark/65 font-bold text-lg">
-                      {profile.full_name?.[0]?.toUpperCase() || '?'}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-col min-w-0 flex-1">
+                <Avatar profile={profile} className="w-12 h-12 text-lg" />
+                <div className="flex flex-col min-w-0 flex-1 gap-0.5">
                   <div className="flex items-center gap-1.5">
                     <span className="text-sm font-bold text-toro-dark truncate group-hover:text-toro-gold transition-colors">
-                      {profile.full_name}
+                      {profile.full_name || `@${profile.username}`}
                     </span>
                     {profile.is_verified && (
-                      <span title="Verified Student" className="w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center shrink-0">
-                        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                      <span title="Verified Student" className="w-3.5 h-3.5 rounded-full bg-green-600 flex items-center justify-center shrink-0">
+                        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
                       </span>
                     )}
                   </div>
-                  <span className="text-[10px] text-toro-dark/65 font-mono truncate">@{profile.username}</span>
-                  
+                  <span className="text-xs text-toro-dark/65 truncate">@{profile.username}</span>
                   {profile.university && (
-                    <div className="flex items-center gap-1 mt-1.5">
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-toro-dark/30 shrink-0">
-                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                      </svg>
-                      <span className="text-[10px] text-toro-dark/65 truncate italic">
-                        {profile.university}
-                      </span>
-                    </div>
+                    <span className="text-xs text-toro-dark/65 truncate mt-1">{profile.university}</span>
                   )}
-                  
                   {profile.skills && (
-                    <p className="text-[10px] text-toro-gold font-bold truncate mt-1">
-                      {profile.skills}
-                    </p>
+                    <span className="text-xs font-semibold text-toro-gold truncate mt-0.5">{profile.skills}</span>
                   )}
                 </div>
-              </motion.div>
+              </Link>
             ))}
           </div>
         </section>

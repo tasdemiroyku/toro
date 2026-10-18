@@ -55,8 +55,8 @@ app/
   u/[username]/            public profile
   layout.js                fetches user server-side, renders Header/Footer
 components/                <Name>Client.jsx per route + shared UI: Header, Footer, AuthShell (auth split layout),
-                           LegalPage, ListingCard (every listing grid), CategoryIcon, PasswordStrength,
-                           SampleBadge, ToretBull, ToroLoader
+                           LegalPage, ListingCard (every listing grid), Avatar, CategoryIcon, PasswordStrength,
+                           SampleBadge, ToretBull
 lib/categories.js          CATEGORIES (value, label, examples, icon), CATEGORY_LABEL, CATEGORY_ICON, PRICE_TYPES
 lib/password.js            PASSWORD_RULES, isStrongPassword (mirrors Supabase Auth policy)
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
@@ -72,7 +72,7 @@ supabase/seed/             demo data (listings.is_sample = true)
 tests/                     node:test unit tests (redirects, password policy, categories ↔ DB CHECK)
 .github/workflows/ci.yml   lint → test → build
 docs/screenshots/          README images
-public/images/             optimised media: hero.mp4, hero-poster.jpg, torino-river.jpg, og-image.jpg
+public/images/             optimised media: hero.mp4, hero-poster.jpg, torino-river.jpg, og-image.jpg, toret/*.jpg
 ```
 
 ## Architecture rules
@@ -152,7 +152,9 @@ updating the CHECK constraint.
 ## Design system
 
 - Colors are Tailwind tokens only: `toro-dark` #132600, `toro-gold` #C9963E,
-  `toro-light` #FAFAF7. No raw hex in `className`.
+  `toro-light` #FFFFFF (page background, light text on dark), `toro-sage` #EEF1E8
+  (light sage section bands). Cards on white need a thin border. No raw hex in
+  `className`. Gold buttons use dark text.
 - Fonts: **Inter** (`font-sans`) for all text, headings included (bold +
   `tracking-tight` for page and section titles). Cormorant (`font-logo`) is only for
   the "Toro" wordmark. Both come from next/font in `app/layout.js`.
@@ -161,8 +163,14 @@ updating the CHECK constraint.
 - Global classes (`app/globals.css`): `.toro-input` (every input, textarea and
   select), `.toro-btn-primary`, `.toro-btn-gold`, `.toro-btn-outline`,
   `.toro-card`, `.toro-empty-state`.
-- Shapes: inputs and buttons `rounded-full`; cards and modals `rounded-2xl` or
+- Shapes: inputs, buttons and search bars `rounded-xl` (12 px, via the `.toro-*`
+  classes); a button inside a bar is `rounded-lg`. Only chips, tags, badges, avatars
+  and icon-only round buttons are pills. Cards and modals `rounded-2xl` or
   `rounded-[2rem]`. Borders are thin and solid (`border-toro-dark/10`), **never dashed**.
+- People: always render `<Avatar profile={…} />` (photo, or initials on a colour
+  derived from the profile id), never ad-hoc initials.
+- Photos: use our own (`public/images/toret/` are stills from our Toret footage).
+  No stock photos and no recognisable faces or children.
 - Listing grids always use `<ListingCard />`: text-first, with the category icon,
   provider and price, and no cover photo. An uploaded `image_url` is shown only
   on the listing detail page, with no stock fallback. Horizontal carousels use
@@ -197,6 +205,10 @@ updating the CHECK constraint.
 - Passwords: validate with `isStrongPassword` and show `<PasswordStrength />`
   (the requirements checklist). Keep `lib/password.js` in sync with the Supabase
   Auth password settings.
+- Auth pages (AuthShell): on desktop exactly one viewport tall
+  (`grid-rows-[minmax(0,1fr)]`); the form column is `relative`, starts at a fixed
+  offset (never vertically centred, or the heading jumps between modes) and scrolls
+  on its own.
 - Home header: `position: fixed`, large and transparent at the top, compact after
   80 px (large again under 20 px). Never resize it with scroll-linked values; that
   changed the layout and bounced.

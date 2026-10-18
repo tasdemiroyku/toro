@@ -62,7 +62,7 @@ export default function ContactClient({ defaultName = '', defaultEmail = '' }) {
           maxLength={MAX_MESSAGE}
           rows={6}
           placeholder="A question, feedback, a problem with a listing or a privacy request…"
-          className="toro-input !rounded-2xl resize-y"
+          className="toro-input resize-y"
         />
         <span className="text-[10px] text-toro-dark/30 text-right">{form.message.length}/{MAX_MESSAGE}</span>
       </label>

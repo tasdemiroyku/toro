@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useSyncExternalStore } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
@@ -9,14 +9,6 @@ import AuthShell from '@/components/AuthShell'
 import PasswordStrength from '@/components/PasswordStrength'
 import { safeRedirectPath } from '@/lib/redirect'
 import { isStrongPassword } from '@/lib/password'
-
-// "Remember me" e-mail lives in localStorage. Reading it through
-// useSyncExternalStore keeps server and client renders consistent
-// (the server snapshot is always empty) without a setState-in-effect.
-const SAVED_EMAIL_KEY = 'toro_saved_email'
-const subscribeToNothing = () => () => {}
-const readSavedEmail = () => localStorage.getItem(SAVED_EMAIL_KEY) ?? ''
-const readSavedEmailOnServer = () => ''
 
 const COPY = {
   login:  { title: 'Welcome back',        subtitle: 'Log in to message providers and manage your listings.', submit: 'Log in',         busy: 'Logging in…' },
@@ -87,13 +79,9 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
   const router = useRouter()
   const safeRedirectTarget = safeRedirectPath(redirectTarget)
   const [mode, setMode] = useState(MODES.includes(initialMode) ? initialMode : 'login')
-  const savedEmail = useSyncExternalStore(subscribeToNothing, readSavedEmail, readSavedEmailOnServer)
-  const [typedEmail, setEmail] = useState(null)
-  const email = typedEmail ?? savedEmail
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
-  const [rememberChoice, setRememberMe] = useState(null)
-  const rememberMe = rememberChoice ?? !!savedEmail
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(null)
   const [showPassword, setShowPassword] = useState(false)
@@ -177,8 +165,6 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
-        if (rememberMe) localStorage.setItem(SAVED_EMAIL_KEY, email)
-        else localStorage.removeItem(SAVED_EMAIL_KEY)
         router.replace(safeRedirectTarget)
         router.refresh()
       }
@@ -225,16 +211,16 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
 
               {mode !== 'forgot' && (
                 <div className="flex flex-col gap-5">
-                  <div className="grid grid-cols-2 gap-3">
-                    <button onClick={() => handleOAuth('google')} type="button" className="toro-btn-outline w-full !px-3" aria-label="Continue with Google">
+                  <div className="flex flex-col gap-3">
+                    <button onClick={() => handleOAuth('google')} type="button" className="toro-btn-outline w-full">
                       <GoogleIcon />
-                      Google
+                      Continue with Google
                     </button>
-                    <button onClick={() => handleOAuth('linkedin_oidc')} type="button" className="toro-btn-outline w-full !px-3" aria-label="Continue with LinkedIn">
+                    <button onClick={() => handleOAuth('linkedin_oidc')} type="button" className="toro-btn-outline w-full">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="#0A66C2" aria-hidden="true">
                         <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                       </svg>
-                      LinkedIn
+                      Continue with LinkedIn
                     </button>
                   </div>
 
@@ -326,18 +312,6 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
                     </div>
                     {mode === 'signup' && <div className="px-1 pt-1"><PasswordStrength password={password} /></div>}
                   </div>
-                )}
-
-                {mode === 'login' && (
-                  <label className="flex items-center gap-2 px-1 cursor-pointer group w-fit">
-                    <input
-                      type="checkbox"
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                      className="w-4 h-4 rounded border-toro-dark/20 accent-toro-gold cursor-pointer"
-                    />
-                    <span className="text-xs text-toro-dark/65 group-hover:text-toro-dark transition">Remember my e-mail</span>
-                  </label>
                 )}
 
                 {message && (

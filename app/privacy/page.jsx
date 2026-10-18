@@ -76,12 +76,10 @@ export default function PrivacyPage() {
         </ul>
       </LegalSection>
 
-      <LegalSection title="7. Cookies and local storage">
+      <LegalSection title="7. Cookies">
         <p>
-          We only use cookies that are strictly necessary to keep you signed in. If you tick
-          &ldquo;Remember me&rdquo;, your e-mail address is saved in your own browser&apos;s local
-          storage to pre-fill the login form. Unticking it removes the address. No consent banner is
-          needed because we use no optional cookies.
+          We only use cookies that are strictly necessary to keep you signed in. We use no
+          analytics, advertising or other optional cookies, so no consent banner is needed.
         </p>
       </LegalSection>
 

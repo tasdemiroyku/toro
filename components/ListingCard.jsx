@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { CATEGORY_LABEL } from '@/lib/categories'
 import CategoryIcon from '@/components/CategoryIcon'
 import SampleBadge from '@/components/SampleBadge'
+import Avatar from '@/components/Avatar'
 
 const PRICE_UNIT = { hour: '/ hour', session: '/ session', day: '/ day', fixed: 'fixed' }
 
@@ -21,13 +22,7 @@ function Provider({ profile }) {
   const name = profile?.full_name || (profile?.username ? `@${profile.username}` : 'Toro member')
   return (
     <div className="flex items-center gap-2 min-w-0">
-      {profile?.avatar_url ? (
-        <img src={profile.avatar_url} alt="" className="w-7 h-7 rounded-full object-cover border border-toro-dark/10 shrink-0" />
-      ) : (
-        <span className="w-7 h-7 rounded-full bg-toro-dark/10 text-toro-dark text-[11px] font-bold flex items-center justify-center shrink-0">
-          {name.replace('@', '')[0]?.toUpperCase()}
-        </span>
-      )}
+      <Avatar profile={profile} className="w-7 h-7 text-[11px]" />
       <span className="text-xs font-semibold text-toro-dark/70 truncate">{name}</span>
       {profile?.is_verified && (
         <span title="Verified Student" className="w-3.5 h-3.5 rounded-full bg-green-600 flex items-center justify-center shrink-0">

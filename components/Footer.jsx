@@ -7,18 +7,18 @@ import ToretBull from '@/components/ToretBull'
 
 const COLUMNS = [
   {
-    title: 'Product',
+    title: 'Marketplace',
     links: [
       { href: '/listings', label: 'Browse services' },
       { href: '/listings/create', label: 'Post a service' },
-      { href: '/login?mode=signup', label: 'Create an account' },
+      { href: '/login?mode=signup', label: 'Sign up' },
     ],
   },
   {
     title: 'Company',
     links: [
       { href: '/contact', label: 'Contact' },
-      { href: 'https://github.com/tasdemiroyku/toro', label: 'Source on GitHub', external: true },
+      { href: 'https://github.com/tasdemiroyku/toro', label: 'GitHub', external: true },
     ],
   },
   {
@@ -52,13 +52,21 @@ function LaunchUpdates() {
   }
 
   return (
-    <div className="flex flex-col gap-3 max-w-sm">
-      <p className="text-sm font-semibold text-toro-light">Launch updates</p>
-      <p className="text-sm text-toro-light/65">One e-mail when Toro opens to everyone. Nothing else.</p>
+    <div className="flex flex-col gap-4 max-w-sm">
+      <div className="flex flex-col gap-1.5">
+        <p className="text-base font-semibold text-toro-light">Get launch updates</p>
+        <p className="text-sm text-toro-light/70 leading-relaxed">
+          We will e-mail you once when Toro opens to all students in Turin.
+        </p>
+      </div>
+
       {status === 'done' ? (
-        <p role="status" className="text-sm text-toro-gold">Thanks. We will let you know.</p>
+        <p role="status" className="flex items-center gap-2 rounded-xl border border-toro-gold/30 bg-toro-gold/10 px-4 py-3 text-sm text-toro-light">
+          <svg className="w-4 h-4 text-toro-gold shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+          Thanks, you are on the list. We will e-mail you at launch.
+        </p>
       ) : (
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-2 rounded-xl bg-toro-light/[0.06] p-1.5 border border-toro-light/15 focus-within:border-toro-gold/60 transition">
           <label htmlFor="footer-email" className="sr-only">E-mail address</label>
           <input
             id="footer-email"
@@ -66,15 +74,20 @@ function LaunchUpdates() {
             required
             value={email}
             onChange={e => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            className="min-w-0 flex-1 rounded-full bg-toro-light/10 border border-toro-light/15 px-4 py-2.5 text-sm text-toro-light placeholder:text-toro-light/40 outline-none focus:border-toro-gold transition"
+            placeholder="Your e-mail address"
+            className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-toro-light placeholder:text-toro-light/45 outline-none"
           />
-          <button type="submit" disabled={status === 'sending'} className="rounded-full bg-toro-gold px-4 py-2.5 text-sm font-semibold text-toro-dark hover:brightness-110 disabled:opacity-60 transition">
+          <button type="submit" disabled={status === 'sending'} className="rounded-lg bg-toro-gold px-4 py-2 text-sm font-semibold text-toro-dark hover:brightness-105 disabled:opacity-60 transition">
             {status === 'sending' ? 'Saving…' : 'Notify me'}
           </button>
         </form>
       )}
-      {status === 'error' && <p role="alert" className="text-xs text-red-300">Something went wrong. Please try again.</p>}
+
+      {status === 'error' && <p role="alert" className="text-xs text-red-300">We could not save your address. Please try again.</p>}
+      <p className="text-xs text-toro-light/55">
+        We use your address only for this e-mail.{' '}
+        <Link href="/privacy" className="underline hover:text-toro-light">Privacy Policy</Link>
+      </p>
     </div>
   )
 }
@@ -124,8 +137,8 @@ export default function Footer() {
         </div>
 
         <div className="pt-6 border-t border-toro-light/10 flex flex-col sm:flex-row gap-2 justify-between text-xs text-toro-light/60">
-          <span suppressHydrationWarning>© {new Date().getFullYear()} Toro. Made in Turin.</span>
-          <span>Named after the Toret, Turin&apos;s bull-head drinking fountains.</span>
+          <span suppressHydrationWarning>© {new Date().getFullYear()} Toro. All rights reserved.</span>
+          <span>Made in Turin, Italy.</span>
         </div>
       </div>
     </footer>

@@ -313,7 +313,7 @@ function PersonalSection({ user, profile, setProfile }) {
           rows={3}
           maxLength={300}
           placeholder="Tell other students what you can offer or what you're looking for..."
-          className="toro-input !rounded-2xl resize-none"
+          className="toro-input resize-none"
         />
         <p className="text-xs text-toro-dark/25 text-right -mt-1">
           {(profile?.bio || '').length}/300
@@ -380,7 +380,7 @@ function PersonalSection({ user, profile, setProfile }) {
               <div className="flex flex-col gap-2">
                 <button
                   onClick={handleDeleteAccount}
-                  className="w-full bg-red-500 text-white rounded-full py-3 text-sm hover:bg-red-600 transition"
+                  className="w-full bg-red-600 text-white rounded-xl py-3 text-sm font-semibold hover:bg-red-700 transition"
                 >
                   Yes, delete everything
                 </button>
