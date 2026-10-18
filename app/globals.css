@@ -16,6 +16,12 @@
 
 /* BASE */
 @layer base {
+  /* The canvas behind the page (seen when macOS rubber-band scrolling pulls past
+     the top or bottom) matches the dark header and footer instead of flashing light */
+  html {
+    background-color: var(--color-toro-dark);
+  }
+
   body {
     background-color: var(--color-toro-light);
     color: var(--color-toro-dark);

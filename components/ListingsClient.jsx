@@ -149,7 +149,7 @@ export default function ListingsClient({
 
       {/* Category filter chips, driven by the URL. Mobile: one swipeable row;
           larger screens: wrapped. */}
-      <div className="flex gap-2 overflow-x-auto -mx-6 px-6 pb-1 sm:flex-wrap sm:overflow-visible sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="flex gap-2 overflow-x-auto overscroll-x-contain -mx-6 px-6 pb-1 sm:flex-wrap sm:overflow-visible sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {CATEGORIES.map(cat => (
           <button
             key={cat.value}
