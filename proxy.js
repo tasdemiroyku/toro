@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { updateSession } from './utils/supabase/proxy'
 
-const PROTECTED_ROUTES = ['/profile', '/listings/create', '/listings/my', '/inbox']
+const PROTECTED_ROUTES = ['/profile', '/listings/create', '/listings/my', '/inbox', '/admin']
 
 // Routes that are always publicly accessible — even without a username
 const PUBLIC_PREFIXES = ['/listings', '/u/', '/login', '/onboarding', '/reset-password', '/auth/', '/api/', '/privacy', '/terms', '/contact']
