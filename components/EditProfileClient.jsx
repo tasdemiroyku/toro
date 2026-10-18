@@ -288,7 +288,7 @@ function PersonalSection({ user, profile, setProfile }) {
           <button
             type="button"
             onClick={handleCopyLink}
-            className="shrink-0 bg-white border border-toro-dark/10 hover:border-toro-dark/30 text-toro-dark px-4 py-2.5 rounded-xl text-xs font-semibold transition flex items-center gap-2"
+            className="shrink-0 bg-white border border-toro-dark/10 hover:border-toro-dark/30 text-toro-dark px-4 py-2.5 rounded-full text-xs font-semibold transition flex items-center gap-2"
           >
             {copied ? (
               <>
@@ -380,7 +380,7 @@ function PersonalSection({ user, profile, setProfile }) {
               <div className="flex flex-col gap-2">
                 <button
                   onClick={handleDeleteAccount}
-                  className="w-full bg-red-600 text-white rounded-xl py-3 text-sm font-semibold hover:bg-red-700 transition"
+                  className="w-full bg-red-600 text-white rounded-full py-3 text-sm font-semibold hover:bg-red-700 transition"
                 >
                   Yes, delete everything
                 </button>
@@ -793,7 +793,7 @@ export default function EditProfileClient({ user, initialProfile }) {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-all text-left ${
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-all text-left ${
                 activeTab === item.id
                   ? 'bg-toro-dark text-toro-light'
                   : 'bg-transparent text-toro-dark/65 hover:text-toro-dark'

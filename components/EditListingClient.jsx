@@ -154,7 +154,7 @@ export default function EditListingClient({ listing }) {
                     <button
                       type="button"
                       onClick={() => fileRef.current?.click()}
-                      className="bg-white text-toro-dark text-xs font-semibold px-4 py-2 rounded-lg hover:bg-toro-light transition"
+                      className="bg-white text-toro-dark text-xs font-semibold px-4 py-2 rounded-full hover:bg-toro-light transition"
                     >
                       Change
                     </button>
@@ -162,7 +162,7 @@ export default function EditListingClient({ listing }) {
                       <button
                         type="button"
                         onClick={handleRemoveImage}
-                        className="bg-red-600 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                        className="bg-red-600 text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-red-700 transition"
                       >
                         Remove
                       </button>
@@ -222,7 +222,7 @@ export default function EditListingClient({ listing }) {
                   key={cat.value}
                   type="button"
                   onClick={() => setForm(prev => ({ ...prev, category: cat.value }))}
-                  className={`py-2.5 px-3 rounded-xl text-xs font-semibold border transition ${
+                  className={`py-2.5 px-3 rounded-full text-xs font-semibold border transition ${
                     form.category === cat.value
                       ? 'bg-toro-dark text-toro-light border-toro-dark'
                       : 'bg-white text-toro-dark border-toro-dark/15 hover:border-toro-gold'
