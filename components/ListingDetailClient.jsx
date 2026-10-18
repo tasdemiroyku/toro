@@ -105,8 +105,22 @@ const handleToggleActive = () => {
           </div>
 
           <div className="flex flex-wrap gap-4 text-sm text-toro-dark/50">
-            {listing.location && <span>📍 {listing.location}</span>}
-            {listing.languages?.length > 0 && <span>🗣 {listing.languages.join(', ')}</span>}
+            {listing.location && (
+              <span className="flex items-center gap-1.5">
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.5" />
+                </svg>
+                {listing.location}
+              </span>
+            )}
+            {listing.languages?.length > 0 && (
+              <span className="flex items-center gap-1.5">
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 5h11v7H8l-3 3v-3H3Z" /><path d="M17 9h4v8h-2v3l-3-3h-6v-2" />
+                </svg>
+                {listing.languages.join(', ')}
+              </span>
+            )}
             <span>
               Posted {new Date(listing.created_at).toLocaleDateString('en-GB', {
                 day: 'numeric', month: 'long', year: 'numeric'

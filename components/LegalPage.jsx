@@ -10,7 +10,7 @@ export default function LegalPage({ title, intro, children }) {
       <article className="max-w-3xl mx-auto px-6 py-16 sm:py-20">
         <header className="flex flex-col gap-3 pb-10 mb-10 border-b border-toro-dark/10">
           <p className="text-xs font-bold tracking-widest uppercase text-toro-gold">Legal</p>
-          <h1 className="text-4xl sm:text-5xl font-bold text-toro-dark" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-toro-dark">
             {title}
           </h1>
           <p className="text-sm text-toro-dark/50">

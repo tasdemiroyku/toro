@@ -1,34 +1,25 @@
-'use client'
+import { PASSWORD_RULES } from '@/lib/password'
 
-import { motion } from 'framer-motion'
-
-// Four-step meter: length ≥ 8, an uppercase letter, a digit, a symbol
+// Live checklist of the password policy (lib/password.js)
 export default function PasswordStrength({ password }) {
-  const checks = [
-    password.length >= 8,
-    /[A-Z]/.test(password),
-    /[0-9]/.test(password),
-    /[^A-Za-z0-9]/.test(password),
-  ]
-  const score = checks.filter(Boolean).length
-  const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e']
-  const labels = ['Weak', 'Fair', 'Good', 'Strong']
-
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex gap-1 flex-1">
-        {[0, 1, 2, 3].map(i => (
-          <motion.div
-            key={i}
-            className="h-1 flex-1 rounded-full"
-            animate={{ background: i < score ? colors[score - 1] : 'rgba(19, 38, 0, 0.08)' }}
-            transition={{ duration: 0.3 }}
-          />
-        ))}
-      </div>
-      <span className="text-xs" style={{ color: score > 0 ? colors[score - 1] : 'rgba(19, 38, 0, 0.4)' }}>
-        {score > 0 ? labels[score - 1] : ''}
-      </span>
-    </div>
+    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5" aria-label="Password requirements">
+      {PASSWORD_RULES.map(rule => {
+        const met = rule.test(password)
+        return (
+          <li key={rule.id} className={`flex items-center gap-2 text-xs transition-colors ${met ? 'text-green-700' : 'text-toro-dark/40'}`}>
+            <span className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 transition-colors ${met ? 'bg-green-600' : 'border border-toro-dark/20'}`}>
+              {met && (
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              )}
+            </span>
+            {rule.label}
+            <span className="sr-only">{met ? '(met)' : '(missing)'}</span>
+          </li>
+        )
+      })}
+    </ul>
   )
 }

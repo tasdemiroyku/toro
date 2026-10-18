@@ -60,7 +60,7 @@ export default async function ListingsPage({ searchParams }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-toro-light font-sans">
-      <main className="flex-grow max-w-6xl mx-auto px-6 py-12 w-full">
+      <main className="flex-grow toro-container py-12">
         <ListingsClient
           user={user}
           initialListings={listings ?? []}

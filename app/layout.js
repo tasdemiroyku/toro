@@ -1,13 +1,19 @@
-import { Cormorant_Garamond } from 'next/font/google'
+import { Inter, Cormorant_Garamond } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { createClient } from '@/utils/supabase/server'
 import { SITE_URL } from '@/lib/site'
 
+// Inter for all UI text; Cormorant only for the "Toro" wordmark (font-logo)
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
+
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['600', '700'],
+  weight: ['700'],
   variable: '--font-cormorant',
 })
 
@@ -20,14 +26,14 @@ export const metadata = {
     icon: '/favicon.svg',
     apple: '/apple-touch-icon.png',
   },
-  description: 'Il marketplace degli studenti di Torino. Trova studenti per ripetizioni, pulizie, aiuto con documenti consolari e molto altro.',
-  keywords: ['studenti torino', 'ripetizioni torino', 'pulizie torino', 'lavoro studenti torino', 'marketplace torino', 'öğrenci hizmetleri torino'],
+  description: 'The marketplace of Turin\'s students: find and offer tutoring, cleaning, help with Italian paperwork, moving, tech help and language exchange.',
+  keywords: ['students Turin', 'tutoring Turin', 'student services Torino', 'ripetizioni torino', 'permesso di soggiorno help', 'marketplace torino'],
   authors: [{ name: 'Toro' }],
   creator: 'Toro',
   metadataBase: new URL(SITE_URL),
   openGraph: {
     title: 'Toro · Torino',
-    description: 'Il marketplace degli studenti di Torino.',
+    description: 'The marketplace of Turin\'s students.',
     url: SITE_URL,
     siteName: 'Toro',
     images: [
@@ -35,16 +41,16 @@ export const metadata = {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Toro - Il marketplace degli studenti di Torino',
+        alt: 'Toro, the marketplace of Turin\'s students',
       }
     ],
-    locale: 'it_IT',
+    locale: 'en_GB',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Toro · Torino',
-    description: 'Il marketplace degli studenti di Torino.',
+    description: 'The marketplace of Turin\'s students.',
     images: ['/images/og-image.jpg'],
   },
   robots: {
@@ -70,8 +76,8 @@ export default async function RootLayout({ children }) {
   }
 
   return (
-    <html lang="it" className={cormorant.variable} suppressHydrationWarning>
-      <body className="bg-[#FAFAF7] font-sans antialiased min-h-screen flex flex-col">
+    <html lang="en" className={`${inter.variable} ${cormorant.variable}`} suppressHydrationWarning>
+      <body className="bg-toro-light font-sans antialiased min-h-screen flex flex-col">
         <Header user={user} profile={profile} />
 
         <main className="flex-grow">

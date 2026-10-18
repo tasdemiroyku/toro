@@ -26,10 +26,7 @@ export default function AuthShell({ children }) {
 
         <div className="relative z-10 flex flex-col gap-6 max-w-md text-toro-light">
           <ToretBull className="w-12 h-12 text-toro-gold" />
-          <h2
-            className="text-4xl xl:text-5xl font-bold leading-tight"
-            style={{ fontFamily: 'var(--font-cormorant), serif' }}
-          >
+          <h2 className="text-4xl xl:text-[2.75rem] font-bold tracking-tight leading-tight">
             The marketplace of Turin&apos;s students.
           </h2>
           <ul className="flex flex-col gap-3 text-sm text-toro-light/80">

@@ -12,6 +12,7 @@ import { savePersonalInfo } from '@/app/actions/profile'
 import { SITE_HOST } from '@/lib/site'
 import { requestStudentCode, confirmStudentCode } from '@/app/actions/verification'
 import PasswordStrength from '@/components/PasswordStrength'
+import { isStrongPassword } from '@/lib/password'
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -328,7 +329,7 @@ function PersonalSection({ user, profile, setProfile }) {
 
       <Field
         label="Skills & specialities"
-        hint='Comma-separated — e.g. "MATLAB, Figma, French cooking"'
+        hint='Separate with commas, e.g. "MATLAB, Figma, French cooking"'
       >
         <input
           type="text"
@@ -599,7 +600,7 @@ function SecuritySection({ user }) {
     setEmailLoading(true)
     const { error } = await supabase.auth.updateUser({ email: emailForm.email })
     showToast(
-      error ? error.message : 'Confirmation sent — check both inboxes.',
+      error ? error.message : 'Confirmation sent. Check both inboxes.',
       error ? 'error' : 'success'
     )
     if (!error) setEmailForm({ email: '', confirm: '' })
@@ -607,8 +608,8 @@ function SecuritySection({ user }) {
   }
 
   const handlePasswordUpdate = async () => {
-    if (passwordForm.password.length < 8)
-      return showToast('Password must be at least 8 characters.', 'error')
+    if (!isStrongPassword(passwordForm.password))
+      return showToast('Your new password does not meet all the requirements yet.', 'error')
     if (passwordForm.password !== passwordForm.confirm)
       return showToast("Passwords don't match.", 'error')
     setPasswordLoading(true)

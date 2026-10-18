@@ -183,10 +183,28 @@ export default function Header({ user: initialUser = null, profile: initialProfi
   const isAuthPage = pathname === '/login'
   const { scrollY } = useScroll()
 
+  // Home page: a large transparent header over the hero that switches to the
+  // compact 72 px bar once you scroll. It is position: fixed there, so the size
+  // change never moves the page (the old in-flow, scroll-linked resize bounced),
+  // and it switches with hysteresis: compact after 80 px, large again under 20 px.
+  const [compact, setCompact] = useState(false)
+  useEffect(() => {
+    if (!isHome) return
+    const onScroll = () => {
+      const y = window.scrollY
+      setCompact(prev => (prev ? y > 20 : y > 80))
+    }
+    const frame = requestAnimationFrame(onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [isHome])
+  const large = isHome && !compact
+  const headerHeight = large ? 104 : 72
+
   const clampedScroll = useTransform(scrollY, (value) => Math.max(0, value))
-  const animatedHeight = useTransform(clampedScroll, [0, 80], [110, 72])
-  const animatedLogo = useTransform(clampedScroll, [0, 80], [64, 36])
-  const animatedTitle = useTransform(clampedScroll, [0, 80], [42, 28])
 
   const searchOpacity = useTransform(clampedScroll, [250, 350], [0, 1])
   const searchY = useTransform(clampedScroll, [250, 350], [10, 0])
@@ -253,30 +271,21 @@ export default function Header({ user: initialUser = null, profile: initialProfi
 
   return (
     <>
-      <motion.header
-        style={{ height: isHome ? animatedHeight : 72 }}
-        className="bg-toro-dark sticky top-0 z-50 w-full shadow-[0_14px_22px_-10px_rgba(0,0,0,0.5)]"
+      <header
+        style={{ height: headerHeight }}
+        className={`${isHome ? 'fixed' : 'sticky'} top-0 inset-x-0 z-50 w-full transition-[height,background-color,box-shadow] duration-300 ease-out ${
+          large
+            ? 'bg-linear-to-b from-toro-dark/70 to-transparent'
+            : 'bg-toro-dark shadow-[0_14px_22px_-10px_rgba(0,0,0,0.5)]'
+        }`}
       >
-        <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between gap-4">
+        <div className="toro-container h-full flex items-center justify-between gap-4">
 
           <Link href="/" className="flex items-center gap-3 shrink-0">
-            <motion.div
-              style={{
-                width: isHome ? animatedLogo : 36,
-                height: isHome ? animatedLogo : 36
-              }}
-            >
-              <ToretBull className="w-full h-full text-toro-light" />
-            </motion.div>
-            <motion.span
-              style={{
-                fontSize: isHome ? animatedTitle : 28,
-                fontFamily: 'var(--font-cormorant), serif'
-              }}
-              className="font-bold text-toro-light leading-none"
-            >
+            <ToretBull className={`text-toro-light transition-all duration-300 ease-out ${large ? 'w-14 h-14' : 'w-9 h-9'}`} />
+            <span className={`font-logo font-bold text-toro-light leading-none transition-all duration-300 ease-out ${large ? 'text-[40px]' : 'text-[28px]'}`}>
               Toro
-            </motion.span>
+            </span>
           </Link>
 
           {/* Sticky search — visible on every page, but hidden on the home hero until scroll */}
@@ -377,7 +386,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
           </div>
 
         </div>
-      </motion.header>
+      </header>
 
       <AnimatePresence>
         {mobileOpen && (
@@ -386,7 +395,7 @@ export default function Header({ user: initialUser = null, profile: initialProfi
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.2 }}
-            style={{ top: isHome ? animatedHeight : 72 }}
+            style={{ top: headerHeight }}
             className="fixed left-0 right-0 z-40 bg-toro-dark border-t border-toro-light/10 px-6 py-6 flex flex-col gap-4 md:hidden"
           >
             <form

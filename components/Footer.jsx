@@ -13,18 +13,15 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-toro-dark px-6 lg:px-8 pt-10 pb-8">
-      <div className="max-w-6xl mx-auto">
+    <footer className="bg-toro-dark pt-10 pb-8">
+      <div className="toro-container">
         {/* Bottom Section (Logo & Links) */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           
           {/* Logo & Copyright */}
           <div className="flex items-center gap-3">
             <ToretBull className="w-8 h-8 text-toro-light opacity-90" />
-            <span
-              className="text-2xl font-bold text-toro-light"
-              style={{ fontFamily: 'var(--font-cormorant), serif' }}
-            >
+            <span className="font-logo text-2xl font-bold text-toro-light">
               Toro
             </span>
             <span suppressHydrationWarning className="text-xs font-medium text-toro-light/30 ml-2 hidden sm:inline-block">

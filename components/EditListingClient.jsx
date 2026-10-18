@@ -304,7 +304,7 @@ export default function EditListingClient({ listing }) {
           </Field>
 
           {/* ── Languages ── */}
-          <Field label="Languages" hint='Comma-separated — e.g. "English, Italian, Turkish"'>
+          <Field label="Languages" hint='Separate with commas, e.g. "English, Italian, Turkish"'>
             <input
               name="languages"
               value={form.languages}

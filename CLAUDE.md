@@ -28,8 +28,10 @@ TypeScript, deliberate) · Tailwind CSS v4 · Framer Motion 12 · Supabase (Post
 Auth with e-mail + Google + LinkedIn OIDC, Storage, Realtime) · Resend (installed,
 not used yet) · Vercel.
 
-Commands: `npm run dev`, `npm run build`, `npm run lint`. Before committing, both
-`build` and `lint` must pass with zero errors. `<img>` warnings are accepted for now.
+Commands: `npm run dev`, `npm run build`, `npm run lint`, `npm test`. Before
+committing, build, lint and tests must pass with zero errors (`<img>` warnings are
+accepted for now). GitHub Actions (`.github/workflows/ci.yml`) runs the same checks
+on every PR with placeholder env values.
 
 ## Structure
 
@@ -55,7 +57,8 @@ app/
 components/                <Name>Client.jsx per route + shared UI: Header, Footer, AuthShell (auth split layout),
                            LegalPage, ListingCard (every listing grid), CategoryIcon, PasswordStrength,
                            SampleBadge, ToretBull, ToroLoader
-lib/categories.js          CATEGORIES, CATEGORY_LABEL, CATEGORY_DEFAULT_IMAGE, PRICE_TYPES, PRICE_TYPE_LABEL
+lib/categories.js          CATEGORIES (value, label, examples, icon), CATEGORY_LABEL, CATEGORY_ICON, PRICE_TYPES
+lib/password.js            PASSWORD_RULES, isStrongPassword (mirrors Supabase Auth policy)
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
 lib/redirect.js            safeRedirectPath()
 lib/site.js                SITE_URL, SITE_HOST, CONTACT_EMAIL, LEGAL_LAST_UPDATED
@@ -66,8 +69,10 @@ proxy.js                   middleware entry point (Next.js 16 name)
 supabase/migrations/       versioned SQL schema, RLS policies, triggers
 supabase/audit/            read-only catalog queries to verify RLS and schema
 supabase/seed/             demo data (listings.is_sample = true)
-scripts/                   generate-category-covers.mjs (category SVGs)
-public/images/             optimised media: hero.mp4, hero-poster.jpg, torino-river.jpg, og-image.jpg, categories/*.svg
+tests/                     node:test unit tests (redirects, password policy, categories ↔ DB CHECK)
+.github/workflows/ci.yml   lint → test → build
+docs/screenshots/          README images
+public/images/             optimised media: hero.mp4, hero-poster.jpg, torino-river.jpg, og-image.jpg
 ```
 
 ## Architecture rules
@@ -148,8 +153,11 @@ updating the CHECK constraint.
 
 - Colors are Tailwind tokens only: `toro-dark` #132600, `toro-gold` #C9963E,
   `toro-light` #FAFAF7. No raw hex in `className`.
-- Fonts: headings use `var(--font-cormorant)` (Cormorant Garamond 600/700);
-  body is system sans.
+- Fonts: **Inter** (`font-sans`) for all text, headings included (bold +
+  `tracking-tight` for page and section titles). Cormorant (`font-logo`) is only for
+  the "Toro" wordmark. Both come from next/font in `app/layout.js`.
+- Layout: every page-level block uses `.toro-container` (max-w-6xl, px-6) so the
+  header, sections and footer line up. Do not use other max-widths for sections.
 - Global classes (`app/globals.css`): `.toro-input` (every input, textarea and
   select), `.toro-btn-primary`, `.toro-btn-gold`, `.toro-btn-outline`,
   `.toro-card`, `.toro-empty-state`.
@@ -157,8 +165,9 @@ updating the CHECK constraint.
   `rounded-[2rem]`. Borders are thin and solid (`border-toro-dark/10`), **never dashed**.
 - Listing grids always use `<ListingCard />`: text-first, with the category icon,
   provider and price, and no cover photo. An uploaded `image_url` is shown only
-  on the listing detail page, with no stock fallback. Category cover SVGs are
-  used for the home page category tiles.
+  on the listing detail page, with no stock fallback. Horizontal carousels use
+  native scroll with `scroll-snap` (see Latest services in HomeClient).
+- Copy: plain punctuation, no em dashes (—) in UI text.
 - Empty states use the `.toro-empty-state` pattern: ToretBull icon, heading,
   short text, CTA.
 - Never define CATEGORIES or PRICE_TYPES locally. Import them from `@/lib/categories`.
@@ -178,7 +187,14 @@ updating the CHECK constraint.
 - Media: keep files in `public/images/`, optimised before committing (hero video
   ≤1 MB H.264 without audio, photos ≤200 KB). The hero video only loads on
   ≥768 px screens with motion allowed (`HeroBackground` in HomeClient).
-- Category covers are generated SVGs; re-run `node scripts/generate-category-covers.mjs`
-  after adding a category.
+- Adding a category: add it to `lib/categories.js` (with `examples` and `icon`)
+  **and** a migration updating `listings_category_check`; `npm test` fails if
+  they disagree.
+- Passwords: validate with `isStrongPassword` and show `<PasswordStrength />`
+  (the requirements checklist). Keep `lib/password.js` in sync with the Supabase
+  Auth password settings.
+- Home header: `position: fixed`, large and transparent at the top, compact after
+  80 px (large again under 20 px). Never resize it with scroll-linked values; that
+  changed the layout and bounced.
 - Demo listings have `is_sample = true` and show `<SampleBadge />`.
-- i18n (IT/EN/TR) is planned. All UI text is English today, while `<html lang="it">`.
+- i18n (IT/EN/TR) is planned. All UI text is English today (`<html lang="en">`).

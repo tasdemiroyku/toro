@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import AuthShell from '@/components/AuthShell'
 import PasswordStrength from '@/components/PasswordStrength'
-
-const MIN_PASSWORD_LENGTH = 8
+import { isStrongPassword } from '@/lib/password'
 
 export default function ResetPasswordClient() {
   const router = useRouter()
@@ -19,8 +18,8 @@ export default function ResetPasswordClient() {
   const handleReset = async (e) => {
     e.preventDefault()
 
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      setMessage({ text: `Use at least ${MIN_PASSWORD_LENGTH} characters.`, type: 'error' })
+    if (!isStrongPassword(password)) {
+      setMessage({ text: 'Your password does not meet all the requirements yet.', type: 'error' })
       return
     }
     if (password !== confirmPassword) {
@@ -50,10 +49,10 @@ export default function ResetPasswordClient() {
     <AuthShell>
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-1.5">
-          <h1 className="text-3xl font-bold text-toro-dark" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+          <h1 className="text-3xl font-bold tracking-tight text-toro-dark">
             Choose a new password
           </h1>
-          <p className="text-sm text-toro-dark/50">Use at least {MIN_PASSWORD_LENGTH} characters.</p>
+          <p className="text-sm text-toro-dark/50">Pick something you have not used on other sites.</p>
         </div>
 
         <form onSubmit={handleReset} className="flex flex-col gap-5">
@@ -64,7 +63,7 @@ export default function ResetPasswordClient() {
                 id="new-password"
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="new-password"
-                placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
+                placeholder="Create a strong password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
@@ -78,7 +77,7 @@ export default function ResetPasswordClient() {
                 {showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
-            {password && <div className="px-1 pt-1"><PasswordStrength password={password} /></div>}
+            <div className="px-1 pt-1"><PasswordStrength password={password} /></div>
           </div>
 
           <div className="flex flex-col gap-1.5">

@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect, useSyncExternalStore } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef, useCallback, useSyncExternalStore } from 'react'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import ToretBull from './ToretBull'
 import { CATEGORIES } from '@/lib/categories'
 import ListingCard from '@/components/ListingCard'
+import CategoryIcon from '@/components/CategoryIcon'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -48,57 +49,40 @@ function HeroBackground() {
   )
 }
 
-// ── How many cards fit at this viewport width ─────────────────────────────────
-function useVisibleCount() {
-  const [count, setCount] = useState(4)
-  useEffect(() => {
-    const update = () => {
-      if (window.innerWidth < 640) setCount(1)
-      else if (window.innerWidth < 1024) setCount(2)
-      else setCount(4)
-    }
-    update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
-  }, [])
-  return count
-}
-
 // ── Home page ─────────────────────────────────────────────────────────────────
-export default function HomeClient({ user, listings }) {
+export default function HomeClient({ user, listings, categoryCounts = {} }) {
   const router = useRouter()
   const [email, setEmail]         = useState('')
   const [status, setStatus]       = useState('idle')
   const [heroSearch, setHeroSearch] = useState('')
 
-  // ── Carousel state ──
-  const visibleCount = useVisibleCount()
-  const [page, setPage] = useState(0)
-  const [dir, setDir]   = useState(1)
+  // ── Latest services: native horizontal scroll (touchpad, touch, keyboard) ──
+  // with scroll-snap; the arrow buttons scroll by one visible page.
+  const trackRef = useRef(null)
+  const [edges, setEdges] = useState({ atStart: true, atEnd: false })
 
-  const totalPages = listings.length > 0 ? Math.ceil(listings.length / visibleCount) : 0
+  const updateEdges = useCallback(() => {
+    const el = trackRef.current
+    if (!el) return
+    setEdges({
+      atStart: el.scrollLeft <= 4,
+      atEnd: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4,
+    })
+  }, [])
 
-  // Reset to the first page when the number of visible cards changes
-  const [pageSize, setPageSize] = useState(visibleCount)
-  if (pageSize !== visibleCount) {
-    setPageSize(visibleCount)
-    setPage(0)
+  useEffect(() => {
+    const frame = requestAnimationFrame(updateEdges)
+    window.addEventListener('resize', updateEdges)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('resize', updateEdges)
+    }
+  }, [updateEdges])
+
+  const scrollPage = (direction) => {
+    const el = trackRef.current
+    el?.scrollBy({ left: direction * el.clientWidth, behavior: 'smooth' })
   }
-
-  const goNext = () => { setDir(1);  setPage(p => (p + 1) % totalPages) }
-  const goPrev = () => { setDir(-1); setPage(p => (p - 1 + totalPages) % totalPages) }
-  const goTo   = (i) => { setDir(i > page ? 1 : -1); setPage(i) }
-
-  const displayedListings = listings.length > 0
-    ? Array.from({ length: visibleCount }, (_, i) =>
-        listings[(page * visibleCount + i) % listings.length]
-      ).filter(Boolean)
-    : []
-
-  const gridClass =
-    visibleCount === 1 ? 'grid-cols-1' :
-    visibleCount === 2 ? 'grid-cols-2' :
-    'grid-cols-4'
 
   const handleSearch = () => {
     const q = heroSearch.trim()
@@ -154,104 +138,85 @@ export default function HomeClient({ user, listings }) {
       </section>
 
       {/* ── Browse by category ── */}
-      <motion.section className="px-8 pt-20 max-w-[80rem] mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
+      <motion.section className="toro-container pt-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
         <motion.div variants={fadeUp} className="flex items-end justify-between gap-4 mb-8">
           <div className="flex flex-col gap-1">
-            <h2 className="text-3xl font-bold text-toro-dark">Browse by category</h2>
-            <p className="text-sm text-toro-dark/50">Everyday help, from people who study in Turin.</p>
+            <h2 className="text-3xl font-bold tracking-tight text-toro-dark">Browse by category</h2>
+            <p className="text-sm text-toro-dark/50">Everyday help from people who study in Turin.</p>
           </div>
+          <Link href="/listings" className="text-sm font-semibold text-toro-dark/60 hover:text-toro-gold transition whitespace-nowrap">
+            All services →
+          </Link>
         </motion.div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {CATEGORIES.map(cat => (
-            <motion.div key={cat.value} variants={fadeUp}>
-              <Link
-                href={`/listings?category=${cat.value}`}
-                className="group relative block aspect-[4/3] rounded-[1.5rem] overflow-hidden border border-toro-dark/10"
-              >
-                <img src={cat.defaultImage} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-x-0 bottom-0 p-4 bg-linear-to-t from-toro-dark/90 to-transparent">
-                  <span className="text-sm font-semibold text-toro-light">{cat.label}</span>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-          <motion.div variants={fadeUp}>
-            <Link
-              href="/listings"
-              className="group h-full aspect-[4/3] rounded-[1.5rem] border border-toro-dark/10 bg-white flex flex-col items-center justify-center gap-3 hover:border-toro-gold transition"
-            >
-              <ToretBull className="w-10 h-10 text-toro-dark/30 group-hover:text-toro-gold transition" />
-              <span className="text-sm font-semibold text-toro-dark">All services →</span>
-            </Link>
-          </motion.div>
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+          {CATEGORIES.map(cat => {
+            const count = categoryCounts[cat.value] ?? 0
+            return (
+              <motion.div key={cat.value} variants={fadeUp}>
+                <Link
+                  href={`/listings?category=${cat.value}`}
+                  className="group h-full flex flex-col gap-3 rounded-2xl border border-toro-dark/10 bg-white p-4 hover:border-toro-gold/60 hover:shadow-[0_12px_30px_-18px_rgba(19,38,0,0.3)] transition-all"
+                >
+                  <span className="w-9 h-9 rounded-xl bg-toro-dark/5 text-toro-dark flex items-center justify-center group-hover:bg-toro-dark group-hover:text-toro-gold transition-colors">
+                    <CategoryIcon category={cat.value} className="w-[18px] h-[18px]" />
+                  </span>
+                  <span className="flex flex-col gap-0.5">
+                    <span className="text-sm font-semibold text-toro-dark leading-snug">{cat.label}</span>
+                    <span className="text-xs text-toro-dark/45 leading-snug">{cat.examples}</span>
+                  </span>
+                  <span className="mt-auto text-[11px] font-medium text-toro-dark/40">
+                    {count > 0 ? `${count} service${count === 1 ? '' : 's'}` : 'Be the first'}
+                  </span>
+                </Link>
+              </motion.div>
+            )
+          })}
         </div>
       </motion.section>
 
-      {/* ── Carousel section ── */}
-      <motion.section className="px-8 py-24 max-w-[80rem] mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
+      {/* ── Latest services ── */}
+      <motion.section className="toro-container py-24" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
 
-        {/* Header row — title left, "view all" right */}
-        <motion.div variants={fadeUp} className="flex items-center justify-between mb-10 gap-4 flex-wrap max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-toro-dark">Latest Services</h2>
-          <button onClick={() => router.push('/listings')} className="text-toro-gold font-bold hover:underline text-sm uppercase tracking-widest ml-1">
-            View All →
-          </button>
-        </motion.div>
-
-        {/* Cards & Arrows Container */}
-        {listings.length > 0 ? (
-          <div className="relative group">
-            
-            {/* Left Minimalist Arrow */}
-            {totalPages > 1 && (
-              <button onClick={goPrev} aria-label="Previous" className="absolute -left-6 md:-left-12 top-1/2 -translate-y-1/2 z-20 p-2 text-toro-dark/20 hover:text-toro-gold transition-colors duration-200">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-              </button>
-            )}
-
-            {/* Overflow wrapper with padding trick to prevent shadow clipping */}
-            <div className="overflow-hidden px-4 -mx-4 py-8 -my-8 max-w-6xl mx-auto">
-              <AnimatePresence mode="wait" custom={dir}>
-                <motion.div
-                  key={`${page}-${visibleCount}`}
-                  custom={dir}
-                  initial={d => ({ opacity: 0, x: d * 52 })}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={d => ({ opacity: 0, x: d * -52 })}
-                  transition={{ duration: 0.26, ease: 'easeInOut' }}
-                  className={`grid ${gridClass} gap-6`}
-                >
-                  {displayedListings.map((item, index) => (
-                    <ListingCard key={`${item.id}-${index}`} listing={item} />
-                  ))}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Right Minimalist Arrow */}
-            {totalPages > 1 && (
-              <button onClick={goNext} aria-label="Next" className="absolute -right-6 md:-right-12 top-1/2 -translate-y-1/2 z-20 p-2 text-toro-dark/20 hover:text-toro-gold transition-colors duration-200">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-              </button>
-            )}
-
-            {/* Dot indicators */}
-            {totalPages > 1 && (
-              <div className="flex justify-center gap-2 mt-4">
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button
-                    key={i} onClick={() => goTo(i)}
-                    aria-label={`Go to page ${i + 1}`}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      i === page ? 'w-6 bg-toro-gold' : 'w-2 bg-toro-dark/15 hover:bg-toro-dark/30'
-                    }`}
-                  />
-                ))}
+        {/* Header row: title on the left, carousel controls and "view all" on the right */}
+        <motion.div variants={fadeUp} className="flex items-center justify-between mb-8 gap-4 flex-wrap">
+          <h2 className="text-3xl font-bold tracking-tight text-toro-dark">Latest services</h2>
+          <div className="flex items-center gap-3">
+            {listings.length > 1 && (
+              <div className="flex items-center gap-2">
+                <button onClick={() => scrollPage(-1)} disabled={edges.atStart} aria-label="Previous" className="w-10 h-10 rounded-full border border-toro-dark/15 text-toro-dark/60 flex items-center justify-center hover:border-toro-gold hover:text-toro-gold transition disabled:opacity-30 disabled:pointer-events-none">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <button onClick={() => scrollPage(1)} disabled={edges.atEnd} aria-label="Next" className="w-10 h-10 rounded-full border border-toro-dark/15 text-toro-dark/60 flex items-center justify-center hover:border-toro-gold hover:text-toro-gold transition disabled:opacity-30 disabled:pointer-events-none">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
               </div>
             )}
+            <Link href="/listings" className="text-sm font-semibold text-toro-dark/60 hover:text-toro-gold transition whitespace-nowrap">
+              View all →
+            </Link>
+          </div>
+        </motion.div>
+
+        {listings.length > 0 ? (
+          <div
+            ref={trackRef}
+            onScroll={updateEdges}
+            role="region"
+            aria-label="Latest services"
+            tabIndex={0}
+            className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-px-6 -mx-6 px-6 py-6 -my-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus-visible:outline-none"
+          >
+            {listings.map(item => (
+              <div
+                key={item.id}
+                className="snap-start shrink-0 w-[85%] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4.5rem)/4)]"
+              >
+                <ListingCard listing={item} />
+              </div>
+            ))}
           </div>
         ) : (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="toro-empty-state max-w-6xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="toro-empty-state">
             <div className="w-16 h-16 text-toro-dark/15"><ToretBull className="w-full h-full" /></div>
             <div className="flex flex-col gap-1.5">
               <p className="text-toro-dark text-lg font-bold">No services here yet</p>
@@ -263,13 +228,13 @@ export default function HomeClient({ user, listings }) {
       </motion.section>
 
       {/* ── Why Toro ── */}
-      <motion.section className="bg-toro-dark py-24 px-8" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 variants={fadeUp} className="text-2xl font-bold text-toro-light mb-12">Why Toro is different</motion.h2>
+      <motion.section className="bg-toro-dark py-24" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
+        <div className="toro-container">
+          <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-light mb-12">Why Toro is different</motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { title: 'Student verified', desc: 'Sign up with your university email to earn a Verified Student badge, so you always know who you are dealing with.' },
-              { title: 'Built for newcomers', desc: 'Multilingual platform. Whether you speak Italian, English or Turkish — Toro works for you.' },
+              { title: 'Built for newcomers', desc: 'Every provider lists the languages they speak, so you can get help in Italian, English, Turkish and more.' },
               { title: 'Your first step', desc: 'Never worked before? No problem. Toro is designed to help students take their first professional step with confidence.' },
             ].map(item => (
               <motion.div key={item.title} variants={fadeUp} className="flex flex-col gap-3">
@@ -283,8 +248,8 @@ export default function HomeClient({ user, listings }) {
       </motion.section>
 
       {/* ── Email Signup ── */}
-      <motion.section className="px-8 py-24 max-w-6xl mx-auto flex flex-col items-center text-center gap-6" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
-        <motion.h2 variants={fadeUp} className="text-3xl font-bold text-toro-dark">Be the first in Torino</motion.h2>
+      <motion.section className="toro-container py-24 flex flex-col items-center text-center gap-6" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
+        <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-dark">Be the first in Torino</motion.h2>
         <motion.p variants={fadeUp} className="text-toro-dark/60 max-w-md">
           We are launching soon. Sign up to get early access and be notified the moment Toro goes live.
         </motion.p>
