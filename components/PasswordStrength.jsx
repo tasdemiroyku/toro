@@ -7,7 +7,7 @@ export default function PasswordStrength({ password }) {
       {PASSWORD_RULES.map(rule => {
         const met = rule.test(password)
         return (
-          <li key={rule.id} className={`flex items-center gap-2 text-xs transition-colors ${met ? 'text-green-700' : 'text-toro-dark/40'}`}>
+          <li key={rule.id} className={`flex items-center gap-2 text-xs transition-colors ${met ? 'text-green-700' : 'text-toro-dark/65'}`}>
             <span className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 transition-colors ${met ? 'bg-green-600' : 'border border-toro-dark/20'}`}>
               {met && (
                 <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

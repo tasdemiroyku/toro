@@ -55,7 +55,7 @@ export default function ListingsClient({
           <h1 className="text-3xl font-bold text-toro-dark">
             {searchQuery ? 'Search Results' : 'Services in Torino'}
           </h1>
-          <p className="text-sm text-toro-dark/40 mt-1 font-medium">
+          <p className="text-sm text-toro-dark/65 mt-1 font-medium">
             {searchQuery
               ? `Found ${totalCount} services${initialProfiles.length > 0 ? ` and ${initialProfiles.length} students` : ''} for "${searchQuery}"`
               : `${totalCount} service${totalCount !== 1 ? 's' : ''} available`}
@@ -106,7 +106,7 @@ export default function ListingsClient({
                   {profile.avatar_url ? (
                     <img src={profile.avatar_url} className="w-full h-full object-cover" alt="" />
                   ) : (
-                    <span className="text-toro-dark/40 font-bold text-lg">
+                    <span className="text-toro-dark/65 font-bold text-lg">
                       {profile.full_name?.[0]?.toUpperCase() || '?'}
                     </span>
                   )}
@@ -122,14 +122,14 @@ export default function ListingsClient({
                       </span>
                     )}
                   </div>
-                  <span className="text-[10px] text-toro-dark/40 font-mono truncate">@{profile.username}</span>
+                  <span className="text-[10px] text-toro-dark/65 font-mono truncate">@{profile.username}</span>
                   
                   {profile.university && (
                     <div className="flex items-center gap-1 mt-1.5">
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-toro-dark/30 shrink-0">
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
                       </svg>
-                      <span className="text-[10px] text-toro-dark/50 truncate italic">
+                      <span className="text-[10px] text-toro-dark/65 truncate italic">
                         {profile.university}
                       </span>
                     </div>
@@ -179,7 +179,7 @@ export default function ListingsClient({
             <p className="text-toro-dark text-lg font-bold">
               {searchQuery ? `No service results for "${searchQuery}"` : 'No services here yet'}
             </p>
-            <p className="text-toro-dark/40 text-sm max-w-xs mx-auto font-medium">
+            <p className="text-toro-dark/65 text-sm max-w-xs mx-auto font-medium">
               {searchQuery
                 ? 'Try a different keyword or browse all services.'
                 : 'Be the first to offer help in this category.'}

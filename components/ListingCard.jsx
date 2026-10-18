@@ -12,7 +12,7 @@ function Price({ price, priceType }) {
   return (
     <span className="text-base font-bold text-toro-dark whitespace-nowrap">
       €{Number(price)}
-      {PRICE_UNIT[priceType] && <span className="ml-1 text-xs font-medium text-toro-dark/40">{PRICE_UNIT[priceType]}</span>}
+      {PRICE_UNIT[priceType] && <span className="ml-1 text-xs font-medium text-toro-dark/65">{PRICE_UNIT[priceType]}</span>}
     </span>
   )
 }
@@ -67,11 +67,11 @@ export default function ListingCard({ listing, showProvider = true }) {
         <h3 className="text-[17px] font-bold text-toro-dark leading-snug line-clamp-2 group-hover:text-toro-gold transition-colors">
           {listing.title}
         </h3>
-        <p className="text-sm text-toro-dark/55 leading-relaxed line-clamp-3">{listing.description}</p>
+        <p className="text-sm text-toro-dark/65 leading-relaxed line-clamp-3">{listing.description}</p>
       </div>
 
       {listing.location && (
-        <p className="flex items-center gap-1.5 text-xs text-toro-dark/50 min-w-0">
+        <p className="flex items-center gap-1.5 text-xs text-toro-dark/65 min-w-0">
           <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z" />
             <circle cx="12" cy="9.5" r="2.5" />

@@ -46,7 +46,7 @@ export default function AuthShell({ children }) {
         <div className="flex-1 flex items-center justify-center py-12">
           <div className="w-full max-w-[400px]">{children}</div>
         </div>
-        <footer className="py-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-toro-dark/40">
+        <footer className="py-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-toro-dark/65">
           <Link href="/privacy" className="hover:text-toro-dark transition">Privacy</Link>
           <Link href="/terms" className="hover:text-toro-dark transition">Terms</Link>
           <Link href="/contact" className="hover:text-toro-dark transition">Contact</Link>

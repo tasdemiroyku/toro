@@ -25,6 +25,12 @@
   button {
     cursor: pointer;
   }
+
+  /* Visible keyboard focus everywhere (mouse clicks do not show it) */
+  :focus-visible {
+    outline: 2px solid var(--color-toro-gold);
+    outline-offset: 2px;
+  }
 }
 
 /* COMPONENTS */

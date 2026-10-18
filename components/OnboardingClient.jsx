@@ -140,11 +140,11 @@ function UsernameField({ value, onChange, onStatusChange }) {
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+      <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
         Username <span className="text-red-400">*</span>
       </label>
       <div className="relative">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-toro-dark/40 font-medium pointer-events-none">@</span>
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-toro-dark/65 font-medium pointer-events-none">@</span>
         <input
           type="text"
           value={value}
@@ -198,7 +198,7 @@ function AvatarUpload({ preview, uploading, onPick }) {
           )}
         </div>
       </button>
-      <p className="text-xs text-toro-dark/40 font-medium">
+      <p className="text-xs text-toro-dark/65 font-medium">
         {preview?.url ? 'Click to change photo' : 'Add a profile photo (optional)'}
       </p>
       <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={onPick} />
@@ -218,7 +218,7 @@ function StepUsername({ form, setForm }) {
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-bold text-toro-dark">Choose your username</h2>
-          <p className="text-sm text-toro-dark/50 font-medium">
+          <p className="text-sm text-toro-dark/65 font-medium">
             This is your permanent public handle on Toro. It cannot be changed later.
           </p>
         </div>
@@ -229,7 +229,7 @@ function StepUsername({ form, setForm }) {
         />
         <div className="text-xs text-toro-dark/30 bg-toro-dark/3 rounded-2xl p-4 leading-relaxed">
           Your public profile will live at{' '}
-          <span className="font-mono text-toro-dark/50">
+          <span className="font-mono text-toro-dark/65">
             {SITE_HOST}/u/{form.username || 'your_handle'}
           </span>
         </div>
@@ -268,7 +268,7 @@ function StepPersonal({ user, form, setForm, avatarPreview, setAvatarPreview, se
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-bold text-toro-dark">About you</h2>
-          <p className="text-sm text-toro-dark/50 font-medium">
+          <p className="text-sm text-toro-dark/65 font-medium">
             Help the Turin community get to know you.
           </p>
         </div>
@@ -280,7 +280,7 @@ function StepPersonal({ user, form, setForm, avatarPreview, setAvatarPreview, se
         />
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+          <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
             Full name <span className="text-red-400">*</span>
           </label>
           <input
@@ -293,7 +293,7 @@ function StepPersonal({ user, form, setForm, avatarPreview, setAvatarPreview, se
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+          <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
             Bio <span className="text-toro-dark/25 normal-case font-normal">(optional)</span>
           </label>
           <textarea
@@ -307,7 +307,7 @@ function StepPersonal({ user, form, setForm, avatarPreview, setAvatarPreview, se
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">
+          <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">
             Languages
           </label>
           <div className="flex flex-wrap gap-1.5">
@@ -342,7 +342,7 @@ function StepPassword({ form, setForm }) {
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-bold text-toro-dark">Secure your account</h2>
-          <p className="text-sm text-toro-dark/50 font-medium">
+          <p className="text-sm text-toro-dark/65 font-medium">
             Set a strong password for your Toro account.
           </p>
         </div>
@@ -359,7 +359,7 @@ function StepPassword({ form, setForm }) {
             <button
               type="button"
               onClick={() => setShow(s => !s)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-toro-dark/40 hover:text-toro-dark transition"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-toro-dark/65 hover:text-toro-dark transition"
             >
               {show ? (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -523,7 +523,7 @@ export default function OnboardingClient({ user, profile, redirectAfter }) {
           <div className="w-14 h-14 bg-toro-dark rounded-2xl flex items-center justify-center p-2.5 shadow-lg">
             <ToretBull className="w-full h-full text-toro-light" />
           </div>
-          <p className="text-sm font-semibold text-toro-dark/40 tracking-widest uppercase">
+          <p className="text-sm font-semibold text-toro-dark/65 tracking-widest uppercase">
             Welcome to Toro
           </p>
         </motion.div>

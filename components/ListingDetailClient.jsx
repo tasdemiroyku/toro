@@ -75,7 +75,7 @@ const handleToggleActive = () => {
 
           <button
             onClick={() => router.push('/listings')}
-            className="text-sm text-toro-dark/40 hover:text-toro-dark transition flex items-center gap-1 w-fit"
+            className="text-sm text-toro-dark/65 hover:text-toro-dark transition flex items-center gap-1 w-fit"
           >
             ← Back to listings
           </button>
@@ -98,13 +98,13 @@ const handleToggleActive = () => {
             </div>
             <h1 className="text-3xl font-bold text-toro-dark leading-tight">{listing.title}</h1>
             {listing.is_sample && (
-              <p className="text-xs text-toro-dark/40">
+              <p className="text-xs text-toro-dark/65">
                 This is a sample listing that shows how Toro works while we are in preview.
               </p>
             )}
           </div>
 
-          <div className="flex flex-wrap gap-4 text-sm text-toro-dark/50">
+          <div className="flex flex-wrap gap-4 text-sm text-toro-dark/65">
             {listing.location && (
               <span className="flex items-center gap-1.5">
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -129,7 +129,7 @@ const handleToggleActive = () => {
           </div>
 
           <div className="bg-white border border-toro-dark/10 rounded-2xl p-6">
-            <h2 className="text-sm font-semibold text-toro-dark/50 uppercase tracking-wide mb-3">
+            <h2 className="text-sm font-semibold text-toro-dark/65 uppercase tracking-wide mb-3">
               About this service
             </h2>
             <p className="text-sm text-toro-dark/80 leading-relaxed whitespace-pre-line">
@@ -139,7 +139,7 @@ const handleToggleActive = () => {
 
           {isOwner && (
             <div className="bg-toro-dark/5 rounded-2xl p-4 flex flex-col gap-3">
-              <p className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">Your listing</p>
+              <p className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">Your listing</p>
               <div className="flex gap-3">
                 <button onClick={handleToggleActive} className="flex-1 toro-btn-outline !py-2 text-sm">
                   {listing.is_active ? 'Pause listing' : 'Activate listing'}
@@ -171,7 +171,7 @@ const handleToggleActive = () => {
                 {listing.price === 0 || listing.price_type === 'free' ? 'Free' : `€${listing.price}`}
               </span>
               {listing.price_type && listing.price_type !== 'free' && (
-                <span className="text-sm text-toro-dark/40 ml-1">/ {listing.price_type}</span>
+                <span className="text-sm text-toro-dark/65 ml-1">/ {listing.price_type}</span>
               )}
             </div>
 
@@ -210,7 +210,7 @@ const handleToggleActive = () => {
 
           {/* Provider card */}
           <div className="bg-white border border-toro-dark/10 rounded-2xl p-5 flex flex-col gap-3">
-            <p className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">Provider</p>
+            <p className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">Provider</p>
 
             <div
               className={`flex items-center gap-3 ${profile?.username ? 'cursor-pointer group' : ''}`}
@@ -234,9 +234,9 @@ const handleToggleActive = () => {
                   {profile?.full_name || 'Anonymous'}
                 </p>
                 {profile?.username ? (
-                  <p className="text-xs font-mono text-toro-dark/40">@{profile.username}</p>
+                  <p className="text-xs font-mono text-toro-dark/65">@{profile.username}</p>
                 ) : profile?.location ? (
-                  <p className="text-xs text-toro-dark/40">{profile.location}</p>
+                  <p className="text-xs text-toro-dark/65">{profile.location}</p>
                 ) : null}
               </div>
               {profile?.username && (

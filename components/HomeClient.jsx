@@ -165,7 +165,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
         <motion.div variants={fadeUp} className="flex items-end justify-between gap-4 mb-8">
           <div className="flex flex-col gap-1">
             <h2 className="text-3xl font-bold tracking-tight text-toro-dark">Browse by category</h2>
-            <p className="text-sm text-toro-dark/50">Everyday help from people who study in Turin.</p>
+            <p className="text-sm text-toro-dark/65">Everyday help from people who study in Turin.</p>
           </div>
           <Link href="/listings" className="text-sm font-semibold text-toro-dark/60 hover:text-toro-gold transition whitespace-nowrap">
             All services →
@@ -185,9 +185,9 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
                   </span>
                   <span className="flex flex-col gap-0.5">
                     <span className="text-sm font-semibold text-toro-dark leading-snug">{cat.label}</span>
-                    <span className="text-xs text-toro-dark/45 leading-snug">{cat.examples}</span>
+                    <span className="text-xs text-toro-dark/65 leading-snug">{cat.examples}</span>
                   </span>
-                  <span className="mt-auto text-[11px] font-medium text-toro-dark/40">
+                  <span className="mt-auto text-[11px] font-medium text-toro-dark/65">
                     {count > 0 ? `${count} service${count === 1 ? '' : 's'}` : 'Be the first'}
                   </span>
                 </Link>
@@ -227,7 +227,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
             role="region"
             aria-label="Latest services"
             tabIndex={0}
-            className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-px-6 -mx-6 px-6 py-6 -my-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus-visible:outline-none"
+            className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-px-6 -mx-6 px-6 py-6 -my-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {listings.map(item => (
               <div
@@ -243,7 +243,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
             <div className="w-16 h-16 text-toro-dark/15"><ToretBull className="w-full h-full" /></div>
             <div className="flex flex-col gap-1.5">
               <p className="text-toro-dark text-lg font-bold">No services here yet</p>
-              <p className="text-toro-dark/40 text-sm max-w-xs mx-auto font-medium">Be the first to offer help to the student community in Torino.</p>
+              <p className="text-toro-dark/65 text-sm max-w-xs mx-auto font-medium">Be the first to offer help to the student community in Torino.</p>
             </div>
             <button onClick={() => router.push(user ? '/listings/create' : '/login')} className="toro-btn-primary px-8">Post a service</button>
           </motion.div>

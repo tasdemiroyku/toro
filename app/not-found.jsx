@@ -12,7 +12,7 @@ export default function NotFound() {
         </div>
         <div className="flex flex-col gap-1.5">
           <p className="text-toro-dark text-lg font-bold">This page does not exist</p>
-          <p className="text-toro-dark/40 text-sm max-w-xs mx-auto">
+          <p className="text-toro-dark/65 text-sm max-w-xs mx-auto">
             The link may be broken, or the listing or profile may have been removed.
           </p>
         </div>

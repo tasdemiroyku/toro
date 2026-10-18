@@ -163,7 +163,7 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
           <h1 className="text-3xl font-bold tracking-tight text-toro-dark">
             {copy.title}
           </h1>
-          <p className="text-sm text-toro-dark/50">{copy.subtitle}</p>
+          <p className="text-sm text-toro-dark/65">{copy.subtitle}</p>
         </div>
 
         {mode !== 'forgot' && (
@@ -183,7 +183,7 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
 
             <div className="flex items-center gap-4">
               <div className="flex-1 h-px bg-toro-dark/10" />
-              <span className="text-xs font-medium text-toro-dark/40">or continue with e-mail</span>
+              <span className="text-xs font-medium text-toro-dark/65">or continue with e-mail</span>
               <div className="flex-1 h-px bg-toro-dark/10" />
             </div>
           </div>
@@ -252,7 +252,7 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-toro-dark/40 hover:text-toro-dark transition"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-toro-dark/65 hover:text-toro-dark transition"
                 >
                   {!showPassword ? (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -279,7 +279,7 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className="w-4 h-4 rounded border-toro-dark/20 accent-toro-gold cursor-pointer"
               />
-              <span className="text-xs text-toro-dark/50 group-hover:text-toro-dark transition">Remember my e-mail</span>
+              <span className="text-xs text-toro-dark/65 group-hover:text-toro-dark transition">Remember my e-mail</span>
             </label>
           )}
 
@@ -297,7 +297,7 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
           )}
 
           {mode === 'forgot' && cooldown > 0 && (
-            <p className="text-xs font-medium text-toro-dark/50 text-center">
+            <p className="text-xs font-medium text-toro-dark/65 text-center">
               You can resend in <span className="font-bold font-mono text-toro-dark/70 bg-toro-dark/5 px-1.5 py-0.5 rounded">{formatTime(cooldown)}</span>
             </p>
           )}
@@ -307,7 +307,7 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
           </button>
 
           {mode === 'signup' && (
-            <p className="text-xs text-center text-toro-dark/40 leading-relaxed">
+            <p className="text-xs text-center text-toro-dark/65 leading-relaxed">
               By creating an account you agree to our{' '}
               <Link href="/terms" className="text-toro-dark/70 underline hover:text-toro-dark">Terms of Use</Link>
               {' '}and{' '}
@@ -316,7 +316,7 @@ export default function LoginClient({ redirectTarget = '/', initialMode = 'login
           )}
         </form>
 
-        <p className="text-sm text-center text-toro-dark/50 pt-2 border-t border-toro-dark/10">
+        <p className="text-sm text-center text-toro-dark/65 pt-2 border-t border-toro-dark/10">
           <span className="inline-block pt-5">
             {mode === 'login' && (
               <>New to Toro?{' '}<button type="button" onClick={() => switchMode('signup')} className="text-toro-dark font-semibold hover:text-toro-gold transition">Create an account</button></>

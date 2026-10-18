@@ -90,7 +90,7 @@ function VerifiedBadge() {
 function Field({ label, children, hint }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-xs text-toro-dark/50 tracking-wide">{label}</label>
+      <label className="text-xs text-toro-dark/65 tracking-wide">{label}</label>
       {children}
       {hint && <p className="text-xs text-toro-dark/30">{hint}</p>}
     </div>
@@ -162,7 +162,7 @@ function LanguageTagSelector({ selected, onChange }) {
         </AnimatePresence>
         <button
           onClick={() => setOpen(o => !o)}
-          className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs border border-toro-dark/20 text-toro-dark/40 hover:border-toro-gold/60 hover:text-toro-gold transition"
+          className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs border border-toro-dark/20 text-toro-dark/65 hover:border-toro-gold/60 hover:text-toro-gold transition"
         >
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
             <line x1="12" y1="5" x2="12" y2="19"/>
@@ -280,7 +280,7 @@ function PersonalSection({ user, profile, setProfile }) {
 
       {/* STATIC USERNAME LOGIC: Immutable Public Link */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-xs text-toro-dark/50 tracking-wide">Public Profile Link</label>
+        <label className="text-xs text-toro-dark/65 tracking-wide">Public Profile Link</label>
         <div className="flex items-center bg-toro-dark/5 border border-toro-dark/10 rounded-2xl p-1.5 pl-4">
           <span className="flex-1 text-sm font-mono text-toro-dark/70 truncate mr-2 select-all">
             {SITE_HOST}/u/{profile.username}
@@ -373,7 +373,7 @@ function PersonalSection({ user, profile, setProfile }) {
             >
               <div className="flex flex-col gap-2 text-center">
                 <h2 className="text-xl text-toro-dark">Delete account?</h2>
-                <p className="text-sm text-toro-dark/50 leading-relaxed">
+                <p className="text-sm text-toro-dark/65 leading-relaxed">
                   This is permanent. All your listings and messages will be removed.
                 </p>
               </div>
@@ -521,7 +521,7 @@ function StudentVerification({ profile, setProfile }) {
     <div className="rounded-2xl p-4 border border-toro-dark/10 flex flex-col gap-3 text-sm">
       <div className="flex flex-col gap-1">
         <p className="font-semibold text-toro-dark">Get the Verified Student badge</p>
-        <p className="text-toro-dark/50">
+        <p className="text-toro-dark/65">
           Enter your university e-mail (e.g. <em>@studenti.polito.it</em>) and we will send you a
           code. Your login e-mail stays the same and the university address is never shown publicly.
         </p>
@@ -563,7 +563,7 @@ function StudentVerification({ profile, setProfile }) {
             <button onClick={sendCode} disabled={busy} className="text-toro-gold font-semibold hover:underline disabled:opacity-40">
               Resend code
             </button>
-            <button onClick={() => { setStep('email'); setMessage(null) }} className="text-toro-dark/50 hover:underline">
+            <button onClick={() => { setStep('email'); setMessage(null) }} className="text-toro-dark/65 hover:underline">
               Use a different e-mail
             </button>
           </div>
@@ -625,11 +625,11 @@ function SecuritySection({ user }) {
   return (
     <div className="flex flex-col gap-8">
       <div className="rounded-2xl p-4 text-sm flex items-center gap-3 bg-toro-dark/5 border border-toro-dark/10">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-toro-dark/40 shrink-0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-toro-dark/65 shrink-0">
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
           <polyline points="22,6 12,13 2,6"/>
         </svg>
-        <span className="text-toro-dark/50">
+        <span className="text-toro-dark/65">
           Current email: <span className="text-toro-dark">{user?.email}</span>
         </span>
       </div>
@@ -637,7 +637,7 @@ function SecuritySection({ user }) {
       <div className="flex flex-col gap-5">
         <div>
           <h3 className="text-sm text-toro-dark mb-0.5">Update email</h3>
-          <p className="text-xs text-toro-dark/40">
+          <p className="text-xs text-toro-dark/65">
             You&apos;ll receive a confirmation at both your old and new address.
           </p>
         </div>
@@ -659,7 +659,7 @@ function SecuritySection({ user }) {
       <div className="flex flex-col gap-5">
         <div>
           <h3 className="text-sm text-toro-dark mb-0.5">Update password</h3>
-          <p className="text-xs text-toro-dark/40">Min 8 characters. Use uppercase, lowercase, a number and a symbol.</p>
+          <p className="text-xs text-toro-dark/65">Min 8 characters. Use uppercase, lowercase, a number and a symbol.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="New password">
@@ -775,9 +775,9 @@ export default function EditProfileClient({ user, initialProfile }) {
             {verified && <VerifiedBadge />}
           </div>
           {profile?.username && (
-            <p className="text-sm font-mono text-toro-dark/40">@{profile.username}</p>
+            <p className="text-sm font-mono text-toro-dark/65">@{profile.username}</p>
           )}
-          <p className="text-sm text-toro-dark/40">{user?.email}</p>
+          <p className="text-sm text-toro-dark/65">{user?.email}</p>
           {user?.created_at && (
             <p className="text-xs text-toro-dark/30">Member since {memberSince(user.created_at)}</p>
           )}
@@ -796,7 +796,7 @@ export default function EditProfileClient({ user, initialProfile }) {
               className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm transition-all text-left ${
                 activeTab === item.id
                   ? 'bg-toro-dark text-toro-light'
-                  : 'bg-transparent text-toro-dark/50 hover:text-toro-dark'
+                  : 'bg-transparent text-toro-dark/65 hover:text-toro-dark'
               }`}
             >
               <span className={activeTab === item.id ? 'opacity-100' : 'opacity-60'}>{item.icon}</span>

@@ -79,7 +79,7 @@ function ContactModal({ profile, listings, onClose }) {
                 </svg>
               </div>
               <h2 className="text-lg font-bold text-toro-dark">Message sent!</h2>
-              <p className="text-sm text-toro-dark/50">
+              <p className="text-sm text-toro-dark/65">
                 {profile.full_name?.split(' ')[0] || 'They'} will reply in your inbox.
               </p>
             </div>
@@ -94,12 +94,12 @@ function ContactModal({ profile, listings, onClose }) {
               <h2 className="text-lg font-bold text-toro-dark">
                 Contact {profile.full_name?.split(' ')[0] || 'this member'}
               </h2>
-              <p className="text-xs text-toro-dark/40">Choose which service your message is about.</p>
+              <p className="text-xs text-toro-dark/65">Choose which service your message is about.</p>
             </div>
 
             {listings.length > 1 && (
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">Regarding</label>
+                <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">Regarding</label>
                 <select
                   value={selectedId}
                   onChange={e => setSelectedId(e.target.value)}
@@ -119,7 +119,7 @@ function ContactModal({ profile, listings, onClose }) {
             )}
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-toro-dark/50 uppercase tracking-wide">Message</label>
+              <label className="text-xs font-semibold text-toro-dark/65 uppercase tracking-wide">Message</label>
               <textarea
                 rows={4}
                 maxLength={500}
@@ -188,7 +188,7 @@ export default function ProfileClient({ profile, listings, isOwnProfile, current
           </div>
 
           {profile.username && (
-            <p className="text-sm font-mono text-toro-dark/40">@{profile.username}</p>
+            <p className="text-sm font-mono text-toro-dark/65">@{profile.username}</p>
           )}
 
           <div className="flex flex-wrap gap-2 mt-1">
@@ -201,7 +201,7 @@ export default function ProfileClient({ profile, listings, isOwnProfile, current
               </span>
             )}
             {profile.department && (
-              <span className="text-xs font-semibold text-toro-dark/50 bg-toro-dark/5 px-3 py-1 rounded-full">{profile.department}</span>
+              <span className="text-xs font-semibold text-toro-dark/65 bg-toro-dark/5 px-3 py-1 rounded-full">{profile.department}</span>
             )}
             {profile.created_at && (
               <span className="text-xs text-toro-dark/30 px-1 py-1 self-center">Member since {memberSince(profile.created_at)}</span>
@@ -231,14 +231,14 @@ export default function ProfileClient({ profile, listings, isOwnProfile, current
         <motion.div initial="hidden" animate="visible" variants={stagger} className="lg:col-span-1 flex flex-col gap-5">
           {profile.bio && (
             <motion.div variants={fadeUp} className="bg-white border border-toro-dark/10 rounded-2xl p-5">
-              <p className="text-xs font-semibold text-toro-dark/40 uppercase tracking-widest mb-3">About</p>
+              <p className="text-xs font-semibold text-toro-dark/65 uppercase tracking-widest mb-3">About</p>
               <p className="text-sm text-toro-dark/70 leading-relaxed">{profile.bio}</p>
             </motion.div>
           )}
 
           {profile.languages?.length > 0 && (
             <motion.div variants={fadeUp} className="bg-white border border-toro-dark/10 rounded-2xl p-5">
-              <p className="text-xs font-semibold text-toro-dark/40 uppercase tracking-widest mb-3">Languages</p>
+              <p className="text-xs font-semibold text-toro-dark/65 uppercase tracking-widest mb-3">Languages</p>
               <div className="flex flex-wrap gap-1.5">
                 {profile.languages.map(lang => (
                   <span key={lang} className="text-xs font-semibold bg-toro-dark text-toro-light px-3 py-1 rounded-full">{lang}</span>
@@ -249,7 +249,7 @@ export default function ProfileClient({ profile, listings, isOwnProfile, current
 
           {profile.skills && (
             <motion.div variants={fadeUp} className="bg-white border border-toro-dark/10 rounded-2xl p-5">
-              <p className="text-xs font-semibold text-toro-dark/40 uppercase tracking-widest mb-3">Skills</p>
+              <p className="text-xs font-semibold text-toro-dark/65 uppercase tracking-widest mb-3">Skills</p>
               <div className="flex flex-wrap gap-1.5">
                 {profile.skills.split(',').map(s => s.trim()).filter(Boolean).map(skill => (
                   <span key={skill} className="text-xs font-semibold text-toro-gold bg-toro-gold/10 px-3 py-1 rounded-full">{skill}</span>
@@ -280,7 +280,7 @@ export default function ProfileClient({ profile, listings, isOwnProfile, current
                   <p className="text-toro-dark text-lg font-bold">
                     {isOwnProfile ? 'No services yet' : 'No services offered'}
                   </p>
-                  <p className="text-toro-dark/40 text-sm max-w-xs mx-auto font-medium text-center">
+                  <p className="text-toro-dark/65 text-sm max-w-xs mx-auto font-medium text-center">
                     {isOwnProfile
                       ? 'Post your first service to start helping the community and earning.'
                       : "This member hasn't posted any active services yet."}
