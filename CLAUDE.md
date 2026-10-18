@@ -43,6 +43,9 @@ app/
   actions/profile.js       savePersonalInfo (phone → private_profiles)
   actions/verification.js  requestStudentCode, confirmStudentCode (admin client + Resend)
   actions/contact.js       sendContactMessage → CONTACT_INBOX_EMAIL
+  actions/reports.js       reportContent (validation, daily limit, founders e-mail)
+  actions/moderation.js    resolveReport (admin only)
+  admin/reports/           moderation page (404 for non-admins)
   privacy/ terms/ contact/ static legal pages and contact form
   not-found.jsx            branded 404
   api/subscribe/route.js   waitlist insert into `subscribers`
@@ -135,6 +138,14 @@ changes, re-run `supabase/audit/*.sql` (read-only) to confirm the result.
   `messages_listing_id_fkey`, `messages_sender_id_fkey` and
   `messages_receiver_id_fkey` must stay exact: the inbox query uses them as
   PostgREST join hints.
+- **reports:** reporter_id, target_type (listing|user), target_id, reason (CHECK =
+  `lib/reports.js`), details ≤1000, status (open|dismissed|actioned), resolved_at/by.
+  Insert-only for the reporter; read and resolved only with the service role on
+  `/admin/reports` (`getAdminUser` in `utils/supabase/adminGuard.js`, admins have
+  `private_profiles.is_admin`).
+- **Moderation:** `listings.is_removed` (+ removed_reason, removed_at) hides a listing
+  from everyone but its owner; listing insert/update grants are column lists that
+  exclude these columns. Add new editable listing columns to those grants.
 - **subscribers:** email (lowercase, unique). anon/authenticated may INSERT only;
   nobody can read it through the API.
 - **is_verified** is granted only by `confirmStudentCode` (service role) after a

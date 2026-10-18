@@ -65,6 +65,8 @@ drinking fountains.
 - **Verified Student badge** through a code sent to a university e-mail
 - **Account deletion** removes the profile, listings, messages, private data and
   uploaded photos
+- **Reports and moderation:** report a listing or a user; admins review reports on
+  `/admin/reports` and can remove listings (hidden from everyone but the owner)
 - **Privacy Policy, Terms of Use** and a contact form that e-mails the team
   without publishing an address
 
