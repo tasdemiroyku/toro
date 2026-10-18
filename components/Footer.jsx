@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import ToretBull from './ToretBull' // Importing the central, reusable logo
+import { CONTACT_EMAIL } from '@/lib/site'
 
 export default function Footer() {
   const pathname = usePathname()
@@ -39,15 +40,17 @@ export default function Footer() {
 
           {/* Legal Links */}
           <div className="flex gap-6">
-            <Link href="#" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
+            <Link href="/privacy" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
               Privacy
             </Link>
-            <Link href="#" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
+            <Link href="/terms" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
               Terms
             </Link>
-            <Link href="#" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
-              Contacts
-            </Link>
+            {CONTACT_EMAIL && (
+              <a href={`mailto:${CONTACT_EMAIL}`} className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
+                Contact
+              </a>
+            )}
           </div>
           
         </div>

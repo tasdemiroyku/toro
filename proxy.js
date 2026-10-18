@@ -4,7 +4,7 @@ import { updateSession } from './utils/supabase/proxy'
 const PROTECTED_ROUTES = ['/profile', '/listings/create', '/listings/my', '/inbox']
 
 // Routes that are always publicly accessible — even without a username
-const PUBLIC_PREFIXES = ['/listings', '/u/', '/login', '/onboarding', '/reset-password', '/auth/', '/api/']
+const PUBLIC_PREFIXES = ['/listings', '/u/', '/login', '/onboarding', '/reset-password', '/auth/', '/api/', '/privacy', '/terms']
 
 function isPublicRoute(pathname) {
   if (pathname === '/') return true
