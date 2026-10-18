@@ -104,7 +104,13 @@ export default function MyListingsClient({ listings: initial }) {
                   >
                     {listing.title}
                   </Link>
-                  <StatusBadge active={listing.is_active} />
+                  {listing.is_removed ? (
+                    <span title={listing.removed_reason || undefined} className="text-[10px] font-bold uppercase tracking-wide text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
+                      Removed by moderators
+                    </span>
+                  ) : (
+                    <StatusBadge active={listing.is_active} />
+                  )}
                 </div>
                 <p className="text-xs text-toro-dark/65 font-medium">
                   {CATEGORY_LABEL[listing.category] ?? listing.category}

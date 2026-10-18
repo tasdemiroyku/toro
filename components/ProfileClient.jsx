@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import ListingCard from '@/components/ListingCard'
+import ReportButton from '@/components/ReportButton'
 import Avatar from '@/components/Avatar'
 import { sendMessage } from '@/app/actions/messages'
 import ToretBull from '@/components/ToretBull'
@@ -204,11 +205,14 @@ export default function ProfileClient({ profile, listings, isOwnProfile, current
                 Edit profile
               </button>
             ) : (
-              canContact && (
-                <button onClick={() => setShowContact(true)} className="toro-btn-primary !py-2 !px-5 !text-xs">
-                  Send message
-                </button>
-              )
+              <>
+                {canContact && (
+                  <button onClick={() => setShowContact(true)} className="toro-btn-primary !py-2 !px-5 !text-xs">
+                    Send message
+                  </button>
+                )}
+                <ReportButton targetType="user" targetId={profile.id} isLoggedIn={!!currentUserId} />
+              </>
             )}
           </div>
         </motion.div>

@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CATEGORY_LABEL } from '@/lib/categories'
 import CategoryIcon from '@/components/CategoryIcon'
+import ReportButton from '@/components/ReportButton'
 import Avatar from '@/components/Avatar'
 import SampleBadge from '@/components/SampleBadge'
 import { sendMessage } from '@/app/actions/messages'
@@ -101,6 +102,13 @@ const handleToggleActive = () => {
             {listing.is_sample && (
               <p className="text-xs text-toro-dark/65">
                 This is a sample listing that shows how Toro works while we are in preview.
+              </p>
+            )}
+            {isOwner && listing.is_removed && (
+              <p role="status" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                Our moderators removed this listing, so other people cannot see it.
+                {listing.removed_reason && <> Reason: {listing.removed_reason}.</>} If you think this is a mistake,
+                {' '}<a href="/contact" className="underline">contact us</a>.
               </p>
             )}
           </div>
@@ -263,6 +271,10 @@ const handleToggleActive = () => {
               </div>
             )}
           </div>
+
+          {!isOwner && (
+            <ReportButton targetType="listing" targetId={listing.id} isLoggedIn={!!user} className="self-center" />
+          )}
         </div>
       </div>
 
