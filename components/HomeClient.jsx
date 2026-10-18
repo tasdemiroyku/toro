@@ -128,7 +128,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
             <input
               id="hero-search"
               type="text"
-              placeholder="Try “maths tutor” or “permesso di soggiorno”"
+              placeholder="What do you need help with?"
               value={heroSearch}
               onChange={e => setHeroSearch(e.target.value)}
               className="flex-1 min-w-0 bg-transparent outline-none text-white placeholder:text-white/60 text-base md:text-lg py-3 px-5"
