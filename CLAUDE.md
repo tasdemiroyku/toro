@@ -152,7 +152,8 @@ updating the CHECK constraint.
 ## Design system
 
 - Colors are Tailwind tokens only: `toro-dark` #132600, `toro-gold` #C9963E,
-  `toro-light` #FAFAF7, `toro-cream` #F4EFE6 (warm section bands). No raw hex in
+  `toro-light` #FFFFFF (page background, light text on dark), `toro-sage` #EEF1E8
+  (light sage section bands). Cards on white need a thin border. No raw hex in
   `className`. Gold buttons use dark text.
 - Fonts: **Inter** (`font-sans`) for all text, headings included (bold +
   `tracking-tight` for page and section titles). Cormorant (`font-logo`) is only for

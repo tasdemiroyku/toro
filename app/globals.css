@@ -4,8 +4,8 @@
 @theme {
   --color-toro-dark: #132600;
   --color-toro-gold: #C9963E;
-  --color-toro-light: #FAFAF7;
-  --color-toro-cream: #F4EFE6;
+  --color-toro-light: #FFFFFF;
+  --color-toro-sage: #EEF1E8;
 }
 
 /* Fonts come from next/font (app/layout.js): Inter for everything, Cormorant

@@ -270,7 +270,7 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
       </motion.section>
 
       {/* ── How it works ── */}
-      <motion.section className="bg-toro-cream py-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
+      <motion.section className="bg-toro-sage py-20" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={stagger}>
         <div className="toro-container">
           <motion.h2 variants={fadeUp} className="text-3xl font-bold tracking-tight text-toro-dark mb-10">How it works</motion.h2>
           <ol className="grid grid-cols-1 md:grid-cols-3 gap-6">
