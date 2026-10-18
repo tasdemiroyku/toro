@@ -1,17 +1,26 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 
+// Same rule as the subscribers.email_format CHECK constraint
+const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+
 export async function POST(request) {
-  try {
-    const { email } = await request.json()
-    if (!email || !email.includes('@')) return NextResponse.json({ error: 'Valid email is required' }, { status: 400 })
+  const body = await request.json().catch(() => null)
+  const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase() : ''
 
-    const supabase = await createClient()
-    const { error } = await supabase.from('subscribers').insert({ email })
-
-    if (error && error.code !== '23505') throw error // 23505 = Already exists
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+  if (!email || email.length > 254 || !EMAIL_RE.test(email)) {
+    return NextResponse.json({ error: 'A valid email is required.' }, { status: 400 })
   }
+
+  const supabase = await createClient()
+  const { error } = await supabase.from('subscribers').insert({ email })
+
+  // 23505 = already subscribed. Report success either way so the endpoint
+  // does not reveal which addresses are on the list.
+  if (error && error.code !== '23505') {
+    console.error('Subscribe failed:', error.message)
+    return NextResponse.json({ error: 'Something went wrong.' }, { status: 500 })
+  }
+
+  return NextResponse.json({ success: true })
 }

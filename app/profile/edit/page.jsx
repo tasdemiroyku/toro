@@ -12,16 +12,23 @@ export default async function ProfileSettingsPage() {
 
   if (!user) redirect('/login')
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
+  // Own profile only: public fields + private fields (phone, verified university e-mail)
+  const [{ data: profile }, { data: privateProfile }] = await Promise.all([
+    supabase.from('profiles').select('*').eq('id', user.id).single(),
+    supabase.from('private_profiles').select('phone_number, student_email').eq('id', user.id).maybeSingle(),
+  ])
 
   return (
     <div className="flex-grow bg-toro-light">
       <main className="w-full">
-        <EditProfileClient user={user} initialProfile={profile} />
+        <EditProfileClient
+          user={user}
+          initialProfile={{
+            ...profile,
+            phone_number: privateProfile?.phone_number ?? '',
+            student_email: privateProfile?.student_email ?? null,
+          }}
+        />
       </main>
     </div>
   )

@@ -38,6 +38,8 @@ app/
   actions/account.js       deleteUserAccount (uses admin client)
   actions/listings.js      deleteListing, toggleListingActive
   actions/messages.js      sendMessage
+  actions/profile.js       savePersonalInfo (phone → private_profiles)
+  actions/verification.js  requestStudentCode, confirmStudentCode (admin client + Resend)
   api/subscribe/route.js   waitlist insert into `subscribers`
   auth/callback/route.js   OAuth code exchange → onboarding or ?next
   inbox/                   realtime inbox
@@ -54,7 +56,10 @@ lib/redirect.js            safeRedirectPath()
 lib/site.js                SITE_URL, SITE_HOST (the only place the domain is written)
 utils/supabase/            client.js, server.js, proxy.js (session helper), admin.js (secret key)
 utils/upload.js            image validation, WebP compression, Storage upload
+utils/email.js             sendEmail() via Resend (server-only)
 proxy.js                   middleware entry point (Next.js 16 name)
+supabase/migrations/       versioned SQL schema, RLS policies, triggers
+supabase/audit/            read-only catalog queries to verify RLS and schema
 ```
 
 ## Architecture rules
@@ -71,7 +76,7 @@ proxy.js                   middleware entry point (Next.js 16 name)
 - **Defense in depth:** protected pages also call `getUser()` and redirect.
 - **Imports:** always the `@/` alias, never `../../`.
 - **Naming:** pages `page.jsx`, client components `PascalCaseClient.jsx`, utilities
-  `camelCase.js`, SQL `supabase/migrations/snake_case.sql`.
+  `camelCase.js`, SQL `supabase/migrations/YYYYMMDDHHMMSS_snake_case.sql`.
 - Call `router.refresh()` (client) or `revalidatePath()` (server) after every mutation.
 
 ## Security rules
@@ -91,28 +96,45 @@ proxy.js                   middleware entry point (Next.js 16 name)
 
 ## Database
 
-The live schema is managed in the Supabase dashboard. **The migrations are not yet
-in the repo** (ROADMAP S1). Known tables:
+Schema lives in `supabase/migrations/` (timestamped SQL, applied by hand in the
+Supabase SQL Editor; `…120000_baseline.sql` mirrors what was live on 2026-10-17
+and is not re-run). Wrap each migration in `begin; … commit;`. Breaking changes go
+expand → deploy app → contract (see the phone-number migrations). After schema
+changes, re-run `supabase/audit/*.sql` (read-only) to confirm the result.
 
-- **profiles:** id (= auth.users.id), username (unique, lowercase a–z 0–9 _,
-  3–30 chars), full_name, avatar_url, bio (≤300), languages text[], location,
-  skills, phone_number (private), university, department, is_verified (set by a
-  DB trigger from the e-mail domain), created_at.
-- **listings:** id, user_id → profiles, title (≤100), description (≤1000),
-  category (a `lib/categories.js` value), price, price_type (hour, session, day,
-  fixed, free), location, languages text[], is_active, image_url, created_at.
-- **messages:** id, listing_id, sender_id, receiver_id, content (≤500), read,
-  created_at. The FK names `messages_listing_id_fkey`, `messages_sender_id_fkey`
-  and `messages_receiver_id_fkey` must stay exact: the inbox query uses them as
-  PostgREST join hints. If PostgREST reports a schema error, run
-  `NOTIFY pgrst, 'reload schema'`.
-- **subscribers:** email (unique), the waitlist.
-- **Storage:** public bucket `toro-uploads`, with paths `avatars/{userId}/…` and
-  `listings/{userId}/{listingId}/…`.
+- **profiles** (world-readable): id (= auth.users.id), username (unique,
+  `^[a-z0-9_]{3,30}$`), full_name ≤100, avatar_url, bio ≤300, languages text[] ≤15,
+  location ≤100, skills ≤300, university ≤150, department ≤150, is_verified,
+  created_at. Row created by `handle_new_user()` on auth signup.
+- **private_profiles** (owner-only RLS): id → profiles, phone_number, updated_at,
+  student_email (unique), student_verified_at. Anything a stranger must not see
+  goes here, never in `profiles`. Clients may write only phone_number/updated_at.
+- **student_verifications** (service role only, no client grants): pending
+  codes as HMAC (`VERIFICATION_CODE_SECRET`), attempts, expires_at, consumed_at.
+- **listings:** id, user_id → profiles, title ≤100, description ≤1000, category
+  (CHECK = `lib/categories.js` values), price 0–10000, price_type (CHECK), location,
+  languages, is_active, image_url, created_at. Anyone sees active rows; owners see
+  and edit their own.
+- **messages:** id, listing_id, sender_id, receiver_id, content 1–500, read,
+  created_at. Participants read; inserts must concern a listing owned by sender or
+  receiver (`listing_belongs_to_either()`); receivers may UPDATE only `read`
+  (column grant). In the `supabase_realtime` publication. FK names
+  `messages_listing_id_fkey`, `messages_sender_id_fkey` and
+  `messages_receiver_id_fkey` must stay exact: the inbox query uses them as
+  PostgREST join hints.
+- **subscribers:** email (lowercase, unique). anon/authenticated may INSERT only;
+  nobody can read it through the API.
+- **is_verified** is granted only by `confirmStudentCode` (service role) after a
+  code sent to an `is_student_email()` address is confirmed. The sign-up e-mail
+  is irrelevant. Client column grants on `profiles` exclude it — when adding an
+  editable profile column, add it to the grants in a migration too.
+- **Storage:** public bucket `toro-uploads` (5 MB, images only). Paths
+  `avatars/{uid}/…` and `listings/{uid}/{listingId}/…`; users can write, read
+  and list only their own folder; files are served by public URL.
 
 Column conventions: snake_case, booleans `is_*`, timestamps `*_at`, FKs `{table}_id`.
-Category and price-type values are stored in the DB; renaming one needs a data
-migration first.
+Adding a category or price type needs both `lib/categories.js` and a migration
+updating the CHECK constraint.
 
 ## Design system
 

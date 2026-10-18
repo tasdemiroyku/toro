@@ -8,14 +8,11 @@ import { uploadAvatar } from '@/utils/upload'
 import ToretBull from '@/components/ToretBull'
 import { useTransition } from 'react'
 import { deleteUserAccount } from '@/app/actions/account'
+import { savePersonalInfo } from '@/app/actions/profile'
+import { SITE_HOST } from '@/lib/site'
+import { requestStudentCode, confirmStudentCode } from '@/app/actions/verification'
 
 // ─── Constants ───────────────────────────────────────────────────────────────
-
-const STUDENT_DOMAINS = [
-  'studenti.polito.it', 'edu.unito.it', 'studenti.unimi.it',
-  'studio.unibo.it', 'studenti.uniroma1.it', 'edu', 'ac.uk',
-  'student.kuleuven.be', 'etu.u-paris.fr',
-]
 
 const LANGUAGE_OPTIONS = [
   'Italian', 'English', 'Turkish', 'French', 'Spanish',
@@ -66,12 +63,6 @@ const NAV_ITEMS = [
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const USERNAME_RE = /^[a-z0-9_]{3,30}$/
-
-function isVerifiedStudent(email) {
-  if (!email) return false
-  const domain = email.split('@')[1] ?? ''
-  return STUDENT_DOMAINS.some(d => domain.endsWith(d))
-}
 
 function memberSince(dateStr) {
   if (!dateStr) return null
@@ -212,7 +203,6 @@ function LanguageTagSelector({ selected, onChange }) {
 
 function PersonalSection({ user, profile, setProfile }) {
   const update = (field, value) => setProfile(prev => ({ ...prev, [field]: value }))
-  const supabase = createClient()
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -236,22 +226,17 @@ function PersonalSection({ user, profile, setProfile }) {
 
   const handleSave = async () => {
     setSaving(true)
-    
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        full_name:    profile.full_name,
-        bio:          profile.bio,
-        languages:    profile.languages,
-        phone_number: profile.phone_number,
-        skills:       profile.skills,
-      })
-      .eq('id', user.id)
 
-    showToast(
-      error ? 'Something went wrong.' : 'Profile saved.',
-      error ? 'error' : 'success'
-    )
+    // Server Action: validates input and keeps the phone number in private_profiles
+    const { error } = await savePersonalInfo({
+      fullName:    profile.full_name,
+      bio:         profile.bio,
+      languages:   profile.languages,
+      skills:      profile.skills,
+      phoneNumber: profile.phone_number,
+    })
+
+    showToast(error ?? 'Profile saved.', error ? 'error' : 'success')
     setSaving(false)
   }
 
@@ -261,7 +246,7 @@ function PersonalSection({ user, profile, setProfile }) {
         await deleteUserAccount()
       } catch (error) {
         setShowDeleteModal(false)
-        setGlobalToast({ message: error.message, type: 'error' })
+        showToast(error.message, 'error')
       }
     })
   }
@@ -296,7 +281,7 @@ function PersonalSection({ user, profile, setProfile }) {
         <label className="text-xs text-toro-dark/50 tracking-wide">Public Profile Link</label>
         <div className="flex items-center bg-toro-dark/5 border border-toro-dark/10 rounded-2xl p-1.5 pl-4">
           <span className="flex-1 text-sm font-mono text-toro-dark/70 truncate mr-2 select-all">
-            toro.com/u/{profile.username}
+            {SITE_HOST}/u/{profile.username}
           </span>
           <button
             type="button"
@@ -468,34 +453,6 @@ function AcademicSection({ user, profile, setProfile }) {
         </Field>
       </div>
 
-      {/* Verification status banner */}
-      <div className={`rounded-2xl p-4 text-sm border ${
-        isVerifiedStudent(user?.email)
-          ? 'bg-green-50 border-green-200'
-          : 'bg-transparent border-toro-dark/10'
-      }`}>
-        {isVerifiedStudent(user?.email) ? (
-          <div className="flex items-center gap-2 text-green-700">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 6 9 17l-5-5"/>
-            </svg>
-            Your email <span className="font-medium">{user?.email}</span> is automatically verified as a student address.
-          </div>
-        ) : (
-          <div className="flex items-start gap-2 text-toro-dark/50">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 shrink-0">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-            <span>
-              Sign up with your university email (e.g. <em>@studenti.polito.it</em>) to receive a
-              Verified Student badge and build trust with other users.
-            </span>
-          </div>
-        )}
-      </div>
-
       <div className="pt-2">
         <button
           onClick={handleSave}
@@ -506,7 +463,116 @@ function AcademicSection({ user, profile, setProfile }) {
         </button>
       </div>
 
+      <StudentVerification profile={profile} setProfile={setProfile} />
+
       <AnimatePresence>{toast && <Toast {...toast} />}</AnimatePresence>
+    </div>
+  )
+}
+
+// ─── Student verification (code sent to a university e-mail) ─────────────────
+
+function StudentVerification({ profile, setProfile }) {
+  const router = useRouter()
+  const [step, setStep]       = useState('email') // 'email' → 'code'
+  const [email, setEmail]     = useState('')
+  const [code, setCode]       = useState('')
+  const [busy, setBusy]       = useState(false)
+  const [message, setMessage] = useState(null)    // { text, type }
+
+  if (profile?.is_verified) {
+    return (
+      <div className="rounded-2xl p-4 text-sm border bg-green-50 border-green-200 flex items-center gap-2 text-green-700">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>
+        <span>
+          Verified student
+          {profile.student_email && <> · <span className="font-medium">{profile.student_email}</span></>}
+        </span>
+      </div>
+    )
+  }
+
+  const sendCode = async () => {
+    setBusy(true)
+    setMessage(null)
+    const { error } = await requestStudentCode(email)
+    setBusy(false)
+    if (error) return setMessage({ text: error, type: 'error' })
+    setStep('code')
+    setCode('')
+    setMessage({ text: `We sent a 6-digit code to ${email.trim().toLowerCase()}.`, type: 'info' })
+  }
+
+  const confirmCode = async () => {
+    setBusy(true)
+    setMessage(null)
+    const { error, studentEmail } = await confirmStudentCode(code)
+    setBusy(false)
+    if (error) return setMessage({ text: error, type: 'error' })
+    setProfile(prev => ({ ...prev, is_verified: true, student_email: studentEmail }))
+    router.refresh()
+  }
+
+  return (
+    <div className="rounded-2xl p-4 border border-toro-dark/10 flex flex-col gap-3 text-sm">
+      <div className="flex flex-col gap-1">
+        <p className="font-semibold text-toro-dark">Get the Verified Student badge</p>
+        <p className="text-toro-dark/50">
+          Enter your university e-mail (e.g. <em>@studenti.polito.it</em>) and we will send you a
+          code. Your login e-mail stays the same and the university address is never shown publicly.
+        </p>
+      </div>
+
+      {step === 'email' ? (
+        <div className="flex flex-col sm:flex-row gap-2">
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && email.trim() && !busy && sendCode()}
+            placeholder="name@studenti.polito.it"
+            maxLength={254}
+            className="toro-input flex-1"
+          />
+          <button onClick={sendCode} disabled={busy || !email.trim()} className="toro-btn-primary whitespace-nowrap">
+            {busy ? 'Sending…' : 'Send code'}
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <input
+              type="text"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              value={code}
+              onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              onKeyDown={e => e.key === 'Enter' && code.length === 6 && !busy && confirmCode()}
+              placeholder="6-digit code"
+              className="toro-input flex-1 font-mono tracking-widest"
+            />
+            <button onClick={confirmCode} disabled={busy || code.length !== 6} className="toro-btn-primary whitespace-nowrap">
+              {busy ? 'Checking…' : 'Verify'}
+            </button>
+          </div>
+          <div className="flex gap-4 text-xs">
+            <button onClick={sendCode} disabled={busy} className="text-toro-gold font-semibold hover:underline disabled:opacity-40">
+              Resend code
+            </button>
+            <button onClick={() => { setStep('email'); setMessage(null) }} className="text-toro-dark/50 hover:underline">
+              Use a different e-mail
+            </button>
+          </div>
+        </>
+      )}
+
+      {message && (
+        <p className={`text-xs font-medium ${message.type === 'error' ? 'text-red-500' : 'text-toro-dark/60'}`}>
+          {message.text}
+        </p>
+      )}
     </div>
   )
 }
@@ -652,7 +718,7 @@ export default function EditProfileClient({ user, initialProfile }) {
 
   const fileInputRef = useRef(null)
   const supabase = createClient()
-  const verified = isVerifiedStudent(user?.email)
+  const verified = !!profile?.is_verified
 
   const initials =
     profile?.full_name?.[0]?.toUpperCase() ||
