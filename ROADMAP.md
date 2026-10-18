@@ -21,7 +21,7 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-17 | Project renamed from `toro-next` to `toro` (repo, package, folder). Domain change pending; `lib/site.js` holds the URL. |
 | 2026-10-17 | Phone numbers live in an owner-only `private_profiles` table (not dropped), kept for future contact features. |
 | 2026-10-17 | Anyone can sign up with any e-mail. The student badge needs a code sent to a university e-mail (not the sign-up address). One university address per account. |
-| 2026-10-18 | Default listing covers are branded illustrations, not stock photos. Demo listings are labelled "Sample". |
+| 2026-10-18 | Listing cards are text-first (no cover photos); category illustrations are used for the home page category tiles; uploaded photos appear on the detail page only. Demo listings are labelled "Sample". |
 | 2026-10-18 | No public e-mail address until the domain exists; `/contact` form delivers to a server-only inbox variable. |
 | 2026-10-17 | Commits keep the `Co-Authored-By: Claude` trailer (transparency). From now on: feature branch → PR with description → merge. |
 | 2026-10-17 | Schema changes are SQL files in `supabase/migrations/`, written in the repo and applied by hand in the Supabase SQL Editor. Breaking changes use expand → deploy → contract. |
@@ -46,13 +46,14 @@ students comes after that, once moderation and legal pages are in place.
 - [x] Privacy Policy, Terms of Use, contact form (e-mails the founders)
 - [x] Demo data seed with Sample labels; branded 404; uploaded photos deleted with the account
 
-## In progress — first impression (branch `feat/first-impression`)
+## In progress — rollout of the first-impression work ([PR #2](https://github.com/tasdemiroyku/toro/pull/2) merged, cards and auth polish in PR #3)
 
-To do after merging:
+Open steps:
 
-1. Run `20261018120000_listings_is_sample.sql` in the SQL Editor
-2. Create the demo accounts `marta_polito`, `luca_tutor`, `selin_torino` (finish
-   onboarding), then run `supabase/seed/demo_listings.sql`
+1. ✅ `20261018120000_listings_is_sample.sql` applied
+2. Supabase → Authentication → Users → Add user (Auto Confirm) for
+   `tasdemiroyku+marta@gmail.com`, `tasdemiroyku+luca@gmail.com` and
+   `tasdemiroyku+selin@gmail.com`, then run `supabase/seed/demo_listings.sql`
 3. Vercel: add `CONTACT_INBOX_EMAIL`
 4. Supabase → Authentication → set the minimum password length to 8 (the UI asks for 8)
 5. Check the Supabase project region and mention it in the Privacy Policy

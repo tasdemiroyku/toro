@@ -53,7 +53,8 @@ app/
   u/[username]/            public profile
   layout.js                fetches user server-side, renders Header/Footer
 components/                <Name>Client.jsx per route + shared UI: Header, Footer, AuthShell (auth split layout),
-                           LegalPage, PasswordStrength, SampleBadge, ToretBull, ToroLoader
+                           LegalPage, ListingCard (every listing grid), CategoryIcon, PasswordStrength,
+                           SampleBadge, ToretBull, ToroLoader
 lib/categories.js          CATEGORIES, CATEGORY_LABEL, CATEGORY_DEFAULT_IMAGE, PRICE_TYPES, PRICE_TYPE_LABEL
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
 lib/redirect.js            safeRedirectPath()
@@ -154,8 +155,10 @@ updating the CHECK constraint.
   `.toro-card`, `.toro-empty-state`.
 - Shapes: inputs and buttons `rounded-full`; cards and modals `rounded-2xl` or
   `rounded-[2rem]`. Borders are thin and solid (`border-toro-dark/10`), **never dashed**.
-- Listing covers always fall back to a category image:
-  `listing.image_url || CATEGORY_DEFAULT_IMAGE[listing.category] || null`.
+- Listing grids always use `<ListingCard />`: text-first, with the category icon,
+  provider and price, and no cover photo. An uploaded `image_url` is shown only
+  on the listing detail page, with no stock fallback. Category cover SVGs are
+  used for the home page category tiles.
 - Empty states use the `.toro-empty-state` pattern: ToretBull icon, heading,
   short text, CTA.
 - Never define CATEGORIES or PRICE_TYPES locally. Import them from `@/lib/categories`.

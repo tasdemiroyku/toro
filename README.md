@@ -17,7 +17,8 @@ exchange. The name comes from the *Toret*, Turin's green cast-iron bull fountain
 
 - **Accounts:** e-mail/password, Google and LinkedIn sign-in (Supabase Auth),
   password reset, onboarding with a unique username
-- **Listings:** create, edit, pause and delete, with optional cover photos.
+- **Listings:** create, edit, pause and delete. Cards are text-first (category
+  icon, provider, price); an optional photo appears on the listing page.
   Images are compressed to WebP in the browser before upload.
 - **Search:** keyword search over listings and people, category filter,
   server-side pagination with shareable URLs (`?q=`, `?category=`, `?page=`)
