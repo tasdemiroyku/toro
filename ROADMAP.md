@@ -40,10 +40,9 @@ students comes after that, once moderation and legal pages are in place.
 ## In progress — apply the migrations (branch `security/rls-hardening`)
 
 1. ✅ `20261017120100` … `20261017120600` applied (2026-10-17)
-2. Run `20261017130000_student_code_verification.sql` (safe with the old code)
-3. Vercel → Environment Variables: `VERIFICATION_CODE_SECRET`, `RESEND_FROM_EMAIL`
-   (and check `RESEND_API_KEY`, `SUPABASE_SECRET_KEY`)
-4. Merge the PR → Vercel deploys the code that uses `private_profiles`
+2. ✅ `20261017130000_student_code_verification.sql` applied
+3. ✅ Vercel environment variables set (`VERIFICATION_CODE_SECRET`, `RESEND_FROM_EMAIL`)
+4. Merge [PR #1](https://github.com/tasdemiroyku/toro/pull/1) → Vercel deploys the code that uses `private_profiles`
 5. Run `20261017120700_drop_profiles_phone_number.sql`
 6. Re-run `supabase/audit/*.sql` and test: messages, profile save, avatar upload,
    waitlist, student verification
