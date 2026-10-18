@@ -124,11 +124,11 @@ function UsernameField({ value, onChange, onStatusChange }) {
   }
 
   const hintText = {
-    idle: 'Your public handle — e.g. @oyku becomes /u/oyku',
+    idle: 'Your public handle: @oyku becomes /u/oyku',
     typing: '',
     checking: 'Checking availability…',
     available: `✓ @${value} is available`,
-    taken: `@${value} is already taken — try another`,
+    taken: `@${value} is already taken. Try another one.`,
     invalid: 'Letters, numbers and underscores only · 3–30 chars',
   }[status] ?? ''
 
@@ -219,7 +219,7 @@ function StepUsername({ form, setForm }) {
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-bold text-toro-dark">Choose your username</h2>
           <p className="text-sm text-toro-dark/50 font-medium">
-            This is your permanent public handle on Toro. Choose wisely — it cannot be changed later.
+            This is your permanent public handle on Toro. It cannot be changed later.
           </p>
         </div>
         <UsernameField

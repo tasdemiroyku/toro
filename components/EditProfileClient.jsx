@@ -329,7 +329,7 @@ function PersonalSection({ user, profile, setProfile }) {
 
       <Field
         label="Skills & specialities"
-        hint='Comma-separated — e.g. "MATLAB, Figma, French cooking"'
+        hint='Separate with commas, e.g. "MATLAB, Figma, French cooking"'
       >
         <input
           type="text"
@@ -600,7 +600,7 @@ function SecuritySection({ user }) {
     setEmailLoading(true)
     const { error } = await supabase.auth.updateUser({ email: emailForm.email })
     showToast(
-      error ? error.message : 'Confirmation sent — check both inboxes.',
+      error ? error.message : 'Confirmation sent. Check both inboxes.',
       error ? 'error' : 'success'
     )
     if (!error) setEmailForm({ email: '', confirm: '' })
