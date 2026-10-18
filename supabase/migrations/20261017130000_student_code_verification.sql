@@ -52,8 +52,14 @@ alter table public.private_profiles
   add column if not exists student_email       text,
   add column if not exists student_verified_at timestamptz;
 
-alter table public.private_profiles
-  add constraint student_email_lowercase check (student_email = lower(student_email));
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname = 'student_email_lowercase') then
+    alter table public.private_profiles
+      add constraint student_email_lowercase check (student_email = lower(student_email));
+  end if;
+end;
+$$;
 
 create unique index if not exists private_profiles_student_email_key
   on public.private_profiles (student_email);
