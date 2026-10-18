@@ -33,67 +33,6 @@ function useDropdown(delay = 150) {
 
   return { open, setOpen, ref, handleMouseEnter, handleMouseLeave }
 }
-
-function LanguageDropdown() {
-  const { open, setOpen, ref, handleMouseEnter, handleMouseLeave } = useDropdown()
-
-  return (
-    <div
-      className="relative"
-      ref={ref}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {open && <div className="absolute top-full left-0 w-full h-3 bg-transparent z-40" />}
-
-      <button
-        onClick={() => setOpen(!open)}
-        className="text-sm text-toro-light/70 hover:text-toro-light transition font-medium flex items-center gap-1.5 h-full"
-        aria-label="Language selection"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="2" y1="12" x2="22" y2="12"/>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-        EN
-      </button>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -8, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.95 }}
-            transition={{ duration: 0.15 }}
-            className="absolute left-1/2 -translate-x-1/2 mt-3 w-32 bg-toro-light rounded-2xl shadow-xl border border-toro-dark/10 overflow-hidden z-50 py-1"
-          >
-            <button
-              onClick={() => setOpen(false)}
-              className="w-full text-left px-4 py-2.5 text-sm text-toro-dark font-semibold hover:bg-toro-dark/5 transition flex items-center justify-between"
-            >
-              English
-              <div className="w-1.5 h-1.5 rounded-full bg-toro-gold"></div>
-            </button>
-            <button
-              onClick={() => setOpen(false)}
-              className="w-full text-left px-4 py-2.5 text-sm text-toro-dark/60 hover:text-toro-dark hover:bg-toro-dark/5 transition"
-            >
-              Italiano
-            </button>
-            <button
-              onClick={() => setOpen(false)}
-              className="w-full text-left px-4 py-2.5 text-sm text-toro-dark/60 hover:text-toro-dark hover:bg-toro-dark/5 transition"
-            >
-              Türkçe
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
-
 function UserDropdown({ user, profile, setUser, hasUnread }) {
   const router = useRouter()
   const { open, setOpen, ref, handleMouseEnter, handleMouseLeave } = useDropdown()
@@ -403,10 +342,6 @@ export default function Header({ user: initialUser = null, profile: initialProfi
 
             <div className="w-px h-4 bg-toro-light/15 mx-0.5" />
 
-            <LanguageDropdown />
-
-            <div className="w-px h-4 bg-toro-light/15 mx-0.5" />
-
             {user ? (
               <UserDropdown user={user} profile={profile} setUser={setUser} hasUnread={hasUnread} />
             ) : (
@@ -454,15 +389,6 @@ export default function Header({ user: initialUser = null, profile: initialProfi
             style={{ top: isHome ? animatedHeight : 72 }}
             className="fixed left-0 right-0 z-40 bg-toro-dark border-t border-toro-light/10 px-6 py-6 flex flex-col gap-4 md:hidden"
           >
-            <div className="flex items-center gap-4 pb-4 mb-2 border-b border-toro-light/10">
-              <span className="text-xs text-toro-light/40 uppercase tracking-wider font-semibold">Language</span>
-              <div className="flex gap-3">
-                <button className="text-sm text-toro-gold font-bold">EN</button>
-                <button className="text-sm text-toro-light/50 hover:text-toro-light font-medium transition">IT</button>
-                <button className="text-sm text-toro-light/50 hover:text-toro-light font-medium transition">TR</button>
-              </div>
-            </div>
-
             <form
               onSubmit={handleHeaderSearch}
               className="w-full flex items-center bg-toro-light/10 backdrop-blur-md border border-toro-light/20 rounded-full p-1.5 transition-all hover:bg-toro-light/20 mb-2 mt-2"

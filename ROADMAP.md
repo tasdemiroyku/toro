@@ -21,6 +21,8 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-17 | Project renamed from `toro-next` to `toro` (repo, package, folder). Domain change pending; `lib/site.js` holds the URL. |
 | 2026-10-17 | Phone numbers live in an owner-only `private_profiles` table (not dropped), kept for future contact features. |
 | 2026-10-17 | Anyone can sign up with any e-mail. The student badge needs a code sent to a university e-mail (not the sign-up address). One university address per account. |
+| 2026-10-18 | Default listing covers are branded illustrations, not stock photos. Demo listings are labelled "Sample". |
+| 2026-10-18 | No public e-mail address until the domain exists; `/contact` form delivers to a server-only inbox variable. |
 | 2026-10-17 | Commits keep the `Co-Authored-By: Claude` trailer (transparency). From now on: feature branch → PR with description → merge. |
 | 2026-10-17 | Schema changes are SQL files in `supabase/migrations/`, written in the repo and applied by hand in the Supabase SQL Editor. Breaking changes use expand → deploy → contract. |
 
@@ -36,18 +38,28 @@ students comes after that, once moderation and legal pages are in place.
 - [x] Verified on production: no `phone_number` in page HTML
 - [x] RLS audit of all tables and storage (two catalog queries, 2026-10-17)
 - [x] Migrations written: baseline, messages hardening, realtime, private phone table, verification trigger, policy cleanup, subscribers, constraints
+- [x] All security migrations applied and verified with the anon key; [PR #1](https://github.com/tasdemiroyku/toro/pull/1) merged (2026-10-18)
+- [x] Student badge via one-time code to a university e-mail
+- [x] Hero video and images optimised (mobile home media 4.9 MB → 35 KB)
+- [x] Branded, self-hosted category covers (no Unsplash hot-links)
+- [x] Login / sign-up / reset redesign
+- [x] Privacy Policy, Terms of Use, contact form (e-mails the founders)
+- [x] Demo data seed with Sample labels; branded 404; uploaded photos deleted with the account
 
-## In progress — apply the migrations (branch `security/rls-hardening`)
+## In progress — first impression (branch `feat/first-impression`)
 
-1. ✅ `20261017120100` … `20261017120600` applied (2026-10-17)
-2. ✅ `20261017130000_student_code_verification.sql` applied
-3. ✅ Vercel environment variables set (`VERIFICATION_CODE_SECRET`, `RESEND_FROM_EMAIL`)
-4. Merge [PR #1](https://github.com/tasdemiroyku/toro/pull/1) → Vercel deploys the code that uses `private_profiles`
-5. Run `20261017120700_drop_profiles_phone_number.sql`
-6. Re-run `supabase/audit/*.sql` and test: messages, profile save, avatar upload,
-   waitlist, student verification
-7. Buy a domain and verify it in Resend, otherwise codes reach only the Resend
-   account owner
+To do after merging:
+
+1. Run `20261018120000_listings_is_sample.sql` in the SQL Editor
+2. Create the demo accounts `marta_polito`, `luca_tutor`, `selin_torino` (finish
+   onboarding), then run `supabase/seed/demo_listings.sql`
+3. Vercel: add `CONTACT_INBOX_EMAIL`
+4. Supabase → Authentication → set the minimum password length to 8 (the UI asks for 8)
+5. Check the Supabase project region and mention it in the Privacy Policy
+6. Buy a domain, verify it in Resend, then set `RESEND_FROM_EMAIL`, `CONTACT_EMAIL`
+   and `SITE_URL`
+7. Before the public launch: legal review of /privacy and /terms; `delete from
+   listings where is_sample`
 
 ## Audit findings (2026-10-17)
 
@@ -78,7 +90,7 @@ students comes after that, once moderation and legal pages are in place.
 
 | # | Feature | Effort | Depends on |
 |---|---|---|---|
-| F1 | Privacy policy + terms of use pages (GDPR), working footer links | S (text needs legal review) | — |
+| ~~F1~~ | ~~Privacy policy + terms of use pages~~ (done; legal review pending) | — | — |
 | F2 | Report listing / user + founder email via Resend + simple admin view | M | S2, S4 |
 | F3 | Email notification on new message (Resend) | S–M | S4 |
 | F4 | Waitlist confirmation e-mail via Resend (table fixed in `20261017120500`) | S | — |

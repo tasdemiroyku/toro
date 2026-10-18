@@ -5,6 +5,7 @@ import { useTransition } from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CATEGORY_LABEL, CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
+import SampleBadge from '@/components/SampleBadge'
 import { sendMessage } from '@/app/actions/messages'
 import { createClient } from '@/utils/supabase/client'
 
@@ -84,10 +85,18 @@ const handleToggleActive = () => {
           )}
 
           <div className="flex flex-col gap-2">
-            <span className="text-xs font-semibold text-toro-gold uppercase tracking-wide">
-              {CATEGORY_LABEL[listing.category] || listing.category}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold text-toro-gold uppercase tracking-wide">
+                {CATEGORY_LABEL[listing.category] || listing.category}
+              </span>
+              {listing.is_sample && <SampleBadge />}
+            </div>
             <h1 className="text-3xl font-bold text-toro-dark leading-tight">{listing.title}</h1>
+            {listing.is_sample && (
+              <p className="text-xs text-toro-dark/40">
+                This is a sample listing that shows how Toro works while we are in preview.
+              </p>
+            )}
           </div>
 
           <div className="flex flex-wrap gap-4 text-sm text-toro-dark/50">

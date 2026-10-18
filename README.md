@@ -8,7 +8,8 @@ exchange. The name comes from the *Toret*, Turin's green cast-iron bull fountain
 
 **Live demo:** https://toro-next.vercel.app
 
-> Status: pre-launch. The core marketplace works end to end. Moderation, legal
+> Status: pre-launch. The core marketplace works end to end. Listings marked
+> "Sample" are demo content. Moderation, legal
 > pages and translations are on the [roadmap](ROADMAP.md) before opening to
 > real users.
 
@@ -25,7 +26,12 @@ exchange. The name comes from the *Toret*, Turin's green cast-iron bull fountain
   receipts and an unread indicator in the header
 - **Verified students:** anyone can join; the badge is earned by confirming a
   one-time code sent to a university e-mail (via Resend)
-- **Account deletion:** removes the profile and the auth user (GDPR right to erasure)
+- **Account deletion:** removes the profile, listings, messages, private data and
+  uploaded photos (GDPR right to erasure)
+- **Legal & contact:** Privacy Policy, Terms of Use and a contact form that
+  e-mails the team without exposing an address
+- **Fast first load:** optimised hero media, no video on mobile, self-hosted
+  SVG category covers (about 4 KB each)
 
 ## Tech stack
 

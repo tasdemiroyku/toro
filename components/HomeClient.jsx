@@ -1,16 +1,51 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useSyncExternalStore } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import ToretBull from './ToretBull'
 import { CATEGORY_DEFAULT_IMAGE } from '@/lib/categories'
+import SampleBadge from '@/components/SampleBadge'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
 }
 const stagger = { visible: { transition: { staggerChildren: 0.15 } } }
+
+// ── Hero background video ─────────────────────────────────────────────────────
+// The poster image is the first paint (and the LCP element). The 0.8 MB video is
+// only fetched on wide screens, when the user allows motion and has no data saver.
+const VIDEO_QUERY = '(min-width: 768px) and (prefers-reduced-motion: no-preference)'
+
+function subscribeToVideoQuery(onChange) {
+  const media = window.matchMedia(VIDEO_QUERY)
+  media.addEventListener('change', onChange)
+  return () => media.removeEventListener('change', onChange)
+}
+const shouldPlayVideo = () =>
+  window.matchMedia(VIDEO_QUERY).matches && navigator.connection?.saveData !== true
+const shouldPlayVideoOnServer = () => false
+
+function HeroBackground() {
+  const playVideo = useSyncExternalStore(subscribeToVideoQuery, shouldPlayVideo, shouldPlayVideoOnServer)
+  const [videoReady, setVideoReady] = useState(false)
+
+  return (
+    <div className="absolute inset-0" aria-hidden="true">
+      <img src="/images/hero-poster.jpg" alt="" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover" />
+      {playVideo && (
+        <video
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${videoReady ? 'opacity-100' : 'opacity-0'}`}
+          autoPlay muted loop playsInline preload="auto"
+          onCanPlay={() => setVideoReady(true)}
+        >
+          <source src="/images/hero.mp4" type="video/mp4" />
+        </video>
+      )}
+    </div>
+  )
+}
 
 // ── How many cards fit at this viewport width ─────────────────────────────────
 function useVisibleCount() {
@@ -66,6 +101,7 @@ function ListingCard({ item, onClick }) {
           {isFree ? 'Free' : `€${item.price}`}
           {!isFree && <span className="text-[10px] opacity-40 ml-0.5">/{item.price_type === 'hour' ? 'hr' : 'job'}</span>}
         </div>
+        {item.is_sample && <SampleBadge className="absolute top-3 left-3 bg-white/90 shadow-sm" />}
       </div>
 
       <div className="p-4 flex flex-col gap-3">
@@ -156,9 +192,7 @@ export default function HomeClient({ user, listings }) {
 
       {/* ── Hero ── */}
       <section className="relative h-[650px] flex items-center overflow-hidden">
-        <video className="absolute inset-0 w-full h-full object-cover" autoPlay muted loop playsInline preload="metadata" poster="/torino.jpeg" aria-hidden="true">
-          <source src="/toret-video.webm" type="video/webm" />
-        </video>
+        <HeroBackground />
         <div className="absolute inset-0 bg-toro-dark/65 backdrop-blur-[2px]" />
 
         <motion.div className="relative z-10 w-full max-w-3xl mx-auto px-8 flex flex-col items-center mt-12" initial="hidden" animate="visible" variants={stagger}>

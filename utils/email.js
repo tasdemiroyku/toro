@@ -11,7 +11,7 @@ import { Resend } from 'resend'
 
 const DEFAULT_FROM = 'Toro <onboarding@resend.dev>'
 
-export async function sendEmail({ to, subject, text, html }) {
+export async function sendEmail({ to, subject, text, html, replyTo }) {
   if (!process.env.RESEND_API_KEY) throw new Error('RESEND_API_KEY is not set')
 
   // Created per call so a missing key fails here, not at import time
@@ -22,6 +22,7 @@ export async function sendEmail({ to, subject, text, html }) {
     subject,
     text,
     html,
+    ...(replyTo && { replyTo }),
   })
 
   if (error) throw new Error(error.message)

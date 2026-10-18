@@ -2,7 +2,7 @@ import LoginClient from '@/components/LoginClient'
 import { safeRedirectPath } from '@/lib/redirect'
 
 export const metadata = {
-  title: 'Login',
+  title: 'Log in',
 }
 
 export default async function LoginPage({ searchParams }) {

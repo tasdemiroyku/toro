@@ -39,14 +39,14 @@ export default function Footer() {
 
           {/* Legal Links */}
           <div className="flex gap-6">
-            <Link href="#" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
+            <Link href="/privacy" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
               Privacy
             </Link>
-            <Link href="#" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
+            <Link href="/terms" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
               Terms
             </Link>
-            <Link href="#" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
-              Contacts
+            <Link href="/contact" className="text-xs font-medium text-toro-light/50 hover:text-toro-light transition">
+              Contact
             </Link>
           </div>
           
