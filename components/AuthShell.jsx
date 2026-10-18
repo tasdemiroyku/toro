@@ -4,7 +4,8 @@ import CategoryIcon from '@/components/CategoryIcon'
 
 const HIGHLIGHTS = [
   'Students helping students across Turin: tutoring, paperwork, moving and more',
-  'Verified Student badge confirmed through your university e-mail',
+  // U+2011 non-breaking hyphen keeps "e-mail" on one line
+  'Verified Student badge confirmed through your university e\u2011mail',
   'Message providers directly. Free to join.',
 ]
 
