@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useSyncExternalStore } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import ToretBull from './ToretBull'
 import { CATEGORIES } from '@/lib/categories'
 import ListingCard from '@/components/ListingCard'
-import CategoryIcon from '@/components/CategoryIcon'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -152,6 +152,40 @@ export default function HomeClient({ user, listings }) {
           </motion.div>
         </motion.div>
       </section>
+
+      {/* ── Browse by category ── */}
+      <motion.section className="px-8 pt-20 max-w-[80rem] mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>
+        <motion.div variants={fadeUp} className="flex items-end justify-between gap-4 mb-8">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-3xl font-bold text-toro-dark">Browse by category</h2>
+            <p className="text-sm text-toro-dark/50">Everyday help, from people who study in Turin.</p>
+          </div>
+        </motion.div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {CATEGORIES.map(cat => (
+            <motion.div key={cat.value} variants={fadeUp}>
+              <Link
+                href={`/listings?category=${cat.value}`}
+                className="group relative block aspect-[4/3] rounded-[1.5rem] overflow-hidden border border-toro-dark/10"
+              >
+                <img src={cat.defaultImage} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-x-0 bottom-0 p-4 bg-linear-to-t from-toro-dark/90 to-transparent">
+                  <span className="text-sm font-semibold text-toro-light">{cat.label}</span>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+          <motion.div variants={fadeUp}>
+            <Link
+              href="/listings"
+              className="group h-full aspect-[4/3] rounded-[1.5rem] border border-toro-dark/10 bg-white flex flex-col items-center justify-center gap-3 hover:border-toro-gold transition"
+            >
+              <ToretBull className="w-10 h-10 text-toro-dark/30 group-hover:text-toro-gold transition" />
+              <span className="text-sm font-semibold text-toro-dark">All services →</span>
+            </Link>
+          </motion.div>
+        </div>
+      </motion.section>
 
       {/* ── Carousel section ── */}
       <motion.section className="px-8 py-24 max-w-[80rem] mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={stagger}>
