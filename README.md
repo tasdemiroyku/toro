@@ -26,7 +26,9 @@ comes from the *Toret*, Turin's green bull-head drinking fountains.
   allow-listed university address. It is stored as an HMAC, expires after 15 minutes,
   allows 5 attempts and is rate-limited.
 - **Fast first load.** Home page media on mobile went from 4.9 MB to 35 KB.
-- **Quality gates.** Lint, unit tests and a production build run on every pull request.
+- **Quality gates.** Every pull request runs lint (zero warnings), unit tests, a build
+  without server secrets and Playwright end-to-end tests; CodeQL scans the code and
+  `main` only accepts changes that pass. See [SECURITY.md](SECURITY.md) to report an issue.
 
 ## Features
 
@@ -46,7 +48,7 @@ comes from the *Toret*, Turin's green bull-head drinking fountains.
 
 Next.js 16 (App Router, Server Components, Server Actions) · React 19 · Tailwind CSS v4 ·
 Framer Motion · Supabase (PostgreSQL with RLS, Auth, Storage, Realtime; EU) · Resend ·
-Vercel · GitHub Actions
+Vercel · GitHub Actions · Playwright
 
 Architecture, engineering decisions and the project layout:
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).

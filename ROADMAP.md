@@ -7,7 +7,7 @@ Each work session starts from here.
 
 Make Toro a **working, secure, well-documented application** that holds up to a
 technical review (portfolio / internship applications). A public launch to real
-students comes after that, once moderation and legal pages are in place.
+students comes after that: see "Before the public launch" below.
 
 ## Decisions
 
@@ -21,6 +21,8 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-17 | Project renamed from `toro-next` to `toro` (repo, package, folder). Domain change pending; `lib/site.js` holds the URL. |
 | 2026-10-17 | Phone numbers live in an owner-only `private_profiles` table (not dropped), kept for future contact features. |
 | 2026-10-17 | Anyone can sign up with any e-mail. The student badge needs a code sent to a university e-mail (not the sign-up address). One university address per account. |
+| 2026-10-17 | Commits keep the `Co-Authored-By: Claude` trailer (transparency). From now on: feature branch → PR with description → merge. |
+| 2026-10-17 | Schema changes are SQL files in `supabase/migrations/`, written in the repo and applied by hand in the Supabase SQL Editor. Breaking changes use expand → deploy → contract. |
 | 2026-10-18 | Listing cards are text-first (no cover photos); category illustrations are used for the home page category tiles; uploaded photos appear on the detail page only. Demo listings are labelled "Sample". |
 | 2026-10-18 | No public e-mail address until the domain exists; `/contact` form delivers to a server-only inbox variable. |
 | 2026-10-18 | Portfolio-ready: Inter everywhere (Cormorant only for the logo), one page container, ten categories (+ Pet Care, Translation & Proofreading, Design & Media; Consular shown as Paperwork & Bureaucracy), compact category tiles, CI and unit tests, "All rights reserved" licence. |
@@ -30,8 +32,10 @@ students comes after that, once moderation and legal pages are in place.
 | 2026-10-18 | Home layout: category tiles on the sage band; "How it works" and "Why Toro" merged into one dark section (they repeated the same three-column layout). |
 | 2026-10-18 | `main` is protected by a GitHub ruleset: no deletion or force push, changes only through pull requests that pass CI ("Lint, test and build"). No required reviews while there is one maintainer. |
 | 2026-10-18 | README kept short (about 75 lines); architecture, decisions and project layout live in `docs/ARCHITECTURE.md`. |
-| 2026-10-17 | Commits keep the `Co-Authored-By: Claude` trailer (transparency). From now on: feature branch → PR with description → merge. |
-| 2026-10-17 | Schema changes are SQL files in `supabase/migrations/`, written in the repo and applied by hand in the Supabase SQL Editor. Breaking changes use expand → deploy → contract. |
+| 2026-10-19 | The build must not need any server secret: the admin client is created on first use (`getSupabaseAdmin()`), and CI builds without secrets. |
+| 2026-10-19 | End-to-end tests (Playwright) browse as a logged-out visitor against a production build, read live public data with the anon key, and use the installed Chrome. Logged-in flows stay manual for now (no test accounts in CI). |
+| 2026-10-19 | Dependencies: patch security advisories promptly, but prefer releases that are at least two weeks old (Next.js 16.3.8, Playwright 1.63.0). `npm audit --omit=dev` stays at zero. |
+| 2026-10-19 | GitHub security: CodeQL default setup and private vulnerability reporting are on; `SECURITY.md` describes how to report. |
 
 ## Done
 
@@ -53,28 +57,25 @@ students comes after that, once moderation and legal pages are in place.
 - [x] Privacy Policy, Terms of Use, contact form (e-mails the founders)
 - [x] Demo data seed with Sample labels; branded 404; uploaded photos deleted with the account
 - [x] Portfolio polish (PR #4) and home refresh: CI + tests, README showcase, consistent typography/layout, 10 categories
+- [x] Visual polish and home layout (PR #6, #8): auth fits the window, white background with a sage band, pill buttons, one How it works section
+- [x] Reports and moderation (PR #7): report listings and users, `/admin/reports`, listing removal, admin flag
+- [x] Search text escaped in PostgREST filters (PR #9), `next/image` everywhere with zero lint warnings (PR #10)
+- [x] Playwright end-to-end smoke tests in CI (PR #11); Next.js 16.3.8 security update (PR #12)
+- [x] Branch protection on `main`, CodeQL, private vulnerability reporting, `SECURITY.md`
 
-## In progress — rollout of the first-impression work ([PR #2](https://github.com/tasdemiroyku/toro/pull/2) merged, cards and auth polish in PR #3)
+## Before the public launch
 
-Open steps:
+Open steps, mostly outside the code:
 
-- Before merging PR #7: run `20261018140000_reports_and_moderation.sql`, then make
-  yourself admin (SQL in the migration header) and open `/admin/reports`.
-
-0. Run `20261018130000_more_categories.sql` **before** merging PR #4 (the forms offer the
-   new categories), then `supabase/seed/demo_listings_new_categories.sql`
-
-1. ✅ `20261018120000_listings_is_sample.sql` applied
-2. Supabase → Authentication → Users → Add user (Auto Confirm) for
-   `tasdemiroyku+marta@gmail.com`, `tasdemiroyku+luca@gmail.com` and
-   `tasdemiroyku+selin@gmail.com`, then run `supabase/seed/demo_listings.sql`
-3. Vercel: add `CONTACT_INBOX_EMAIL`
-4. Supabase → Authentication → set the minimum password length to 8 (the UI asks for 8)
-5. Check the Supabase project region and mention it in the Privacy Policy
-6. Buy a domain, verify it in Resend, then set `RESEND_FROM_EMAIL`, `CONTACT_EMAIL`
-   and `SITE_URL`
-7. Before the public launch: legal review of /privacy and /terms; `delete from
-   listings where is_sample`
+- [ ] Buy a domain, verify it in Resend, then set `RESEND_FROM_EMAIL`, `CONTACT_EMAIL`
+      and `SITE_URL` (and add the domain to the Supabase Auth redirect URLs)
+- [ ] Send one contact-form message and one report on production to confirm
+      `CONTACT_INBOX_EMAIL` and Resend deliver
+- [ ] Legal review of `/privacy` and `/terms`
+- [ ] `delete from listings where is_sample` (and the three demo accounts)
+- [ ] GitHub: add the repository variables `NEXT_PUBLIC_SUPABASE_URL` and
+      `NEXT_PUBLIC_SUPABASE_ANON_KEY` so the Playwright job runs in CI
+- [ ] GitHub: upload `docs/social-preview.jpg` under Settings → Social preview
 
 ## Audit findings (2026-10-17)
 
@@ -99,7 +100,8 @@ Open steps:
 | S4 | Move listing create/edit, inbox sends, academic info and avatar URL saves into Server Actions (personal info done) | M | — |
 | S5 | Rate limiting on messages, listing creation and `/api/subscribe` (Postgres function or Upstash) | M | S4 |
 | ~~S6~~ | ~~Server-side student verification with a strict allowlist~~ | — | — |
-| S7 | Escape user input used in PostgREST `.or()` search filters | S | — |
+| ~~S7~~ | ~~Escape user input used in PostgREST `.or()` search filters~~ (PR #9) | — | — |
+| S8 | Restrict `listings.image_url` to our Storage bucket with a CHECK constraint (today an owner could point it at any external URL) | S | — |
 
 ## Then — minimum for real users
 
@@ -111,10 +113,9 @@ Open steps:
 | F4 | Waitlist confirmation e-mail via Resend (table fixed in `20261017120500`) | S | — |
 | F5 | i18n: Italian / English / Turkish | L | F1 copy |
 | F6 | Turin neighbourhood filter | S | S1 |
-| F7 | Replace "launching soon" section with real onboarding CTA | S | F1, F2 |
+| ~~F7~~ | ~~Replace "launching soon" section with real onboarding CTA~~ (home refresh) | — | — |
 
 ## Nice to have
 
 - Saved listings, share buttons, image messages, request board, trust badges
-- Automated tests (Playwright smoke test for login → create listing → message)
-- `next/image` for remote images (currently plain `<img>`; lint warnings only)
+- Logged-in end-to-end tests (login → create listing → message) with dedicated test accounts

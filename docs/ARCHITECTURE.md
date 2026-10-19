@@ -61,6 +61,8 @@ tests/               Unit tests
 | `npm run build` | Production build |
 | `npm run lint` | ESLint (Next.js Core Web Vitals rules) |
 | `npm test` | Unit tests (`node:test`, no extra dependencies) |
+| `npm run test:e2e` | Playwright end-to-end tests against a production build (run `npm run build` first) |
 
-CI (GitHub Actions) runs lint, tests and a production build on every pull request,
-and `main` only accepts changes through pull requests that pass it.
+CI (GitHub Actions) runs lint, unit tests and a build without server secrets on every
+pull request, then the Playwright tests on desktop and mobile viewports. CodeQL scans
+every pull request, and `main` only accepts changes through pull requests that pass CI.

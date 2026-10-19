@@ -65,6 +65,8 @@ lib/categories.js          CATEGORIES (value, label, examples, icon), CATEGORY_L
 lib/password.js            PASSWORD_RULES, isStrongPassword (mirrors Supabase Auth policy)
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
 lib/redirect.js            safeRedirectPath()
+lib/search.js              normalizeSearchQuery, ilikeAnyColumn (quoted, escaped .or() filters)
+lib/images.js              canOptimizeImage (next/image: own files and Storage only)
 lib/site.js                SITE_URL, SITE_HOST, CONTACT_EMAIL, LEGAL_LAST_UPDATED
 utils/supabase/            client.js, server.js, proxy.js (session helper), admin.js (getSupabaseAdmin, secret key)
 utils/upload.js            image validation, WebP compression, Storage upload
@@ -73,9 +75,11 @@ proxy.js                   middleware entry point (Next.js 16 name)
 supabase/migrations/       versioned SQL schema, RLS policies, triggers
 supabase/audit/            read-only catalog queries to verify RLS and schema
 supabase/seed/             demo data (listings.is_sample = true)
-tests/                     node:test unit tests (redirects, password policy, categories ↔ DB CHECK)
-.github/workflows/ci.yml   lint → test → build
-docs/screenshots/          README images
+tests/                     node:test unit tests (redirects, passwords, search, images, categories ↔ DB CHECK)
+e2e/                       Playwright smoke tests (logged-out flows; playwright.config.mjs)
+.github/workflows/ci.yml   lint → test → build, then e2e (needs the public Supabase repo variables)
+docs/                      ARCHITECTURE.md, screenshots/ (README images), social-preview.jpg
+SECURITY.md                how to report a vulnerability
 public/images/             optimised media: hero.mp4, hero-poster.jpg, torino-river.jpg, og-image.jpg, toret/*.jpg
 ```
 
@@ -107,6 +111,8 @@ public/images/             optimised media: hero.mp4, hero-poster.jpg, torino-ri
 - Validate route params before querying: UUID regex for ids,
   `/^[a-z0-9_]{3,30}$/` for usernames.
 - Every redirect target from user input goes through `safeRedirectPath()`.
+- User text never goes into a PostgREST filter string directly: use
+  `ilikeAnyColumn()` from `lib/search.js` (or the typed `.eq()`/`.ilike()` builders).
 - Never select `profiles(*)` or `select('*')` on someone else's profile. Use
   `PUBLIC_PROFILE_COLUMNS`. `phone_number` is private.
 - New mutations go in Server Actions with server-side validation, not direct
