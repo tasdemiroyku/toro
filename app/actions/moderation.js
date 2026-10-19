@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import supabaseAdmin from '@/utils/supabase/admin'
+import { getSupabaseAdmin } from '@/utils/supabase/admin'
 import { getAdminUser } from '@/utils/supabase/adminGuard'
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -15,6 +15,7 @@ const ACTIONS = ['dismiss', 'resolve', 'remove_listing']
  *                      and marks every open report on it as 'actioned'
  */
 export async function resolveReport({ reportId, action, note }) {
+  const supabaseAdmin = getSupabaseAdmin()
   const admin = await getAdminUser()
   if (!admin) return { error: 'Not allowed.' }
   if (!UUID_RE.test(reportId ?? '') || !ACTIONS.includes(action)) return { error: 'Invalid request.' }

@@ -6,9 +6,10 @@
  * an admin (private_profiles.is_admin), otherwise null.
  */
 import { createClient } from '@/utils/supabase/server'
-import supabaseAdmin from '@/utils/supabase/admin'
+import { getSupabaseAdmin } from '@/utils/supabase/admin'
 
 export async function getAdminUser() {
+  const supabaseAdmin = getSupabaseAdmin()
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null

@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
-import supabaseAdmin from '@/utils/supabase/admin'
+import { getSupabaseAdmin } from '@/utils/supabase/admin'
 import { sendEmail } from '@/utils/email'
 import { SITE_URL } from '@/lib/site'
 import { REPORT_REASONS, REPORT_REASON_LABEL, REPORT_DETAILS_MAX, REPORTS_PER_DAY } from '@/lib/reports'
@@ -16,6 +16,7 @@ const TARGET_TYPES = ['listing', 'user']
  * Returns { error } or { success: true }.
  */
 export async function reportContent({ targetType, targetId, reason, details }) {
+  const supabaseAdmin = getSupabaseAdmin()
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { error: 'Please log in to report content.' }

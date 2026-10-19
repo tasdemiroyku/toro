@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import supabaseAdmin from '@/utils/supabase/admin'
+import { getSupabaseAdmin } from '@/utils/supabase/admin'
 import { getAdminUser } from '@/utils/supabase/adminGuard'
 import AdminReportsClient from '@/components/AdminReportsClient'
 
@@ -10,6 +10,7 @@ export const metadata = {
 
 // Look up listings and people referenced by the reports, in two queries
 async function loadTargets(reports) {
+  const supabaseAdmin = getSupabaseAdmin()
   const listingIds = [...new Set(reports.filter(r => r.target_type === 'listing').map(r => r.target_id))]
   const profileIds = [...new Set([
     ...reports.filter(r => r.target_type === 'user').map(r => r.target_id),
@@ -35,6 +36,7 @@ export default async function AdminReportsPage() {
   // Non-admins get a 404, so the page's existence is not revealed
   const admin = await getAdminUser()
   if (!admin) notFound()
+  const supabaseAdmin = getSupabaseAdmin()
 
   const [{ data: open }, { data: resolved }] = await Promise.all([
     supabaseAdmin.from('reports').select('*').eq('status', 'open').order('created_at', { ascending: false }).limit(100),

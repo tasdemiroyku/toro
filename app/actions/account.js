@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
-import supabaseAdmin from '@/utils/supabase/admin' // Using our new admin utility
+import { getSupabaseAdmin } from '@/utils/supabase/admin'
 import { redirect } from 'next/navigation'
 
 const BUCKET = 'toro-uploads'
@@ -11,6 +11,7 @@ const BUCKET = 'toro-uploads'
  * Storage objects are not covered by database cascades, so they are deleted explicitly.
  */
 async function removeUserFiles(userId) {
+  const supabaseAdmin = getSupabaseAdmin()
   const bucket = supabaseAdmin.storage.from(BUCKET)
   const paths = []
 
@@ -34,6 +35,7 @@ async function removeUserFiles(userId) {
  * cascades to listings, messages and private data) and auth.users
  */
 export async function deleteUserAccount() {
+  const supabaseAdmin = getSupabaseAdmin()
   const supabase = await createClient()
 
   // 1. Authenticate the requester

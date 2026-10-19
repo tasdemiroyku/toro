@@ -65,7 +65,7 @@ lib/password.js            PASSWORD_RULES, isStrongPassword (mirrors Supabase Au
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
 lib/redirect.js            safeRedirectPath()
 lib/site.js                SITE_URL, SITE_HOST, CONTACT_EMAIL, LEGAL_LAST_UPDATED
-utils/supabase/            client.js, server.js, proxy.js (session helper), admin.js (secret key)
+utils/supabase/            client.js, server.js, proxy.js (session helper), admin.js (getSupabaseAdmin, secret key)
 utils/upload.js            image validation, WebP compression, Storage upload
 utils/email.js             sendEmail() via Resend (server-only)
 proxy.js                   middleware entry point (Next.js 16 name)
@@ -99,7 +99,9 @@ public/images/             optimised media: hero.mp4, hero-poster.jpg, torino-ri
 
 - Use `supabase.auth.getUser()` on the server. **Never** use `getSession()`.
 - RLS stays enabled on every table. The admin (secret key) client is used only in
-  Server Actions, never imported by client code. Only `NEXT_PUBLIC_*` vars may
+  server code (Server Actions, server pages), never imported by client code. Call
+  `getSupabaseAdmin()` inside the function, never at module level: the build must
+  not need any server secret (CI builds without them). Only `NEXT_PUBLIC_*` vars may
   reach the browser.
 - Validate route params before querying: UUID regex for ids,
   `/^[a-z0-9_]{3,30}$/` for usernames.
