@@ -75,7 +75,7 @@ Open steps, mostly outside the code:
 - [ ] `delete from listings where is_sample` (and the three demo accounts)
 - [ ] GitHub: add the repository variables `NEXT_PUBLIC_SUPABASE_URL` and
       `NEXT_PUBLIC_SUPABASE_ANON_KEY` so the Playwright job runs in CI
-- [ ] GitHub: upload `docs/social-preview.png` under Settings → Social preview
+- [ ] GitHub: upload `docs/social-preview.jpg` under Settings → Social preview
 
 ## Audit findings (2026-10-17)
 
