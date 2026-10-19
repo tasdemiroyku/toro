@@ -5,7 +5,7 @@ import { useTransition } from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { canOptimizeImage } from '@/lib/images'
+import { canOptimizeImage, isListingImageUrl } from '@/lib/images'
 import { CATEGORY_LABEL } from '@/lib/categories'
 import CategoryIcon from '@/components/CategoryIcon'
 import ReportButton from '@/components/ReportButton'
@@ -23,8 +23,11 @@ export default function ListingDetailClient({ listing: initialListing, profile, 
   const [sendError, setSendError]     = useState(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-  // Only a photo the provider uploaded; listings without one show the category icon
-  const cover = listing.image_url || null
+  // Only a photo the provider uploaded to this listing's Storage folder (the
+  // database enforces the same rule); listings without one show the category icon
+  const cover = isListingImageUrl(listing.image_url, listing.user_id, listing.id)
+    ? listing.image_url
+    : null
 
   const handleContact = async () => {
     if (!user) { router.push('/login'); return }

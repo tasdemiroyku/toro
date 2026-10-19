@@ -21,7 +21,8 @@ flowchart LR
   handles UI state, animation and realtime.
 - **Authorization lives in PostgreSQL.** The browser only has the anon key, so every
   table has Row Level Security. Sensitive columns are protected with column grants,
-  not just hidden in queries.
+  not just hidden in queries, and CHECK constraints validate what clients may write
+  (categories, lengths, listing photos only from the listing's own Storage folder).
 - **Mutations that need trust run as Server Actions:** profile saves, student
   verification, the contact form and account deletion. They validate input on the
   server and return errors to the UI instead of throwing.
