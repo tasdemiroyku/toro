@@ -37,6 +37,7 @@ students comes after that: see "Before the public launch" below.
 | 2026-10-19 | Dependencies: patch security advisories promptly, but prefer releases that are at least two weeks old (Next.js 16.3.8, Playwright 1.63.0). `npm audit --omit=dev` stays at zero. |
 | 2026-10-19 | GitHub security: CodeQL default setup and private vulnerability reporting are on; `SECURITY.md` describes how to report. |
 | 2026-10-19 | `listings.image_url` may only be null or a file in that listing's own Storage folder (`toro-uploads/listings/{user_id}/{id}/`), enforced by a CHECK constraint and mirrored by `isListingImageUrl` on the detail page. The project URL is written in the migration because Postgres cannot know it (it is public anyway). Storing a path instead of a URL was cleaner but needed an expand/contract migration. Avatars stay unrestricted: Google and LinkedIn avatar URLs are copied at sign-up. |
+| 2026-10-19 | Demo URL is `torotorino.vercel.app`; `toro-next.vercel.app` redirects to it. Both stay in the Supabase redirect URLs until a custom domain replaces them. |
 
 ## Done
 
@@ -78,7 +79,7 @@ Open steps, mostly outside the code:
       `CONTACT_INBOX_EMAIL` and Resend deliver
 - [ ] Legal review of `/privacy` and `/terms`
 - [ ] `delete from listings where is_sample` (and the three demo accounts)
-- [ ] GitHub: add the repository variables `NEXT_PUBLIC_SUPABASE_URL` and
+- [x] GitHub: add the repository variables `NEXT_PUBLIC_SUPABASE_URL` and
       `NEXT_PUBLIC_SUPABASE_ANON_KEY` so the Playwright job runs in CI
 - [ ] GitHub: upload `docs/social-preview.jpg` under Settings → Social preview
 
