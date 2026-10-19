@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import ListingsClient from '@/components/ListingsClient'
+import { normalizeSearchQuery, ilikeAnyColumn } from '@/lib/search'
 
 export const metadata = {
   title: 'Services in Torino',
@@ -12,8 +13,7 @@ export default async function ListingsPage({ searchParams }) {
   const { data: { user } } = await supabase.auth.getUser()
 
   const { q, category, page } = await searchParams
-  const rawQuery = q?.trim().slice(0, 100) ?? ''
-  const searchQuery = rawQuery.replace(/[().,]/g, '')
+  const searchQuery = normalizeSearchQuery(q)
   const activeCategory = category?.trim() ?? ''
   const currentPage = Math.max(1, parseInt(page ?? '1', 10))
   
@@ -33,9 +33,7 @@ export default async function ListingsPage({ searchParams }) {
   }
 
   if (searchQuery) {
-    listingsQuery = listingsQuery.or(
-      `title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,category.ilike.%${searchQuery}%`
-    )
+    listingsQuery = listingsQuery.or(ilikeAnyColumn(['title', 'description', 'category'], searchQuery))
   }
 
   // --- 2. Fetch Profiles (The Unified Part) ---
@@ -45,7 +43,7 @@ export default async function ListingsPage({ searchParams }) {
     const { data: matchedProfiles } = await supabase
       .from('profiles')
       .select('id, full_name, avatar_url, username, is_verified, bio, skills')
-      .or(`full_name.ilike.%${searchQuery}%,username.ilike.%${searchQuery}%,skills.ilike.%${searchQuery}%,bio.ilike.%${searchQuery}%`)
+      .or(ilikeAnyColumn(['full_name', 'username', 'skills', 'bio'], searchQuery))
       .not('username', 'is', null)
       .limit(5) // Limit to top 5 matches to keep the focus on services
     
