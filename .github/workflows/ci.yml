@@ -34,3 +34,38 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
+
+  e2e:
+    name: End-to-end (Playwright)
+    needs: check
+    # Needs the public Supabase URL and anon key as repository variables
+    # (Settings → Secrets and variables → Actions → Variables). Skipped until set.
+    if: vars.NEXT_PUBLIC_SUPABASE_URL != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    # Public values only: the tests browse as a logged-out visitor and read live data
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      NEXT_TELEMETRY_DISABLED: 1
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+      # Uses the Google Chrome that ships with the runner (channel: 'chrome')
+      - run: npm run test:e2e
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
