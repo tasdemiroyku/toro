@@ -9,7 +9,7 @@ Please report privately, not in a public issue:
 
 - **GitHub:** the repository's **Security** tab → **Report a vulnerability**
   (private vulnerability reporting is enabled), or
-- **Contact form:** [toro-next.vercel.app/contact](https://toro-next.vercel.app/contact),
+- **Contact form:** [torotorino.vercel.app/contact](https://torotorino.vercel.app/contact),
   which goes straight to the founders.
 
 Include the affected URL or file, steps to reproduce and the impact you expect.

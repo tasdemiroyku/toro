@@ -3,7 +3,7 @@
 **A services marketplace for students in Turin, Italy.**
 
 [![CI](https://github.com/tasdemiroyku/toro/actions/workflows/ci.yml/badge.svg)](https://github.com/tasdemiroyku/toro/actions/workflows/ci.yml)
-&nbsp;**Live demo:** [toro-next.vercel.app](https://toro-next.vercel.app)
+&nbsp;**Live demo:** [torotorino.vercel.app](https://torotorino.vercel.app)
 
 Students offer and find everyday help from each other: tutoring, paperwork with
 Italian bureaucracy, moving, tech help, pet care, translation and more. The name
