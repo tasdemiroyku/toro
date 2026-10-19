@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
-    # Placeholders: the build only needs well-formed values; no secrets in CI
+    # Placeholders for the public values only. The build must not need any
+    # server secret (SUPABASE_SECRET_KEY etc.), and CI checks that by leaving them out.
     env:
       NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
-      SUPABASE_SECRET_KEY: ci-placeholder-secret-key
       NEXT_TELEMETRY_DISABLED: 1
 
     steps:
