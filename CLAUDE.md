@@ -29,8 +29,9 @@ Auth with e-mail + Google + LinkedIn OIDC, Storage, Realtime) · Resend (install
 not used yet) · Vercel.
 
 Commands: `npm run dev`, `npm run build`, `npm run lint`, `npm test`. Before
-committing, build, lint and tests must pass with zero errors (`<img>` warnings are
-accepted for now). GitHub Actions (`.github/workflows/ci.yml`) runs the same checks
+committing, build, lint and tests must pass with zero errors and zero warnings.
+Images use `next/image`; pass `unoptimized={!canOptimizeImage(src)}` (`lib/images.js`)
+for user-provided URLs. GitHub Actions (`.github/workflows/ci.yml`) runs the same checks
 on every PR with placeholder env values.
 
 ## Structure

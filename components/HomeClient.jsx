@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useSyncExternalStore } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import ToretBull from './ToretBull'
@@ -59,7 +60,7 @@ function HeroBackground() {
 
   return (
     <div className="absolute inset-0" aria-hidden="true">
-      <img src="/images/hero-poster.jpg" alt="" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover" />
+      <Image src="/images/hero-poster.jpg" alt="" fill sizes="100vw" fetchPriority="high" className="object-cover" />
       {playVideo && (
         <video
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${videoReady ? 'opacity-100' : 'opacity-0'}`}
@@ -318,12 +319,14 @@ export default function HomeClient({ user, listings, categoryCounts = {} }) {
           </motion.div>
           <motion.div variants={fadeUp} className="grid grid-cols-2 gap-3 md:gap-4">
             {TORET_PHOTOS.map((photo, i) => (
-              <img
+              <Image
                 key={photo.src}
                 src={photo.src}
                 alt={photo.alt}
-                loading="lazy"
-                className={`w-full aspect-[4/3] object-cover rounded-2xl ${i % 2 === 1 ? 'translate-y-6 md:translate-y-10' : ''}`}
+                width={640}
+                height={480}
+                sizes="(min-width: 1024px) 30vw, 50vw"
+                className={`w-full h-auto aspect-[4/3] object-cover rounded-2xl ${i % 2 === 1 ? 'translate-y-6 md:translate-y-10' : ''}`}
               />
             ))}
           </motion.div>

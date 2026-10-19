@@ -1,3 +1,6 @@
+import Image from 'next/image'
+import { canOptimizeImage } from '@/lib/images'
+
 // Profile photo, or initials on a colour picked from the person's id, so the
 // same person always gets the same colour everywhere on the site.
 const PALETTE = [
@@ -26,9 +29,12 @@ export default function Avatar({ profile, className = 'w-8 h-8 text-xs' }) {
 
   if (profile?.avatar_url) {
     return (
-      <img
+      <Image
         src={profile.avatar_url}
         alt=""
+        width={128}
+        height={128}
+        unoptimized={!canOptimizeImage(profile.avatar_url)}
         className={`${className} rounded-full object-cover border border-toro-dark/10 shrink-0`}
       />
     )

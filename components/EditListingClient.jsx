@@ -2,9 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { createClient } from '@/utils/supabase/client'
 import { CATEGORIES, PRICE_TYPES } from '@/lib/categories'
 import { uploadListingImage, validateImageFile } from '@/utils/upload'
+import { canOptimizeImage } from '@/lib/images'
 
 export default function EditListingClient({ listing }) {
   const supabase = createClient()
@@ -144,10 +146,13 @@ export default function EditListingClient({ listing }) {
             <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-toro-dark/10 group">
               {displayCover ? (
                 <>
-                  <img
+                  <Image
                     src={displayCover}
                     alt="Cover"
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(min-width: 768px) 640px, 100vw"
+                    unoptimized={!canOptimizeImage(displayCover)}
+                    className="object-cover"
                   />
                   {/* Overlay on hover */}
                   <div className="absolute inset-0 bg-toro-dark/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-3">
