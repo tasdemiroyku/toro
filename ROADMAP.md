@@ -36,6 +36,7 @@ students comes after that: see "Before the public launch" below.
 | 2026-10-19 | End-to-end tests (Playwright) browse as a logged-out visitor against a production build, read live public data with the anon key, and use the installed Chrome. Logged-in flows stay manual for now (no test accounts in CI). |
 | 2026-10-19 | Dependencies: patch security advisories promptly, but prefer releases that are at least two weeks old (Next.js 16.3.8, Playwright 1.63.0). `npm audit --omit=dev` stays at zero. |
 | 2026-10-19 | GitHub security: CodeQL default setup and private vulnerability reporting are on; `SECURITY.md` describes how to report. |
+| 2026-10-19 | `listings.image_url` may only be null or a file in that listing's own Storage folder (`toro-uploads/listings/{user_id}/{id}/`), enforced by a CHECK constraint and mirrored by `isListingImageUrl` on the detail page. The project URL is written in the migration because Postgres cannot know it (it is public anyway). Storing a path instead of a URL was cleaner but needed an expand/contract migration. Avatars stay unrestricted: Google and LinkedIn avatar URLs are copied at sign-up. |
 
 ## Done
 
@@ -62,11 +63,15 @@ students comes after that: see "Before the public launch" below.
 - [x] Search text escaped in PostgREST filters (PR #9), `next/image` everywhere with zero lint warnings (PR #10)
 - [x] Playwright end-to-end smoke tests in CI (PR #11); Next.js 16.3.8 security update (PR #12)
 - [x] Branch protection on `main`, CodeQL, private vulnerability reporting, `SECURITY.md`
+- [x] Listing photos only from the listing's own Storage folder (S8): migration
+      `20261019120000`, detail page check, unit tests
 
 ## Before the public launch
 
 Open steps, mostly outside the code:
 
+- [ ] Apply `20261019120000_listings_image_url_check.sql` in the Supabase SQL Editor
+      (run the check query in its header first; expected 0 rows)
 - [ ] Buy a domain, verify it in Resend, then set `RESEND_FROM_EMAIL`, `CONTACT_EMAIL`
       and `SITE_URL` (and add the domain to the Supabase Auth redirect URLs)
 - [ ] Send one contact-form message and one report on production to confirm
@@ -101,7 +106,7 @@ Open steps, mostly outside the code:
 | S5 | Rate limiting on messages, listing creation and `/api/subscribe` (Postgres function or Upstash) | M | S4 |
 | ~~S6~~ | ~~Server-side student verification with a strict allowlist~~ | — | — |
 | ~~S7~~ | ~~Escape user input used in PostgREST `.or()` search filters~~ (PR #9) | — | — |
-| S8 | Restrict `listings.image_url` to our Storage bucket with a CHECK constraint (today an owner could point it at any external URL) | S | — |
+| ~~S8~~ | ~~Restrict `listings.image_url` to our Storage bucket with a CHECK constraint~~ (`20261019120000`) | — | — |
 
 ## Then — minimum for real users
 

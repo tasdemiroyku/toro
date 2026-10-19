@@ -66,7 +66,7 @@ lib/password.js            PASSWORD_RULES, isStrongPassword (mirrors Supabase Au
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
 lib/redirect.js            safeRedirectPath()
 lib/search.js              normalizeSearchQuery, ilikeAnyColumn (quoted, escaped .or() filters)
-lib/images.js              canOptimizeImage (next/image: own files and Storage only)
+lib/images.js              canOptimizeImage (next/image: own files and Storage only), isListingImageUrl
 lib/site.js                SITE_URL, SITE_HOST, CONTACT_EMAIL, LEGAL_LAST_UPDATED
 utils/supabase/            client.js, server.js, proxy.js (session helper), admin.js (getSupabaseAdmin, secret key)
 utils/upload.js            image validation, WebP compression, Storage upload
@@ -138,8 +138,11 @@ changes, re-run `supabase/audit/*.sql` (read-only) to confirm the result.
   codes as HMAC (`VERIFICATION_CODE_SECRET`), attempts, expires_at, consumed_at.
 - **listings:** id, user_id → profiles, title ≤100, description ≤1000, category
   (CHECK = `lib/categories.js` values), price 0–10000, price_type (CHECK), location,
-  languages, is_active, image_url, created_at. Anyone sees active rows; owners see
-  and edit their own.
+  languages, is_active, image_url (CHECK: null or a file in
+  `toro-uploads/listings/{user_id}/{id}/` on our project URL; mirrored by
+  `isListingImageUrl`), created_at. Anyone sees active rows; owners see and edit
+  their own. A new Supabase project or custom domain needs a migration that
+  re-creates `listings_image_url_own_upload`.
 - **messages:** id, listing_id, sender_id, receiver_id, content 1–500, read,
   created_at. Participants read; inserts must concern a listing owned by sender or
   receiver (`listing_belongs_to_either()`); receivers may UPDATE only `read`
