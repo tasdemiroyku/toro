@@ -36,6 +36,7 @@ students comes after that: see "Before the public launch" below.
 | 2026-10-19 | End-to-end tests (Playwright) browse as a logged-out visitor against a production build, read live public data with the anon key, and use the installed Chrome. Logged-in flows stay manual for now (no test accounts in CI). |
 | 2026-10-19 | Dependencies: patch security advisories promptly, but prefer releases that are at least two weeks old (Next.js 16.3.8, Playwright 1.63.0). `npm audit --omit=dev` stays at zero. |
 | 2026-10-19 | GitHub security: CodeQL default setup and private vulnerability reporting are on; `SECURITY.md` describes how to report. |
+| 2026-10-19 | Demo URL is `torotorino.vercel.app`; `toro-next.vercel.app` redirects to it. Both stay in the Supabase redirect URLs until a custom domain replaces them. |
 
 ## Done
 
@@ -73,7 +74,7 @@ Open steps, mostly outside the code:
       `CONTACT_INBOX_EMAIL` and Resend deliver
 - [ ] Legal review of `/privacy` and `/terms`
 - [ ] `delete from listings where is_sample` (and the three demo accounts)
-- [ ] GitHub: add the repository variables `NEXT_PUBLIC_SUPABASE_URL` and
+- [x] GitHub: add the repository variables `NEXT_PUBLIC_SUPABASE_URL` and
       `NEXT_PUBLIC_SUPABASE_ANON_KEY` so the Playwright job runs in CI
 - [ ] GitHub: upload `docs/social-preview.jpg` under Settings → Social preview
 
