@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import ToretBull from '@/components/ToretBull'
 
@@ -20,10 +21,13 @@ export default function AuthShell({ children }) {
   return (
     <div className="min-h-[calc(100dvh-72px)] lg:h-[calc(100dvh-72px)] lg:min-h-0 grid lg:grid-cols-2 lg:grid-rows-[minmax(0,1fr)] bg-toro-light">
       <aside className="relative hidden lg:flex flex-col justify-end p-12 xl:p-16 [@media(max-height:760px)]:p-10 overflow-hidden">
-        <img
+        <Image
           src="/images/torino-river.jpg"
           alt="The Po river and Monte dei Cappuccini in Turin"
-          className="toro-ken-burns absolute inset-0 w-full h-full object-cover"
+          fill
+          sizes="50vw"
+          fetchPriority="high"
+          className="toro-ken-burns object-cover"
         />
         <div className="absolute inset-0 bg-linear-to-t from-toro-dark via-toro-dark/70 to-toro-dark/30" />
 

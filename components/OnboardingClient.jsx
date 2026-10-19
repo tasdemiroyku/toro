@@ -2,9 +2,11 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
 import { uploadAvatar } from '@/utils/upload'
+import { canOptimizeImage } from '@/lib/images'
 import ToretBull from '@/components/ToretBull'
 import { SITE_HOST } from '@/lib/site'
 import PasswordStrength from '@/components/PasswordStrength'
@@ -180,7 +182,7 @@ function AvatarUpload({ preview, uploading, onPick }) {
         aria-label="Upload photo"
       >
         {preview?.url ? (
-          <img src={preview.url} alt="" className="w-full h-full object-cover" />
+          <Image src={preview.url} alt="" fill sizes="96px" unoptimized={!canOptimizeImage(preview.url)} className="object-cover" />
         ) : (
           <span className="text-toro-light text-3xl font-bold">{initial}</span>
         )}

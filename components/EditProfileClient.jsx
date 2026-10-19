@@ -2,9 +2,11 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/utils/supabase/client'
 import { uploadAvatar } from '@/utils/upload'
+import { canOptimizeImage } from '@/lib/images'
 import ToretBull from '@/components/ToretBull'
 import { useTransition } from 'react'
 import { deleteUserAccount } from '@/app/actions/account'
@@ -744,7 +746,7 @@ export default function EditProfileClient({ user, initialProfile }) {
             aria-label="Upload profile picture"
           >
             {profile?.avatar_url ? (
-              <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+              <Image src={profile.avatar_url} alt="Profile" fill sizes="80px" unoptimized={!canOptimizeImage(profile.avatar_url)} className="object-cover" />
             ) : (
               <span>{initials}</span>
             )}

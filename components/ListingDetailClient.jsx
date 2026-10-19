@@ -4,6 +4,8 @@ import { deleteListing, toggleListingActive } from '@/app/actions/listings'
 import { useTransition } from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { canOptimizeImage } from '@/lib/images'
 import { CATEGORY_LABEL } from '@/lib/categories'
 import CategoryIcon from '@/components/CategoryIcon'
 import ReportButton from '@/components/ReportButton'
@@ -83,8 +85,8 @@ const handleToggleActive = () => {
           </button>
 
           {cover && (
-            <div className="w-full h-64 rounded-2xl overflow-hidden">
-              <img src={cover} alt={listing.title} className="w-full h-full object-cover" />
+            <div className="relative w-full h-64 rounded-2xl overflow-hidden">
+              <Image src={cover} alt={listing.title} fill sizes="(min-width: 1024px) 60vw, 100vw" unoptimized={!canOptimizeImage(cover)} className="object-cover" />
             </div>
           )}
 
