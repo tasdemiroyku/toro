@@ -71,7 +71,7 @@ students comes after that: see "Before the public launch" below.
 
 Open steps, mostly outside the code:
 
-- [ ] Apply `20261019120000_listings_image_url_check.sql` in the Supabase SQL Editor
+- [x] Apply `20261019120000_listings_image_url_check.sql` in the Supabase SQL Editor
       (run the check query in its header first; expected 0 rows)
 - [ ] Buy a domain, verify it in Resend, then set `RESEND_FROM_EMAIL`, `CONTACT_EMAIL`
       and `SITE_URL` (and add the domain to the Supabase Auth redirect URLs)
@@ -81,7 +81,7 @@ Open steps, mostly outside the code:
 - [ ] `delete from listings where is_sample` (and the three demo accounts)
 - [x] GitHub: add the repository variables `NEXT_PUBLIC_SUPABASE_URL` and
       `NEXT_PUBLIC_SUPABASE_ANON_KEY` so the Playwright job runs in CI
-- [ ] GitHub: upload `docs/social-preview.jpg` under Settings → Social preview
+- [x] GitHub: upload `docs/social-preview.jpg` under Settings → Social preview
 
 ## Audit findings (2026-10-17)
 
