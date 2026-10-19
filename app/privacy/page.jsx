@@ -26,6 +26,7 @@ export default function PrivacyPage() {
           <li><strong>Private profile:</strong> your phone number, if you add one. Only you can see it.</li>
           <li><strong>Student verification:</strong> the university e-mail address you verify and the date of verification. The 6-digit code we send is stored only as a cryptographic hash and expires after 15 minutes.</li>
           <li><strong>Listings</strong> you publish, and <strong>messages</strong> you exchange with other users.</li>
+          <li><strong>Reports:</strong> if you report a listing or a user, we store what you reported, the reason and any details you add. Only our moderators see who sent a report.</li>
           <li><strong>Waitlist:</strong> your e-mail address, if you ask to be notified about the launch.</li>
           <li><strong>Technical data:</strong> session cookies needed to keep you logged in, and standard server logs (such as your IP address and browser type) kept by our hosting provider for security.</li>
         </ul>
@@ -34,7 +35,7 @@ export default function PrivacyPage() {
       <LegalSection title="3. Why we use it (legal bases)">
         <ul>
           <li><strong>To provide the service</strong> (GDPR Art. 6(1)(b)): create your account, show your profile and listings, deliver messages and verify student status when you ask us to.</li>
-          <li><strong>To keep Toro safe</strong> (Art. 6(1)(f), legitimate interest): prevent spam and abuse, limit repeated attempts and investigate reports.</li>
+          <li><strong>To keep Toro safe</strong> (Art. 6(1)(f), legitimate interest): prevent spam and abuse, limit repeated attempts, review reports and remove content that breaks our Terms.</li>
           <li><strong>To send launch updates</strong> (Art. 6(1)(a), consent): only if you joined the waitlist. You can ask us to remove you at any time.</li>
         </ul>
         <p>We do not sell your data, show ads or use tracking or advertising cookies.</p>

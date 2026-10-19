@@ -75,8 +75,9 @@ export default function TermsPage() {
 
       <LegalSection title="7. Moderation and termination">
         <p>
-          We may remove content or suspend or close accounts that break these terms or put other
-          users at risk. You can stop using Toro and delete your account at any time from your
+          Anyone signed in can report a listing or a user with the &ldquo;Report&rdquo; link. Our
+          moderators review reports and may remove content or suspend or close accounts that break
+          these terms or put other users at risk. Reports are confidential. You can stop using Toro and delete your account at any time from your
           profile settings.
         </p>
       </LegalSection>

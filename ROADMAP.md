@@ -58,6 +58,9 @@ students comes after that, once moderation and legal pages are in place.
 
 Open steps:
 
+- Before merging PR #7: run `20261018140000_reports_and_moderation.sql`, then make
+  yourself admin (SQL in the migration header) and open `/admin/reports`.
+
 0. Run `20261018130000_more_categories.sql` **before** merging PR #4 (the forms offer the
    new categories), then `supabase/seed/demo_listings_new_categories.sql`
 
@@ -103,7 +106,7 @@ Open steps:
 | # | Feature | Effort | Depends on |
 |---|---|---|---|
 | ~~F1~~ | ~~Privacy policy + terms of use pages~~ (done; legal review pending) | — | — |
-| F2 | Report listing / user + founder email via Resend + simple admin view | M | S2, S4 |
+| ~~F2~~ | ~~Report listing / user, founder e-mail, admin view~~ (PR #7) | — | — |
 | F3 | Email notification on new message (Resend) | S–M | S4 |
 | F4 | Waitlist confirmation e-mail via Resend (table fixed in `20261017120500`) | S | — |
 | F5 | i18n: Italian / English / Turkish | L | F1 copy |

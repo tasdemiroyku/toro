@@ -43,6 +43,9 @@ app/
   actions/profile.js       savePersonalInfo (phone → private_profiles)
   actions/verification.js  requestStudentCode, confirmStudentCode (admin client + Resend)
   actions/contact.js       sendContactMessage → CONTACT_INBOX_EMAIL
+  actions/reports.js       reportContent (validation, daily limit, founders e-mail)
+  actions/moderation.js    resolveReport (admin only)
+  admin/reports/           moderation page (404 for non-admins)
   privacy/ terms/ contact/ static legal pages and contact form
   not-found.jsx            branded 404
   api/subscribe/route.js   waitlist insert into `subscribers`
@@ -62,7 +65,7 @@ lib/password.js            PASSWORD_RULES, isStrongPassword (mirrors Supabase Au
 lib/profile.js             PUBLIC_PROFILE_COLUMNS
 lib/redirect.js            safeRedirectPath()
 lib/site.js                SITE_URL, SITE_HOST, CONTACT_EMAIL, LEGAL_LAST_UPDATED
-utils/supabase/            client.js, server.js, proxy.js (session helper), admin.js (secret key)
+utils/supabase/            client.js, server.js, proxy.js (session helper), admin.js (getSupabaseAdmin, secret key)
 utils/upload.js            image validation, WebP compression, Storage upload
 utils/email.js             sendEmail() via Resend (server-only)
 proxy.js                   middleware entry point (Next.js 16 name)
@@ -96,7 +99,9 @@ public/images/             optimised media: hero.mp4, hero-poster.jpg, torino-ri
 
 - Use `supabase.auth.getUser()` on the server. **Never** use `getSession()`.
 - RLS stays enabled on every table. The admin (secret key) client is used only in
-  Server Actions, never imported by client code. Only `NEXT_PUBLIC_*` vars may
+  server code (Server Actions, server pages), never imported by client code. Call
+  `getSupabaseAdmin()` inside the function, never at module level: the build must
+  not need any server secret (CI builds without them). Only `NEXT_PUBLIC_*` vars may
   reach the browser.
 - Validate route params before querying: UUID regex for ids,
   `/^[a-z0-9_]{3,30}$/` for usernames.
@@ -135,6 +140,14 @@ changes, re-run `supabase/audit/*.sql` (read-only) to confirm the result.
   `messages_listing_id_fkey`, `messages_sender_id_fkey` and
   `messages_receiver_id_fkey` must stay exact: the inbox query uses them as
   PostgREST join hints.
+- **reports:** reporter_id, target_type (listing|user), target_id, reason (CHECK =
+  `lib/reports.js`), details ≤1000, status (open|dismissed|actioned), resolved_at/by.
+  Insert-only for the reporter; read and resolved only with the service role on
+  `/admin/reports` (`getAdminUser` in `utils/supabase/adminGuard.js`, admins have
+  `private_profiles.is_admin`).
+- **Moderation:** `listings.is_removed` (+ removed_reason, removed_at) hides a listing
+  from everyone but its owner; listing insert/update grants are column lists that
+  exclude these columns. Add new editable listing columns to those grants.
 - **subscribers:** email (lowercase, unique). anon/authenticated may INSERT only;
   nobody can read it through the API.
 - **is_verified** is granted only by `confirmStudentCode` (service role) after a

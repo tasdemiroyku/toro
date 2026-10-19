@@ -35,6 +35,7 @@ comes from the *Toret*, Turin's green bull-head drinking fountains.
 - Search with category filters, server-side pagination and shareable URLs
 - Public profiles at `/u/[username]` and a realtime inbox with read receipts
 - Verified Student badge and full account deletion
+- Reports and moderation: signed-in users can report a listing or user; admins review them at `/admin/reports`
 - Privacy Policy, Terms of Use and a contact form
 
 | Browse | Listing | Sign up |

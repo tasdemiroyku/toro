@@ -3,7 +3,7 @@
 import { createHmac, randomInt, timingSafeEqual } from 'node:crypto'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/utils/supabase/server'
-import supabaseAdmin from '@/utils/supabase/admin'
+import { getSupabaseAdmin } from '@/utils/supabase/admin'
 import { sendEmail } from '@/utils/email'
 
 /**
@@ -58,6 +58,7 @@ function verificationEmail(code) {
 }
 
 export async function requestStudentCode(rawEmail) {
+  const supabaseAdmin = getSupabaseAdmin()
   const user = await getCurrentUser()
   if (!user) return { error: 'Please log in again.' }
   if (!process.env.VERIFICATION_CODE_SECRET) return NOT_CONFIGURED
@@ -135,6 +136,7 @@ export async function requestStudentCode(rawEmail) {
 }
 
 export async function confirmStudentCode(rawCode) {
+  const supabaseAdmin = getSupabaseAdmin()
   const user = await getCurrentUser()
   if (!user) return { error: 'Please log in again.' }
   if (!process.env.VERIFICATION_CODE_SECRET) return NOT_CONFIGURED

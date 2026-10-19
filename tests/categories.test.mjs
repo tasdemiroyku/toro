@@ -30,3 +30,11 @@ test('every category has a label, examples and an icon', () => {
     assert.ok(CATEGORY_ICON[c.value]?.length > 0, `${c.value}: icon paths`)
   }
 })
+
+test('report reasons match the reports_reason_check constraint', async () => {
+  const { REPORT_REASONS } = await import('../lib/reports.js')
+  const matches = [...migrations.matchAll(/reports_reason_check check \(reason in \(([^)]*)\)/gs)]
+  assert.ok(matches.length > 0, 'reports_reason_check not found')
+  const dbValues = [...matches.at(-1)[1].matchAll(/'([a-z_]+)'/g)].map(m => m[1]).sort()
+  assert.deepEqual(REPORT_REASONS.map(r => r.value).sort(), dbValues)
+})
